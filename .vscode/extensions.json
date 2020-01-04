@@ -1,0 +1,21 @@
+{
+  // See http://go.microsoft.com/fwlink/?LinkId=827846 to learn about workspace recommendations.
+  // Extension identifier format: ${publisher}.${name}. Example: vscode.csharp
+
+  // List of extensions which should be recommended for users of this workspace.
+  "recommendations": [
+    "eamodio.gitlens",
+    "gruntfuggly.todo-tree",
+    "ms-vscode.cpptools",
+    "redhat.java",
+    "visualstudioexptteam.vscodeintellicode",
+    "vscjava.vscode-java-debug",
+    "vscjava.vscode-java-pack",
+    "vscjava.vscode-java-test",
+    "vscjava.vscode-maven",
+    "wpilibsuite.vscode-wpilib",
+  ],
+  // List of extensions recommended by VS Code that should not be recommended for users of this workspace.
+  "unwantedRecommendations": [
+  ]
+}
