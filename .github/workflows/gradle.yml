@@ -5,7 +5,7 @@ on: [push]
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: [ubuntu-latest]
 
     steps:
     - uses: actions/checkout@v1
@@ -13,7 +13,9 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 11
-    - name: Build with Gradle
-      run: chmod +x ./gradlew && ./gradlew build
-    - name: Test with Gradle
+    - name: Install Gradle packages
+      run: chmod +x ./gradlew && ./gradlew downloadAll
+    - name: Gradle Build
+      run: ./gradlew build
+    - name: Gradle Test
       run: ./gradlew test
