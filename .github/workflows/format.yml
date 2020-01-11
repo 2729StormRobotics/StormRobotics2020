@@ -1,0 +1,21 @@
+name: WPI Format
+
+on: [pull_request]
+
+jobs:
+  format:
+    runs-on: [ubuntu-latest]
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install clang-format
+        run: sudo apt install -y clang-format-6.0
+      - name: Install wpiformat
+        run: sudo python -m pip install --upgrade wpiformat
+      - name: Run wpiformat
+        run: wpiformat -vv -clang 6.0
+      - name: Check for code changes
+        run: git --no-pager diff --exit-code HEAD
+      - name: Fail if wpiformat made changes
+        if: steps.format.outputs.exit-code == 2
+        run: exit 1
