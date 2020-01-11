@@ -14,9 +14,9 @@ jobs:
       with:
         python-version: 3.8
     - name: Install wpiformat
-      run: sudo python -m pip install --upgrade wpiformat
+      run: python3 -m pip install --upgrade wpiformat
     - name: Run wpiformat
-      run: wpiformat -vv -clang 6.0
+      run: python3 -m wpiformat -vv -clang 6.0
     - name: Check for code changes
       run: git --no-pager diff --exit-code HEAD
     - name: Fail if wpiformat made changes
