@@ -12,7 +12,7 @@ jobs:
       - name: Install clang-format
         run: |
           sudo apt-get update
-          sudo apt-get install -y clang-format-6.0
+          sudo apt-get install -y clang-6.0
       - name: Install wpiformat
         run: sudo python -m pip install --upgrade wpiformat
       - name: Run wpiformat
