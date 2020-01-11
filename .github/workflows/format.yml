@@ -8,17 +8,17 @@ jobs:
     runs-on: [ubuntu-18.04]
 
     steps:
-      - uses: actions/checkout@v1
-      - name: Install clang-format
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y clang-6.0
-      - name: Install wpiformat
-        run: sudo python3 -m pip install --upgrade wpiformat
-      - name: Run wpiformat
-        run: wpiformat -vv -clang 6.0
-      - name: Check for code changes
-        run: git --no-pager diff --exit-code HEAD
-      - name: Fail if wpiformat made changes
-        if: steps.format.outputs.exit-code == 2
-        run: exit 1
+    - uses: actions/checkout@v1
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.8
+    - name: Install wpiformat
+      run: sudo python -m pip install --upgrade wpiformat
+    - name: Run wpiformat
+      run: wpiformat -vv -clang 6.0
+    - name: Check for code changes
+      run: git --no-pager diff --exit-code HEAD
+    - name: Fail if wpiformat made changes
+      if: steps.format.outputs.exit-code == 2
+      run: exit 1
