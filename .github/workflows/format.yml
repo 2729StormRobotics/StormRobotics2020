@@ -4,12 +4,15 @@ on: [pull_request]
 
 jobs:
   format:
-    runs-on: [ubuntu-latest]
+    
+    runs-on: [ubuntu-18.04]
 
     steps:
       - uses: actions/checkout@v1
       - name: Install clang-format
-        run: sudo apt install -y clang-format
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang-format-6.0
       - name: Install wpiformat
         run: sudo python -m pip install --upgrade wpiformat
       - name: Run wpiformat
