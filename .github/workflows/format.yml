@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Install clang-format
-        run: sudo apt install -y clang-format-6.0
+        run: sudo apt install -y clang-format
       - name: Install wpiformat
         run: sudo python -m pip install --upgrade wpiformat
       - name: Run wpiformat
