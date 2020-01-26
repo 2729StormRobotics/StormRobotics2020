@@ -77,6 +77,7 @@ sonarqube {
     property "sonar.links.scm", "https://github.com/2729StormRobotics/StormRobotics2020"
     property "sonar.links.issue", "https://github.com/2729StormRobotics/StormRobotics2020/issues"
     property "sonar.sources", "./src/main/java/"
-    property "sonar.tests", "./src/test/java/"
+    // Remove this comment when tests are added.
+    // property "sonar.tests", "./src/test/java/"
   }
 }
