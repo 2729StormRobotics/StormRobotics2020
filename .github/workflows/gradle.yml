@@ -14,8 +14,10 @@ jobs:
       with:
         java-version: 11
     - name: Install Gradle packages
-      run: ./gradlew downloadAll
+      run: ./gradlew downloadAll InstallAllTools
     - name: Gradle Build
       run: ./gradlew build
     - name: Gradle Test
       run: ./gradlew test
+    - name: Sonarcloud Scan
+      run: ./gradlew sonarqube
