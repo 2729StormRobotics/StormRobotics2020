@@ -14,7 +14,7 @@ jobs:
       with:
         java-version: 11
     - name: Install Gradle packages
-      run: chmod +x ./gradlew && ./gradlew downloadAll
+      run: ./gradlew downloadAll
     - name: Gradle Build
       run: ./gradlew build
     - name: Gradle Test
