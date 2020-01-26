@@ -48,7 +48,6 @@ dependencies {
     nativeZip wpi.deps.wpilibJni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.wpilibJni(wpi.platforms.desktop)
 
-
     implementation wpi.deps.vendor.java()
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
@@ -69,12 +68,12 @@ jar {
 }
 
 sonarqube {
-  properties {
-    property "sonar.projectKey", "2729StormRobotics_StormRobotics2020"
-    property "sonar.organization", "storm-robotics-2729-github"
-    property "sonar.host.url", "https://sonarcloud.io"
-    property "sonar.links.homepage", "https://github.com/2729StormRobotics/StormRobotics2020"
-    property "sonar.links.scm", "https://github.com/2729StormRobotics/StormRobotics2020"
-    property "sonar.links.issue", "https://github.com/2729StormRobotics/StormRobotics2020/issues"
-  }
+    properties {
+        property "sonar.projectKey", "2729StormRobotics_StormRobotics2020"
+        property "sonar.organization", "storm-robotics-2729-github"
+        property "sonar.host.url", "https://sonarcloud.io"
+        property "sonar.links.homepage", "https://github.com/2729StormRobotics/StormRobotics2020"
+        property "sonar.links.scm", "https://github.com/2729StormRobotics/StormRobotics2020"
+        property "sonar.links.issue", "https://github.com/2729StormRobotics/StormRobotics2020/issues"
+    }
 }
