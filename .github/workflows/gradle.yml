@@ -22,4 +22,5 @@ jobs:
     - name: Sonarcloud Scan
       run: ./gradlew sonarqube
       env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN_FOR_SONAR }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
