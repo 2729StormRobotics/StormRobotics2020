@@ -1,6 +1,6 @@
 plugins {
     id "java"
-    id "edu.wpi.first.GradleRIO" version "2020.1.2"
+    id "edu.wpi.first.GradleRIO" version "2020.2.2"
     id "org.sonarqube" version "2.8"
 }
 
@@ -53,7 +53,7 @@ dependencies {
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
 
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13'
 
     // Enable simulation gui support. Must check the box in vscode to enable support
     // upon debugging
@@ -66,4 +66,15 @@ dependencies {
 jar {
     from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
     manifest edu.wpi.first.gradlerio.GradleRIOPlugin.javaManifest(ROBOT_MAIN_CLASS)
+}
+
+sonarqube {
+  properties {
+    property "sonar.projectKey", "2729StormRobotics_StormRobotics2020"
+    property "sonar.organization", "storm-robotics-2729-github"
+    property "sonar.host.url", "https://sonarcloud.io"
+    property "sonar.links.homepage", "https://github.com/2729StormRobotics/StormRobotics2020"
+    property "sonar.links.scm", "https://github.com/2729StormRobotics/StormRobotics2020"
+    property "sonar.links.issue", "https://github.com/2729StormRobotics/StormRobotics2020/issues"
+  }
 }
