@@ -16,4 +16,63 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+    // ADD THE PORT NUMBERS TO CONSTANTS!!!!!
+
+    public static final class DriveConstants {
+        public static final int kDriveMotor1 = 0;
+        public static final int kDriveMotor2 = 0;
+        public static final int kDriveMotor3 = 0;
+        public static final int kDriveMotor4 = 0;
+        
+        public static final int kGyroSensor = 0; //IMU for point turn
+
+        public static final double kWheelDiameter = 0; //ADD UNIT OF MEASUREMENT
+
+    }
+
+    public static final class LauncherConstants {
+        public static final int kLauncherMotor1 = 0;
+        public static final int kLauncherMotor2 = 0;
+        // pistons adjust the angle of the launcher
+        public static final int kLauncherPiston1 = 0; // double solenoid
+        public static final int kLauncherPiston2 = 0; // double solenoid
+
+    }
+
+    public static final class IntakeConstants {
+        
+        // beam breaker detects the number of powercells in the cellevator
+        public static final int kBeamBreak1 = 0;
+        public static final int kBeamBreak2 = 0;
+
+        public static final int kIntakeMotor1 = 0;
+        public static final int kIntakeMotor2 = 0;
+        public static final int kIntakeMotor3 = 0;
+        public static final int kIntakeMotor4 = 0;
+        public static final int kIntakeMotor5 = 0;
+
+        // pistons that lower and raise the intake
+        public static final int kIntakePiston1 = 0; // double solenoid
+        public static final int kIntakePiston2 = 0; // double solenoid
+
+    }
+
+    public static final class ControlPanelConstants {
+        public static final int kSpinnerMotor = 0; 
+        public static final int kColorSensor = 0;
+
+    }
+
+    public static final class HangerConstants {
+        public static final int kHangerMotor1 = 0;
+        public static final int kHangerMotor2 = 0;
+
+    }
+
+    public static final class LimeLightConstants {
+        public static final int kLimelight = 0;
+
+    }
+
 }
