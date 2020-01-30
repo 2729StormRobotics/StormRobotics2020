@@ -24,6 +24,9 @@ public final class Constants {
         public static final int kDriveMotor2 = 0;
         public static final int kDriveMotor3 = 0;
         public static final int kDriveMotor4 = 0;
+
+        public static final int kLeftTalonPort = 0;
+        public static final int kRightTalonPort = 0;
         
         public static final int kGyroSensor = 0; //IMU for point turn
 
@@ -34,6 +37,7 @@ public final class Constants {
     public static final class LauncherConstants {
         public static final int kLauncherMotor1 = 0;
         public static final int kLauncherMotor2 = 0;
+
         // pistons adjust the angle of the launcher
         public static final int kLauncherPiston1 = 0; // double solenoid
         public static final int kLauncherPiston2 = 0; // double solenoid
@@ -59,19 +63,22 @@ public final class Constants {
     }
 
     public static final class ControlPanelConstants {
-        public static final int kSpinnerMotor = 0; 
-        public static final int kColorSensor = 0;
+
+        public static final int kSpinnerMotor = 0; // motor for the wheel that spins the control panal
+        public static final int kColorSensor = 0; // Color sensor that senses the colors on the control panel
 
     }
 
     public static final class HangerConstants {
+
         public static final int kHangerMotor1 = 0;
         public static final int kHangerMotor2 = 0;
 
     }
 
     public static final class LimeLightConstants {
-        public static final int kLimelight = 0;
+
+        public static final int kLimelight = 0; // used for vision
 
     }
 
