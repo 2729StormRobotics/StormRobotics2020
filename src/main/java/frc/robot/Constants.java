@@ -16,7 +16,6 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    
         // ADD THE PORT NUMBERS TO CONSTANTS!!!!!
 
         public static final class DriveConstants {
