@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.Constants.IntakeConstants;
 
 public class Intake extends SubsystemBase {
 
@@ -31,10 +31,10 @@ public class Intake extends SubsystemBase {
   public Intake() {
 
     // Instantiates the motor with the ports and sets the type to burshed motor
-    m_intakeMotor = new CANSparkMax(Constants.IntakeConstants.kIntakeMotorPort, MotorType.kBrushed);
+    m_intakeMotor = new CANSparkMax(IntakeConstants.kIntakeMotorPort, MotorType.kBrushed);
     
     // Instantiates the double solenoid with the raise and lower piston ports
-    m_intakePiston = new DoubleSolenoid(Constants.IntakeConstants.kIntakeRaiseSolenoidPort, Constants.IntakeConstants.kIntakeLowerSolenoidPort);
+    m_intakePiston = new DoubleSolenoid(IntakeConstants.kIntakeRaiseSolenoidPort, IntakeConstants.kIntakeLowerSolenoidPort);
 
     // initializes the intake motor
     motorInit(m_intakeMotor);
