@@ -22,11 +22,8 @@ public class Intake extends SubsystemBase {
   // intake motor that spins the intake wheels
   private final CANSparkMax m_intakeMotor;
 
-
   //pistons that raise and lower the intake mechanism
   private final DoubleSolenoid m_intakePiston;
-  
-  
 
   /**
    * Creates a new Intake.
@@ -43,7 +40,6 @@ public class Intake extends SubsystemBase {
     motorInit(m_intakeMotor);
 
     addChild("Intake Pistons", m_intakePiston);
-
 
   }
 
