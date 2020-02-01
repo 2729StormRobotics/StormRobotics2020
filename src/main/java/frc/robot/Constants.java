@@ -16,67 +16,72 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-        // ADD THE PORT NUMBERS TO CONSTANTS!!!!!
+        // ADD THE PORT NUMBERS TO CONSTANTS
 
         public static final class DriveConstants {
             public static final int kLeftDriveMotor1Port = 0;
-            public static final int kLeftDriveMotor2Port = 0;
-            public static final int kRightDriveMotor1Port = 0;
-            public static final int kRightDriveMotor2Port = 0;
+            public static final int kLeftDriveMotor2Port = 15;
+            public static final int kRightDriveMotor1Port = 3;
+            public static final int kRightDriveMotor2Port = 12;
+
+            // pistons that change the gear of the drive train
+            public static final int kDriveSolenoid = 7;
     
-            public static final double kWheelDiameter = 0; //ADD UNIT OF MEASUREMENT
-    
+            public static final double kWheelDiameter = 0; // ADD UNIT OF MEASUREMENT
+
+            public static final double kEncoderDistancePerPulse = 0; // ADD CONVERSION
+            public static final double kEncoderSpeedPerPulse = 0; // ADD CONVERSION
         }
     
         public static final class LauncherConstants {
-            public static final int kLauncherMotor1Port = 0;
-            public static final int kLauncherMotor2Port = 0;
+            public static final int kRightLauncherMotorPort = 13;
+            public static final int kLeftLauncherMotorPort = 14;
     
-            // pistons adjust the angle of the launcher
-            public static final int kLauncherSolenoidPort = 0; 
-    
+            // piston (double solenoid) that adjusts the angle of the launcher
+            public static final int kLongLaunchSolenoidPort = 3;
+            public static final int kShortLaunchSolenoidPort = 4;
         }
     
         public static final class IntakeConstants {
+           
+            public static final int kIntakeMotorPort = 7;
             
-            public static final int kIntakeMotorPort = 0;
-            
-            // pistons that lower and raise the intake
-            public static final int kIntakeSolenoidPort = 0;
+            // piston (double solenoid) that raises and lowers the intake
+            public static final int kIntakeRaiseSolenoidPort = 5;
+            public static final int kIntakeLowerSolenoidPort = 2;
         }
     
         public static final class LoadingConstants {
 
-            // beam breaker detects the number of powercells in the cellevator
-            public static final int kBeamBreak1OutputPort = 0;
-            public static final int kBeamBreak2OutputPort = 0;
-            
-            // motors in cellevator that move powercells to launcher
-            // move independently from each other
-            public static final int kCellevatorMotor1Port = 0;
-            public static final int kCellevatorMotor2Port = 0;
+            // beam breakers detect the number of powercells in the cellevator
+            public static final int kBeamBreakOutput1Port = 0;
+            public static final int kBeamBreakOutput2Port = 0;
 
-            // motor on ramp that transports powercells from intake to cellevator
-            public static final int kLoadingMotor1Port = 0;
-            
+            // motors in cellevator that transport powercells to launcher
+            public static final int kLowCellevatorMotorPort = 5;
+            public static final int kHighCellevatorMotor2Port = 8;
+
+            // motors in ramp that transport powercells from intake to cellevator
+            public static final int kLoadingMotorPort = 6;
+
         }
     
         public static final class ControlPanelConstants {
     
-            public static final int kSpinnerMotorPort = 0; // motor for the wheel that spins the control panal
+            public static final int kSpinnerMotorPort = 9; // motor for the wheel that spins the control panal
+
             public static final int kColorSensorPort = 0; // Color sensor that senses the colors on the control panel
-    
         }
     
         public static final class HangerConstants {
     
-            public static final int kHangerMotor1Port = 0;
-            public static final int kHangerMotor2Port = 0;
-    
+            public static final int kRightHangerMotorPort = 2;
+            public static final int kLeftHangerMotorPort = 1;
+
+            public static final int kFrictionSolenoidPort = 6; // piston that applies the friction brake on the hanging elevator
         }
     
         public static final class LimeLightConstants {
-    
     
         }
     
