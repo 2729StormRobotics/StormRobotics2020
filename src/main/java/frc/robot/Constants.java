@@ -39,8 +39,6 @@ public final class Constants {
     
         public static final class IntakeConstants {
             
-           
-    
             public static final int kIntakeMotorPort = 0;
             
             // pistons that lower and raise the intake
@@ -58,10 +56,9 @@ public final class Constants {
             public static final int kCellevatorMotor1Port = 0;
             public static final int kCellevatorMotor2Port = 0;
 
-            // motors on ramp that transport powercells from intake to cellevator
-            // move together
-            public static final int kLoadingMotor3Port = 0;
-            public static final int kLoadingMotor4Port = 0;
+            // motor on ramp that transports powercells from intake to cellevator
+            public static final int kLoadingMotor1Port = 0;
+            
         }
     
         public static final class ControlPanelConstants {
