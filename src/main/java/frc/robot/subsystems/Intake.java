@@ -81,6 +81,7 @@ public class Intake extends SubsystemBase {
 
   // displays data on the SmartDashboard
   public void log() {
+    //  shows if the intake is raised or lowered by the pistons
     SmartDashboard.putData("Intake Status", m_intakePiston);
   }
 
