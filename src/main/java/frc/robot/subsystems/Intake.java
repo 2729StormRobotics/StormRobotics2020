@@ -59,6 +59,11 @@ public class Intake extends SubsystemBase {
     m_intakeMotor.set(speed);
   }
 
+  public void invertIntakeMotor(double speed){
+    m_intakeMotor.setInverted(!m_intakeMotor.getInverted());
+    
+  }
+
   // stops the intake motor 
   public void stopIntakeMotor() {
     m_intakeMotor.set(0);
@@ -76,7 +81,7 @@ public class Intake extends SubsystemBase {
 
   // displays data on the SmartDashboard
   public void log() {
-    
+    SmartDashboard.putData("Intake Status", m_intakePiston);
   }
 
   @Override
