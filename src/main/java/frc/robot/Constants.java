@@ -39,9 +39,7 @@ public final class Constants {
     
         public static final class IntakeConstants {
             
-            // beam breaker detects the number of powercells in the cellevator
-            public static final int kBeamBreak1OutputPort = 0;
-            public static final int kBeamBreak2OutputPort = 0;
+           
     
             public static final int kIntakeMotorPort = 0;
             
@@ -50,9 +48,18 @@ public final class Constants {
         }
     
         public static final class LoadingConstants {
+
+            // beam breaker detects the number of powercells in the cellevator
+            public static final int kBeamBreak1OutputPort = 0;
+            public static final int kBeamBreak2OutputPort = 0;
             
-            public static final int kLoadingMotor1Port = 0;
-            public static final int kLoadingMotor2Port = 0;
+            // motors in cellevator that move powercells to launcher
+            // move independently from each other
+            public static final int kCellevatorMotor1Port = 0;
+            public static final int kCellevatorMotor2Port = 0;
+
+            // motors on ramp that transport powercells from intake to cellevator
+            // move together
             public static final int kLoadingMotor3Port = 0;
             public static final int kLoadingMotor4Port = 0;
         }
