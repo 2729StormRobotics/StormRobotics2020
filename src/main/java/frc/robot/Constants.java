@@ -63,6 +63,7 @@ public final class Constants {
 
             // motors in ramp that transport powercells from intake to cellevator
             public static final int kLoadingMotorPort = 6;
+
         }
     
         public static final class ControlPanelConstants {
