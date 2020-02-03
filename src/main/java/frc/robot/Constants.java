@@ -73,10 +73,10 @@ public final class Constants {
             public static final int kColorSensorPort = 0; // Color sensor that senses the colors on the control panel
         }
     
-        public static final class HangerConstants {
+        public static final class ClimberConstants {
     
-            public static final int kRightHangerMotorPort = 2;
-            public static final int kLeftHangerMotorPort = 1;
+            public static final int kRightClimberMotorPort = 2;
+            public static final int kLeftClimberMotorPort = 1;
 
             public static final int kFrictionSolenoidPort = 6; // piston that applies the friction brake on the hanging elevator
         }
