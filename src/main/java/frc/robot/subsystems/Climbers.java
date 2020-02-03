@@ -7,13 +7,27 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+import frc.robot.Constants.ClimberConstants;
 
 public class Climbers extends SubsystemBase {
+  
+  private final CANSparkMax m_leftClimber;
+  private final CANSparkMax m_rightClimber;
+  
+
   /**
    * Creates a new Climbers.
    */
   public Climbers() {
+
+    m_leftClimber = new CANSparkMax(ClimberConstants.kLeftClimberMotorPort, MotorType.kBrushless);
+    m_rightClimber = new CANSparkMax(ClimberConstants.kRightClimberMotorPort, MotorType.kBrushless);
 
   }
 
@@ -21,4 +35,8 @@ public class Climbers extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
   }
+
+
+
+
 }
