@@ -52,8 +52,13 @@ public class Climbers extends SubsystemBase {
      */
     encoder.setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);
     encoder.setVelocityConversionFactor(DriveConstants.kEncoderSpeedPerPulse); 
-    //encoderReset(encoder); //Calls the encoderReset method
+    encoderReset(encoder); //Calls the encoderReset method
 
+  }
+
+  private void encoderReset(CANEncoder encoder) {
+    //Resets encoder value to 0.
+    encoder.setPosition(0);
   }
 
   
