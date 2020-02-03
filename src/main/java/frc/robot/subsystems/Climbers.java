@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -36,7 +37,14 @@ public class Climbers extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
+  public void motorInit(CANSparkMax motor, boolean invert) {
+    motor.restoreFactoryDefaults(); //Restores the default values in case something stayed from a previous reboot.
+    motor.setIdleMode(IdleMode.kBrake); //Set motor mode to brake mode
+    motor.setInverted(invert); //Invert the motor if needed.
+    //encoderInit(motor.getEncoder()); //Initialize the encoder.
+  }
 
+  
 
 
 }
