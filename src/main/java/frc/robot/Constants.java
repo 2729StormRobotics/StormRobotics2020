@@ -32,6 +32,10 @@ public final class Constants {
             public static final double kEncoderDistancePerPulse = 0; // ADD CONVERSION
             // constant for the speed of the motor per pulse of the encoder
             public static final double kEncoderSpeedPerPulse = 0; // ADD CONVERSION
+
+            public static final boolean kLeftEncoderInverted = false;
+            public static final boolean kRighEncoderInverted = false;
+
         }
     
         public static final class LauncherConstants {
