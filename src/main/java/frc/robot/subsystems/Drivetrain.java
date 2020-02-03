@@ -69,6 +69,12 @@ public Drivetrain() {
     m_rightMotorEncoder1 = m_rightMotor1.getEncoder();
     m_rightMotorEncoder2 = m_rightMotor2.getEncoder();
 
+    motorInit(m_rightMotor1, false);
+    motorInit(m_rightMotor2, false);
+    motorInit(m_leftMotor1, false);
+    motorInit(m_leftMotor2, false);
+
+
     addChild("Left Motors", m_leftMotors);
     addChild("Right Motors", m_rightMotors);
     addChild("Drivetrain", m_Drive);
