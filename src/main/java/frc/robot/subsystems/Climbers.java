@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -15,6 +16,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ClimberConstants;
+import frc.robot.Constants.DriveConstants;
 
 public class Climbers extends SubsystemBase {
   
@@ -37,11 +39,21 @@ public class Climbers extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void motorInit(CANSparkMax motor, boolean invert) {
+  private void motorInit(CANSparkMax motor, boolean invert) {
     motor.restoreFactoryDefaults(); //Restores the default values in case something stayed from a previous reboot.
     motor.setIdleMode(IdleMode.kBrake); //Set motor mode to brake mode
     motor.setInverted(invert); //Invert the motor if needed.
-    //encoderInit(motor.getEncoder()); //Initialize the encoder.
+    encoderInit(motor.getEncoder()); //Initialize the encoder.
+  }
+
+  private void encoderInit(CANEncoder encoder) {
+    /* Sets the conversion factor for the encoder. This allows the
+     * encoder to output the specified unit.
+     */
+    encoder.setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);
+    encoder.setVelocityConversionFactor(DriveConstants.kEncoderSpeedPerPulse); 
+    //encoderReset(encoder); //Calls the encoderReset method
+
   }
 
   
