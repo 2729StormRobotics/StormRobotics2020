@@ -61,6 +61,13 @@ public class Climbers extends SubsystemBase {
     encoder.setPosition(0);
   }
 
+  public void stopMotor(CANSparkMax motor) {
+
+    //Sets the speed of the motor to 0.
+    motor.set(0.0);
+
+  }
+
   
 
 
