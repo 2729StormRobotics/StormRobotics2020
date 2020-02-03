@@ -83,8 +83,8 @@ public Drivetrain() {
 
 private void encoderInit(CANEncoder encoder) {
     // Converts the input into desired value for distance and velocity
-    encoder.setPositionConversionFactor(kEncoderDistancePerPulse); // ADD kEncoderDistancePerPulse TO CONSTANTS
-    encoder.setVelocityConversionFactor(kEncoderSpeedPerPulse); // ADD kEncoderSpeedPerPulse TO CONSTANTS
+    encoder.setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse); // ADD kEncoderDistancePerPulse TO CONSTANTS
+    encoder.setVelocityConversionFactor(DriveConstants.kEncoderSpeedPerPulse); // ADD kEncoderSpeedPerPulse TO CONSTANTS
     encoderReset(encoder);
   }
 
