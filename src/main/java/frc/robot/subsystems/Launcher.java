@@ -53,8 +53,25 @@ public class Launcher extends SubsystemBase {
     encoderInit(motor.getEncoder());
   }
 
+  /**
+   * Initialize an encoder.
+   * 
+   * @param encoder The encoder to initialize
+   */
   private void encoderInit(CANEncoder encoder) {
-    
+    // Set the automatic conversion factor for the encoder. This allows
+    // the encoder to output data in a specified unit.
+    encoder.setVelocityConversionFactor(LauncherConstants.kEncoderSpeedPerPulse);
+    encoderReset(encoder); // Reset the encoder to 0, just in case
+  }
+
+  /**
+   * Reset an encoder's position.
+   * 
+   * @param encoder The encoder to reset
+   */
+  private void encoderReset(CANEncoder encoder) {
+    encoder.setPosition(0);
   }
 
   @Override
