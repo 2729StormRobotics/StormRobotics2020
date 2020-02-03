@@ -16,7 +16,6 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-        // ADD THE PORT NUMBERS TO CONSTANTS
 
         public static final class DriveConstants {
             public static final int kLeftDriveMotor1Port = 0;
@@ -24,12 +23,14 @@ public final class Constants {
             public static final int kRightDriveMotor1Port = 3;
             public static final int kRightDriveMotor2Port = 12;
 
-            // pistons that change the gear of the drive train
+            // pistons that shift the gear of the drive train 
             public static final int kDriveSolenoid = 7;
     
-            public static final double kWheelDiameter = 0; // ADD UNIT OF MEASUREMENT
+            public static final double kWheelDiameter = 6; 
 
+            //constant for the distance that mechanism travels for every pulse of the encoder
             public static final double kEncoderDistancePerPulse = 0; // ADD CONVERSION
+            // constant for the speed of the motor per pulse of the encoder
             public static final double kEncoderSpeedPerPulse = 0; // ADD CONVERSION
         }
     
@@ -71,12 +72,19 @@ public final class Constants {
             public static final int kSpinnerMotorPort = 9; // motor for the wheel that spins the control panal
 
             public static final int kColorSensorPort = 0; // Color sensor that senses the colors on the control panel
+
+            //values the color sensor values to detect the colors on control panel
+            public static final int kRedTarget = 0; // color sensor red target value
+            public static final int kYellowTarget = 0; // color sensor yellow target value
+            public static final int kGreenTarget = 0; // color sensor green target value
+            public static final int kBlueTarget = 0; // color sensor blue target value
+
         }
     
-        public static final class HangerConstants {
+        public static final class ClimberConstants {
     
-            public static final int kRightHangerMotorPort = 2;
-            public static final int kLeftHangerMotorPort = 1;
+            public static final int kRightClimberMotorPort = 2;
+            public static final int kLeftClimberMotorPort = 1;
 
             public static final int kFrictionSolenoidPort = 6; // piston that applies the friction brake on the hanging elevator
         }
