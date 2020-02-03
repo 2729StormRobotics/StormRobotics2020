@@ -36,6 +36,8 @@ public final class Constants {
         public static final class LauncherConstants {
             public static final int kRightLauncherMotorPort = 13;
             public static final int kLeftLauncherMotorPort = 14;
+
+            public static final double kEncoderSpeedPerPulse = 1; // ADD CONVERSION
     
             // piston (double solenoid) that adjusts the angle of the launcher
             public static final int kLongLaunchSolenoidPort = 3;
