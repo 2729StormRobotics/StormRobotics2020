@@ -12,6 +12,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.DriveConstants;
@@ -24,6 +25,7 @@ public class Climbers extends SubsystemBase {
   private final CANEncoder m_leftEncoder;
   private final CANEncoder m_rightEncoder;
   
+  private final Solenoid frictionBreak;
 
   /**
    * Creates a new Climbers.
@@ -35,6 +37,8 @@ public class Climbers extends SubsystemBase {
 
     m_leftEncoder = m_leftClimber.getEncoder();
     m_rightEncoder = m_rightClimber.getEncoder();
+
+   frictionBreak = new Solenoid(ClimberConstants.kFrictionSolenoidPort);
 
     motorInit(m_leftClimber, false);
     motorInit(m_rightClimber, false);
@@ -110,6 +114,9 @@ public class Climbers extends SubsystemBase {
     return ((getRightEncoderValue() + getLeftEncoderValue()) / 2); //Finds the average of the encoders.
   }
 
+  public void frictionBreakerOn(boolean on) {
+    frictionBreak.set(on); //Sets frictionBreak to the value inputted.
+  }  
   
 
 
