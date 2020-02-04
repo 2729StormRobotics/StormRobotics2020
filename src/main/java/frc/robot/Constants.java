@@ -109,6 +109,9 @@ public final class Constants {
     
         public static final class ClimberConstants {
     
+            public static final double kEncoderDistancePerPulse = 0; // ADD CONVERSION
+            public static final double kEncoderSpeedPerPulse = 0; // ADD CONVERSION
+
             public static final int kRightClimberMotorPort = 2;
             public static final int kLeftClimberMotorPort = 1;
 
