@@ -11,7 +11,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.Constants.ControlPanelConstants;
 import edu.wpi.first.wpilibj.util.Color;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
@@ -47,10 +47,10 @@ public class ControlPanel extends SubsystemBase {
   // sets RBG values for each color target
   // still need to add color target constants 
   public void getRBGValues() { 
-    private final Color kRedTarget = ColorMatch.makeColor(0.476, 0.376, 0.15);
-    private final Color kYellowTarget = ColorMatch.makeColor(0.381, 0.545, 0.136);
-    private final Color kGreenTarget = ColorMatch.makeColor(0.18, 0.568, 0.249);
-    private final Color kBlueTarget = ColorMatch.makeColor(0.15, 0.4467, 0.40);
+    // private final Color kRedTarget = ColorMatch.makeColor(0.476, 0.376, 0.15);
+    // private final Color kYellowTarget = ColorMatch.makeColor(0.381, 0.545, 0.136);
+    // private final Color kGreenTarget = ColorMatch.makeColor(0.18, 0.568, 0.249);
+    // private final Color kBlueTarget = ColorMatch.makeColor(0.15, 0.4467, 0.40);
   }
 
   // displays the color based on RBG values
@@ -74,14 +74,14 @@ public class ControlPanel extends SubsystemBase {
   }
 
   // stops the color panel motor
-  public void stopMotors() {
+  public void stopSpinning() {
 
     m_controlPanelMotor.set(0);
 
   }
 
   // displays data onto SmartDashboard
-  public void log() {
+  public void updateColor() {
 
     SmartDashboard.putString("Color", color);
 
@@ -90,5 +90,6 @@ public class ControlPanel extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    updateColor();
   }
 }
