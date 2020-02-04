@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.ControlPanelConstants;
 import edu.wpi.first.wpilibj.util.Color;
 import com.revrobotics.ColorMatchResult;
@@ -59,13 +60,13 @@ public class ControlPanel extends SubsystemBase {
     Color detectedColor = m_colorSensor.getColor();
     ColorMatchResult match = m_colorMatch.matchClosestColor(detectedColor);
 
-    if (match.color == kRedTarget) {
+    if (match.color == (Constants.ControlPanelConstants.kRedTarget) {
       color = "Red";
-    } else if (match.color == kYellowTarget) {
+    } else if (match.color == Constants.ControlPanelConstants.kYellowTarget) {
       color = "Yellow";
-    } else if (match.color == kGreenTarget) {
+    } else if (match.color == Constants.ControlPanelConstants.kGreenTarget) {
       color = "Green";
-    } else if (match.color == kBlueTarget) {
+    } else if (match.color == Constants.ControlPanelConstants.kBlueTarget) {
       color = "Blue";
     } else {
       color = "Unknown";
