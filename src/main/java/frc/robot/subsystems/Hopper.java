@@ -32,15 +32,18 @@ public class Hopper extends SubsystemBase {
     motor.configFactoryDefault(); // configures the factory defaults in case and changes were previously made to the motor  
   }
 
+  // starts the hopper motor to transfer the power cells from the intake to the cellavator
   public void startHopperMotor(double speed) {
     m_hopperMotor.set(ControlMode.Current, speed);
   }
 
+  // stops the hopper motor
   public void stopHopperMotor() {
     m_hopperMotor.set(ControlMode.PercentOutput, 0);
 
   }
 
+  // displays the speed of the hopper motor on the smart dashboard
   public void log() {
     SmartDashboard.putNumber("Hopper Motor Speed", m_hopperMotor.getActiveTrajectoryVelocity());
   }
@@ -48,5 +51,6 @@ public class Hopper extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    log();
   }
 }
