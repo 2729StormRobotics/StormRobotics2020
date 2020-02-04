@@ -84,6 +84,8 @@ public class Loading extends SubsystemBase {
   public void log() {
     SmartDashboard.putData("Holder Beam Value", m_beamBreakHolder);
     SmartDashboard.putData("Loader Bean Value", m_beamBreakLoader);
+    SmartDashboard.putNumber("Holder Motor Speed", m_holderMotor.get());
+    SmartDashboard.putNumber("Loader Motor Speed", m_loaderMotor.get());
   }
 
   @Override
