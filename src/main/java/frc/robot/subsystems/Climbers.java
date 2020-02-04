@@ -67,6 +67,24 @@ public class Climbers extends SubsystemBase {
     motor.set(0.0);
   }
 
+  private void rightClimberUp(CANSparkMax motor) {
+
+    motor.set(0.5); //0.5 is just a random value. Needs to be tested
+
+  }
+
+  private void leftClimberUp(CANSparkMax motor) {
+
+    motor.set(0.5); //0.5 is just a random value. Needs to be tested
+
+  }
+
+  public void climberUp(CANSparkMax motorOne, CANSparkMax motorTwo) {
+
+    leftClimberUp(motorOne);
+    rightClimberUp(motorTwo);
+  }
+
   
 
 
