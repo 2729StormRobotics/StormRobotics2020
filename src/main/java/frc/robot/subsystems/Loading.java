@@ -20,60 +20,72 @@ public class Loading extends SubsystemBase {
   /**
    * Creates a new Loading.
    */
-
-  private final CANSparkMax m_loadingMotor;
-  private final CANSparkMax m_cellevatorMotor1;
-  private final CANSparkMax m_cellevatorMotor2;
-  private final DigitalInput m_beamTop;
-  private final DigitalInput m_beamBottom;
+  private final CANSparkMax m_holderMotor;
+  private final CANSparkMax m_loaderMotor;
+  private final DigitalInput m_beamBreakHolder;
+  private final DigitalInput m_beamBreakLoader;
 
 
   public Loading() {
 
-    m_loadingMotor = new CANSparkMax(LoadingConstants.kLoadingMotorPort, MotorType.kBrushed);
-    m_cellevatorMotor1 = new CANSparkMax(LoadingConstants.kLowCellevatorMotorPort, MotorType.kBrushed);
-    m_cellevatorMotor2 = new CANSparkMax(LoadingConstants.kHighCellevatorMotor2Port, MotorType.kBrushed);
-    m_beamTop = new DigitalInput(LoadingConstants.kBeamBreakOutput1Port);
-    m_beamBottom = new DigitalInput(LoadingConstants.kBeamBreakOutput2Port);
+    m_holderMotor = new CANSparkMax(LoadingConstants.kLowCellevatorMotorPort, MotorType.kBrushed);
+    m_loaderMotor = new CANSparkMax(LoadingConstants.kHighCellevatorMotor2Port, MotorType.kBrushed);
+    m_beamBreakHolder = new DigitalInput(LoadingConstants.kBeamBreakOutput1Port);
+    m_beamBreakLoader = new DigitalInput(LoadingConstants.kBeamBreakOutput2Port);
 
-    motorInit(m_loadingMotor, false);
-    motorInit(m_cellevatorMotor1, false);
-    motorInit(m_cellevatorMotor2, false);
+    motorInit(m_loaderMotor);
+    motorInit(m_holderMotor);
     
   }
 
-  private void motorInit(CANSparkMax motor, boolean invert) {
+  private void motorInit(CANSparkMax motor) {
     motor.restoreFactoryDefaults(); // Reset settings in motor in case they are changed
     motor.setIdleMode(IdleMode.kBrake); // Sets the motors to brake mode from the beginning
   }
 
   // starts the loading motors
-  public void startMotors (double speed) {
-    m_loadingMotor.set(speed);
-    m_cellevatorMotor1.set(speed);
-    m_cellevatorMotor2.set(speed);
+  public void startLoaderMotor (double speed) {
+    m_loaderMotor.set(speed);
   }
 
-  public void getBeamBreakValues () {
-    m_beamTop.get();
-    m_beamBottom.get();
+  public void startHolderMotor (double speed) {
+    m_holderMotor.set(speed);
   }
 
-  // stops the loading motors
-  public void stopMotors() {
-    m_loadingMotor.set(0);
-    m_cellevatorMotor1.set(0);
-    m_cellevatorMotor2.set(0);
+  // gets the beam break value to see if there is a power cell present at the top of the cellavator
+  public void getHolderBeamBreakValue () {
+    m_beamBreakHolder.get();
+    }
+
+  public void getLoaderBeamBreakValue() {
+    m_beamBreakLoader.get();
+  }
+
+  // stops the loading motor and the holder motor
+  public void stopAllMotors() {
+    m_holderMotor.set(0);
+    m_loaderMotor.set(0);
+  }
+
+  // only stops the loader motor
+  public void stopLoaderMotor() {
+    m_loaderMotor.set(0);
+  }
+
+  // only stops the holder motor
+  public void stopHolderMotor() {
+    m_holderMotor.set(0);
   }
 
   // displays data onto SmartDashboard
   public void log() {
-    SmartDashboard.putData("Top Beam Value", m_beamTop);
-    SmartDashboard.putData("Bottom Bean Value", m_beamBottom);
+    SmartDashboard.putData("Holder Beam Value", m_beamBreakHolder);
+    SmartDashboard.putData("Loader Bean Value", m_beamBreakLoader);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    log();
   }
 }
