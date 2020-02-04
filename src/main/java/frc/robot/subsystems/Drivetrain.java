@@ -18,10 +18,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.Solenoid;
 
 public class Drivetrain extends SubsystemBase {
 
-  //Create variables for motor groups and differential drive
+  //Creates variables for motor groups and differential drive
 
   private final CANSparkMax m_leftMotor1;
   private final CANSparkMax m_leftMotor2;
@@ -33,27 +34,33 @@ public class Drivetrain extends SubsystemBase {
 
   private final DifferentialDrive m_Drive;
 
-  //Create variables for encoders
+  //Creates variables for encoders
 
   private final CANEncoder m_leftMotorEncoder1;
   private final CANEncoder m_leftMotorEncoder2;
   private final CANEncoder m_rightMotorEncoder1;
   private final CANEncoder m_rightMotorEncoder2;
 
-  private boolean slow = false;
+  private boolean m_lowGear = false;
 
   private String m_driveType = "Tank"; // adds a String object to store the drive type in
   SendableChooser<String> m_chooser = new SendableChooser<>();
 
+  private final Solenoid gearShift;
+
 // Creates a new Drivetrain.
 public Drivetrain() {
 
-    // Set variables equal to their ports and types
+    // Sets variables equal to their ports and types
     m_leftMotor1 = new CANSparkMax(DriveConstants.kLeftDriveMotor1Port, MotorType.kBrushless);
     m_leftMotor2 = new CANSparkMax(DriveConstants.kLeftDriveMotor2Port, MotorType.kBrushless);
     m_rightMotor1 = new CANSparkMax(DriveConstants.kRightDriveMotor1Port, MotorType.kBrushless);
     m_rightMotor2 = new CANSparkMax(DriveConstants.kRightDriveMotor2Port, MotorType.kBrushless);
 
+    motorInit(m_rightMotor1, DriveConstants.kRightEncoderInverted); 
+    motorInit(m_rightMotor2, DriveConstants.kRightEncoderInverted);
+    motorInit(m_leftMotor1, DriveConstants.kLeftEncoderInverted);
+    motorInit(m_leftMotor2, DriveConstants.kLeftEncoderInverted); 
     m_leftMotors = new SpeedControllerGroup(m_leftMotor1, m_leftMotor2);
     m_rightMotors = new SpeedControllerGroup(m_rightMotor1, m_rightMotor2);
 
@@ -69,22 +76,19 @@ public Drivetrain() {
     m_rightMotorEncoder1 = m_rightMotor1.getEncoder();
     m_rightMotorEncoder2 = m_rightMotor2.getEncoder();
 
-    motorInit(m_rightMotor1, DriveConstants.kRightEncoderInverted);
-    motorInit(m_rightMotor2, DriveConstants.kRightEncoderInverted);
-    motorInit(m_leftMotor1, DriveConstants.kLeftEncoderInverted);
-    motorInit(m_leftMotor2, DriveConstants.kLeftEncoderInverted);
-
+    gearShift = new Solenoid(DriveConstants.kDriveSolenoid);
 
     addChild("Left Motors", m_leftMotors);
     addChild("Right Motors", m_rightMotors);
     addChild("Drivetrain", m_Drive);
+    addChild("Shift Gears", gearShift);
 
   }
 
 private void encoderInit(CANEncoder encoder) {
     // Converts the input into desired value for distance and velocity
-    encoder.setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse); // ADD kEncoderDistancePerPulse TO CONSTANTS
-    encoder.setVelocityConversionFactor(DriveConstants.kEncoderSpeedPerPulse); // ADD kEncoderSpeedPerPulse TO CONSTANTS
+    encoder.setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);
+    encoder.setVelocityConversionFactor(DriveConstants.kEncoderSpeedPerPulse);
     encoderReset(encoder);
   }
 
@@ -93,26 +97,27 @@ private void encoderReset(CANEncoder encoder) {
   }
 
 public void resetLeftEncoders() {
-    // Reset all left-side drive encoders
+    // Resets all left-side drive encoders
     encoderReset(m_leftMotorEncoder1);
     encoderReset(m_leftMotorEncoder2);
   }
 
 public void resetRightEncoders() {
-    // Reset all right-side drive encoders
+    // Resets all right-side drive encoders
     encoderReset(m_rightMotorEncoder1);
     encoderReset(m_rightMotorEncoder2);
   }
 
 public void resetAllEncoders() {
-    // Reset all drive encoders
+    // Resets all drive encoders
     resetLeftEncoders();
     resetRightEncoders();
   }
 
 private void motorInit(CANSparkMax motor, boolean invert) {
-    motor.restoreFactoryDefaults(); // Reset settings in motor in case they are changed
+    motor.restoreFactoryDefaults(); // Resets settings in motor in case they are changed
     motor.setIdleMode(IdleMode.kBrake); // Sets the motors to brake mode from the beginning
+    motor.setSmartCurrentLimit(kCurrentLimit);
 
     encoderInit(motor.getEncoder()); // Initializes encoder within motor
   }
@@ -133,18 +138,19 @@ public double getDistance() {
   }
 
 // Drives the motor using tank drive
-public void tankDrive(double leftPower, double rightPower) {
+// Change the squareInputs if needed
+public void tankDrive(double leftPower, double rightPower, boolean squareInputs) {
       m_Drive.tankDrive(leftPower, rightPower);
     }
   
 // Drives the motors using arcade drive
-public void arcadeDrive(double speed, double turn) {
+public void arcadeDrive(double speed, double turn, boolean squareInputs) {
       m_Drive.arcadeDrive(speed, turn, true);
     }
   
 // Drives the motor using trigger drive
-public void triggerDrive(double reverse, double forward, double turn) {
-      arcadeDrive(forward - reverse, turn);
+public void triggerDrive(double reverse, double forward, double turn, boolean squareInputs) {
+      m_Drive.arcadeDrive(forward - reverse, turn);
     }
   
 // sets motor values to zero to stop
@@ -152,16 +158,16 @@ public void stopDrive() {
       m_Drive.tankDrive(0,0);
     }
 
-// all motors go at half speed when slowSpeed is activated 
-public void slowSpeed() {
+// all motors go at half speed when shiftLow is activated 
+public void shiftLow() {
       m_Drive.setMaxOutput(0.5);
-      slow = true;
+      m_lowGear = true;
     }
   
-// all motors go at full speed when regularSpeed is activated 
-public void regularSpeed() {
+// all motors go at full speed when shiftHigh is activated 
+public void shiftHigh() {
       m_Drive.setMaxOutput(1.0);
-      slow = false;
+      m_lowGear = false;
     }
 
 // gets the speed from the left motors
@@ -191,7 +197,7 @@ public String getDriveType() {
 
 // puts data on the SmartDashboard
 public void log() {
-      SmartDashboard.putBoolean("Slow Mode", slow);
+      SmartDashboard.putBoolean("Low Gear", m_lowGear);
       SmartDashboard.putNumber("Left Speed", getLeftSpeed());
       SmartDashboard.putNumber("Right Speed", getRightSpeed());
       SmartDashboard.putNumber("Left Distance", getLeftEncoderAverage());
@@ -201,5 +207,7 @@ public void log() {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    log();
+    updateDriveType();
   }
 }
