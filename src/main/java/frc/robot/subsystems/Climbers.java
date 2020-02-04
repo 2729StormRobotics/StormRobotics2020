@@ -9,12 +9,10 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.SparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.DriveConstants;
 
@@ -31,6 +29,9 @@ public class Climbers extends SubsystemBase {
 
     m_leftClimber = new CANSparkMax(ClimberConstants.kLeftClimberMotorPort, MotorType.kBrushless);
     m_rightClimber = new CANSparkMax(ClimberConstants.kRightClimberMotorPort, MotorType.kBrushless);
+
+    motorInit(m_leftClimber, false);
+    motorInit(m_rightClimber, false);
 
   }
 
@@ -62,10 +63,8 @@ public class Climbers extends SubsystemBase {
   }
 
   public void stopMotor(CANSparkMax motor) {
-
     //Sets the speed of the motor to 0.
     motor.set(0.0);
-
   }
 
   
