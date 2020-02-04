@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants.  This class should not be used for any other purpose.  All constants should be
@@ -34,7 +35,7 @@ public final class Constants {
             public static final double kEncoderSpeedPerPulse = 0; // ADD CONVERSION
 
             public static final boolean kLeftEncoderInverted = false;
-            public static final boolean kRighEncoderInverted = false;
+            public static final boolean kRightEncoderInverted = false;
 
         }
     
@@ -77,12 +78,29 @@ public final class Constants {
 
             public static final int kColorSensorPort = 0; // Color sensor that senses the colors on the control panel
 
-            //values the color sensor values to detect the colors on control panel
-            public static final int kRedTarget = 0; // color sensor red target value
-            public static final int kYellowTarget = 0; // color sensor yellow target value
-            public static final int kGreenTarget = 0; // color sensor green target value
-            public static final int kBlueTarget = 0; // color sensor blue target value
+            /*values the color sensor values to detect the colors on control panel r g b
+            red*/
+            public static final double kRedTargetR = 0.476;
+            public static final double kRedTargetG = 0.376;
+            public static final double kRedTargetB = 0.15;
+            //Yellow
+            public static final double kYellowTargetR = 0.381;
+            public static final double kYellowTargetG = 0.545;
+            public static final double kYellowTargetB = 0.136;
+            //Green
+            public static final double kGreenTargetR = 0.18;
+            public static final double kGreenTargetG = 0.568;
+            public static final double kGreenTargetB = 0.249;
+            //Blue
+            public static final double kBlueTargetR = 0.15;
+            public static final double kBlueTargetG = 0.4467;
+            public static final double kBlueTargetB = 0.40;
 
+
+            // public static final int kRedTarget(0.476, 0.376, 0.15); // color sensor red target value
+            // public static final int kYellowTarget = 0; // color sensor yellow target value
+            // public static final int kGreenTarget = 0; // color sensor green target value
+            // public static final int kBlueTarget = 0; // color sensor blue target value
         }
     
         public static final class ClimberConstants {
@@ -94,6 +112,7 @@ public final class Constants {
         }
     
         public static final class LimeLightConstants {
+           public static final double kLimeLightOffest = 13.67;
             public static final double kLimeLightHeight = 43; 
             public static final double kLimeLightAngle = 0; //NEED CORRECT ANGLE 
             public static final double kPortHeight = 98.25;
@@ -102,7 +121,7 @@ public final class Constants {
             public static final double kLimeLightAlignP = 1.0; 
             public static final double kLimeLightAlignI = 0.0;
             public static final double kLimeLightAlignD = 0.0;
-            public static final double kLimeLightTolernce = 5.0
+            public static final double kLimeLightTolernce = 5.0;
             public static final double kLimeLightAlignTolerance = 1.5;
         
             //Distance constants for LimeLight
@@ -111,7 +130,8 @@ public final class Constants {
             public static final double kLimeLightDistanceD = 0.0;
             public static final double kLimeLightDistance = 50.0;
             public static final double kLimeLightDistanceTolernce = 5.0;
-        
+            
+            
         
         }
     
