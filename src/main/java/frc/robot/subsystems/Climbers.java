@@ -20,6 +20,9 @@ public class Climbers extends SubsystemBase {
   
   private final CANSparkMax m_leftClimber;
   private final CANSparkMax m_rightClimber;
+
+  private final CANEncoder m_leftEncoder;
+  private final CANEncoder m_rightEncoder;
   
 
   /**
@@ -30,9 +33,11 @@ public class Climbers extends SubsystemBase {
     m_leftClimber = new CANSparkMax(ClimberConstants.kLeftClimberMotorPort, MotorType.kBrushless);
     m_rightClimber = new CANSparkMax(ClimberConstants.kRightClimberMotorPort, MotorType.kBrushless);
 
+    m_leftEncoder = m_leftClimber.getEncoder();
+    m_rightEncoder = m_rightClimber.getEncoder();
+
     motorInit(m_leftClimber, false);
     motorInit(m_rightClimber, false);
-
   }
 
   @Override
@@ -54,7 +59,6 @@ public class Climbers extends SubsystemBase {
     encoder.setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);
     encoder.setVelocityConversionFactor(DriveConstants.kEncoderSpeedPerPulse); 
     encoderReset(encoder); //Calls the encoderReset method
-
   }
 
   private void encoderReset(CANEncoder encoder) {
@@ -68,30 +72,23 @@ public class Climbers extends SubsystemBase {
   }
 
   private void rightClimberUp(CANSparkMax motor) {
-
     motor.set(0.5); //0.5 is just a random value. Needs to be tested
-
   }
 
   private void leftClimberUp(CANSparkMax motor) {
-
     motor.set(0.5); //0.5 is just a random value. Needs to be tested
-
   }
 
   public void climberUp(CANSparkMax motorOne, CANSparkMax motorTwo) {
-
     leftClimberUp(motorOne); //Uses the leftClimberUp method
     rightClimberUp(motorTwo); //Uses the rightClimberUp method
   }
 
   private void rightClimberDown(CANSparkMax motor) {
-
     motor.set(-0.5); //-0.5 is just a random value. Needs to be tested
   }
 
   private void leftClimberDown(CANSparkMax motor) {
-
     motor.set(-0.5); //-0.5 is just a random value. Needs to be tested
   }
 
@@ -99,6 +96,18 @@ public class Climbers extends SubsystemBase {
 
     leftClimberDown(motorOne); //Uses the leftClimberDown method
     rightClimberDown(motorTwo); //Uses the rightClimberDowm method
+  }
+
+  private double getRightEncoderValue() {
+   return m_rightEncoder.getPosition(); //Get the position of the right encoder.
+  }
+
+  private double getLeftEncoderValue() {
+   return m_leftEncoder.getPosition(); //Get the position of the left encoder.
+  }
+
+  public double getEncoderValue() {
+    return ((getRightEncoderValue() + getLeftEncoderValue()) / 2); //Finds the average of the encoders.
   }
 
   
