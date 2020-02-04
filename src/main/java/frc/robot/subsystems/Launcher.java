@@ -90,6 +90,32 @@ public class Launcher extends SubsystemBase {
       p = LauncherConstants.kP;
     }
 
+    if (p != LauncherConstants.kI) {
+      m_pidController.setI(i);
+      i = LauncherConstants.kI;
+    }
+
+    if (d != LauncherConstants.kD) {
+      m_pidController.setD(d);
+      d = LauncherConstants.kD;
+    }
+
+    if (iz != LauncherConstants.kIz) {
+      m_pidController.setIZone(iz);
+      iz = LauncherConstants.kIz;
+    }
+
+    if (ff != LauncherConstants.kFF) {
+      m_pidController.setFF(ff);
+      ff = LauncherConstants.kFF;
+    }
+
+    if ((max != LauncherConstants.kMaxOutput) || (min != LauncherConstants.kMinOutput)) {
+      m_pidController.setOutputRange(min, max);
+      LauncherConstants.kMinOutput = min;
+      LauncherConstants.kMaxOutput = max;
+    }
+
   }
  
   /**
