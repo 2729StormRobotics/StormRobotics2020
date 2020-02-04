@@ -20,9 +20,10 @@ public class Limelight extends SubsystemBase {
    * Creates a new Limelight.
    */
 
-   private Drivetrain m_drivetrain;  // Add a local variable for the Drivetrain
+  // Declare a local instance of the drivetrain subsystem
+   private Drivetrain m_drivetrain;
 
-  //Create variables for the different values given from the limelight
+  // Create variables for the different values given from the limelight
   public double tx;
   public double ty;
   public double ta;
@@ -41,22 +42,30 @@ public class Limelight extends SubsystemBase {
     return tv;
   }
 
-  // Returns true if a target is detected.
+  /**
+   * Returns true if a target is detected.
+   */
   public boolean isTargetDetected() {
     return (tv > 0.0);
   }
 
-  // Returns true if the target is within a range of the center crosshair of the camera
+  /**
+   * Returns true if the target is within a range of the center crosshair of the camera
+   */
   public boolean isTargetCentered() {
-    return ((tx > -2.0) && (tx < 2.0) && (tx != 0.0));
+    return ((tx > -1.5) && (tx < 1.5) && (tx != 0.0));
   }
 
-  // Calculates the total angle by adding the mount angle with the y-axis offset angle of the limelight
+  /**
+   *  Calculates the total angle by adding the mount angle with the y-axis offset angle of the limelight
+   */
   public double LimelightAngle() {
     return (kLimelightAngle + ty);
   }
 
-  // Return the distance from the limelight to the target (hypotenuse)
+  /**
+   * Return the distance from the limelight to the target (hypotenuse)
+   */
   public double limelightDistance() {
     return (kPortHeight - kLimelightHeight) / Math.tan(Math.toRadians(kLimelightAngle + ty));
   }
