@@ -12,9 +12,9 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
- 
+import com.revrobotics.CANPIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import static frc.robot.Constants.LauncherConstants;
+import frc.robot.Constants.LauncherConstants;
  
 public class Launcher extends SubsystemBase {
  
@@ -23,6 +23,8 @@ public class Launcher extends SubsystemBase {
  
   private final CANEncoder m_leftEncoder;
   private final CANEncoder m_rightEncoder;
+
+  private CANPIDController m_pidController;
  
   /**
    * Creates a new Launcher.
@@ -52,6 +54,42 @@ public class Launcher extends SubsystemBase {
     motor.setIdleMode(IdleMode.kCoast); // Set the motor to coast mode, so that we don't lose momentum when we stop shooting.
     motor.setInverted(invert); // Whether or not to invert motor.
     encoderInit(motor.getEncoder());
+   
+  }
+
+  private void pidInit() {
+    m_pidController = m_leftLauncher.getPIDController();
+
+    //set the PID coefficients
+    m_pidController.setP(LauncherConstants.kP);
+    m_pidController.setI(LauncherConstants.kI);
+    m_pidController.setD(LauncherConstants.kD);
+    m_pidController.setIZone(LauncherConstants.kIz);
+    m_pidController.setFF(LauncherConstants.kFF);
+    m_pidController.setOutputRange(LauncherConstants.kMinOutput, LauncherConstants.kMaxOutput);
+
+    // display PID coefficients on SmartDashboard
+    SmartDashboard.putNumber("Launcher P Gain", LauncherConstants.kP);
+    SmartDashboard.putNumber("Launcher I Gain", LauncherConstants.kI);
+    SmartDashboard.putNumber("Launcher D Gain", LauncherConstants.kD);
+    SmartDashboard.putNumber("Launcher I Zone", LauncherConstants.kIz);
+    SmartDashboard.putNumber("Launcher Feed Forward", LauncherConstants.kFF);
+    SmartDashboard.putNumber("Launcher Max Output", LauncherConstants.kMaxOutput);
+    SmartDashboard.putNumber("Launcher Min Output", LauncherConstants.kMinOutput);
+
+    double p = SmartDashboard.getNumber("Launcher P Gain", 0);
+    double i = SmartDashboard.getNumber("Launcher I Gain", 0);
+    double d = SmartDashboard.getNumber("Launcher D Gain", 0);
+    double iz = SmartDashboard.getNumber("Launcher I Zone", 0);
+    double ff = SmartDashboard.getNumber("Launcher Feed Forward", 0);
+    double max = SmartDashboard.getNumber("Launcher Max Output", 0);
+    double min = SmartDashboard.getNumber("Launcher Min Output", 0);
+
+    if (p != LauncherConstants.kP) {
+      m_pidController.setP(p);
+      p = LauncherConstants.kP;
+    }
+
   }
  
   /**

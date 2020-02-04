@@ -42,6 +42,17 @@ public final class Constants {
             // piston (double solenoid) that adjusts the angle of the launcher
             public static final int kLongLaunchSolenoidPort = 3;
             public static final int kShortLaunchSolenoidPort = 4;
+
+            //PID Constants
+            public static final double kP = 0.0;
+            public static final double kI = 0.0;
+            public static final double kD = 0.0;
+            public static final double kIz = 0.0;
+            public static final double kFF = 0.0;
+            public static final int kMaxOutput = 1; 
+            public static final int kMinOutput = -1;
+            public static final int maxRPM = 5700;
+            
         }
     
         public static final class IntakeConstants {
