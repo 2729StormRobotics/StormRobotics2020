@@ -33,6 +33,7 @@ public class Loading extends SubsystemBase {
     m_beamBreakHolder = new DigitalInput(LoadingConstants.kBeamBreakOutput1Port);
     m_beamBreakLoader = new DigitalInput(LoadingConstants.kBeamBreakOutput2Port);
 
+    //intializes the motors 
     motorInit(m_loaderMotor);
     motorInit(m_holderMotor);
     
@@ -56,6 +57,8 @@ public class Loading extends SubsystemBase {
   public void getHolderBeamBreakValue () {
     m_beamBreakHolder.get();
     }
+
+  // gets the beam break value to see if there is a power cell present at bottom at the cellavator where the loader motor is
 
   public void getLoaderBeamBreakValue() {
     m_beamBreakLoader.get();
