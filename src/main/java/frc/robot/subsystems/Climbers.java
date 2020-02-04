@@ -61,8 +61,8 @@ public class Climbers extends SubsystemBase {
     /* Sets the conversion factor for the encoder. This allows the
      * encoder to output the specified unit.
      */
-    encoder.setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);
-    encoder.setVelocityConversionFactor(DriveConstants.kEncoderSpeedPerPulse); 
+    encoder.setPositionConversionFactor(ClimberConstants.kEncoderDistancePerPulse);
+    encoder.setVelocityConversionFactor(ClimberConstants.kEncoderSpeedPerPulse); 
     encoderReset(encoder); //Calls the encoderReset method
   }
 
