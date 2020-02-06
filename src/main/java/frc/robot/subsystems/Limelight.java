@@ -68,7 +68,7 @@ public class Limelight extends SubsystemBase {
    * Return the distance from the limelight to the target (floor distance)
    */
   public double limelightDistance() {
-    return (kPortHeight - kLimelightHeight) / Math.cos(Math.toRadians(kLimelightAngle + ty) + kLimelightOffset);
+    return (kPortHeight - kLimelightHeight) / Math.cos(Math.toRadians(kLimelightAngle + yOffset) + kLimelightOffset);
   }
 
   public void updateLimelight() {
