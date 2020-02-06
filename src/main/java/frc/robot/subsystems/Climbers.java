@@ -76,7 +76,7 @@ public class Climbers extends SubsystemBase {
   }
 
   private void climb(CANSparkMax motor, double speed) {
-    motor.set(speed); //0.5 is just a random value. Needs to be tested
+    motor.set(speed); //The motor goes at a speed given to it. Not a specific speed
   }
 
   public void climberUp(CANSparkMax motorOne, CANSparkMax motorTwo) {
