@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimberConstants;
-import frc.robot.Constants.DriveConstants;
 
 public class Climbers extends SubsystemBase {
   
@@ -26,7 +25,7 @@ public class Climbers extends SubsystemBase {
   private final CANEncoder m_leftEncoder;
   private final CANEncoder m_rightEncoder;
   
-  private final Solenoid frictionBrake;
+  private final Solenoid m_frictionBrake;
 
   /**
    * Creates a new Climbers.
@@ -39,7 +38,7 @@ public class Climbers extends SubsystemBase {
     m_leftEncoder = m_leftClimber.getEncoder();
     m_rightEncoder = m_rightClimber.getEncoder();
 
-   frictionBrake = new Solenoid(ClimberConstants.kFrictionSolenoidPort);
+    m_frictionBrake = new Solenoid(ClimberConstants.kFrictionSolenoidPort);
 
     motorInit(m_leftClimber, false);
     motorInit(m_rightClimber, false);
@@ -104,7 +103,7 @@ public class Climbers extends SubsystemBase {
   }
 
   public void frictionBrakerOn(boolean on) {
-    frictionBrake.set(on); //Sets frictionBreak to the value inputted.
+    m_frictionBrake.set(on); //Sets frictionBreak to the value inputted.
   }  
   
   public void log() {
