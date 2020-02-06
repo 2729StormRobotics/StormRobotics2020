@@ -43,15 +43,16 @@ public class Loading extends SubsystemBase {
   private void motorInit(CANSparkMax motor, boolean invert) {
     motor.restoreFactoryDefaults(); // Reset settings in motor in case they are changed
     motor.setIdleMode(IdleMode.kBrake); // Sets the motors to brake mode from the beginning
-    motor.setInverted(invert);
+    motor.setInverted(invert); // Inverts the motor if needed
     motor.setSmartCurrentLimit(LoadingConstants.kLoadingCurrentLimit);
   }
 
-  // starts the loading motors
+  // starts the loader motors
   public void runLoaderMotor (double speed) {
     m_loaderMotor.set(speed);
   }
 
+  // starts the holder motors
   public void runHolderMotor (double speed) {
     m_holderMotor.set(speed);
   }
@@ -62,7 +63,6 @@ public class Loading extends SubsystemBase {
     }
 
   // gets the beam break value to see if there is a power cell present at bottom at the cellavator where the loader motor is
-
   public void isBallLoaded() {
     m_beamBreakLoader.get();
   }
