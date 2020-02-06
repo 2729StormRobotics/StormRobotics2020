@@ -80,14 +80,14 @@ public class Climbers extends SubsystemBase {
   }
 
   public void climberUp(CANSparkMax motorOne, CANSparkMax motorTwo) {
-    climb(motorOne, 0.5); //FIXME 0.5 is a random value.
-    climb(motorTwo, 0.5); //FIXME 0.5 is a random value.
+    climb(motorOne, 0.5); //FIXME 0.5 is a random value. This value needs to be tested.
+    climb(motorTwo, 0.5); //FIXME 0.5 is a random value. This value needs to be tested.
   }
 
   public void climberDown(CANSparkMax motorOne, CANSparkMax motorTwo) {
 
-    climb(motorOne, -0.5); //FIXME 0.5 is a random value.
-    climb(motorTwo, -0.5); //FIXME 0.5 is a random value.
+    climb(motorOne, -0.5); //FIXME 0.5 is a random value. This value needs to be tested.
+    climb(motorTwo, -0.5); //FIXME 0.5 is a random value. This value needs to be tested.
   }
 
   private double getRightEncoderValue() {
