@@ -112,32 +112,32 @@ public class Launcher extends SubsystemBase {
     
 
     //reset PID constants if changed in dashboard
-    if (p != LauncherConstants.kP) {
+    if (p != pVal) {
       m_pidController.setP(p);
       pVal = p;
     }
 
-    if (i != LauncherConstants.kI) {
+    if (i != iVal) {
       m_pidController.setI(i);
       iVal = i;
     }
 
-    if (d != LauncherConstants.kD) {
+    if (d != dVal) {
       m_pidController.setD(d);
       dVal = d;
     }
 
-    if (iz != LauncherConstants.kIz) {
+    if (iz != izVal) {
       m_pidController.setIZone(iz);
       izVal = iz;
     }
 
-    if (ff != LauncherConstants.kFF) {
+    if (ff != ffVal) {
       m_pidController.setFF(ff);
       ffVal = ff;
     }
 
-    if ((max != LauncherConstants.kMaxOutput) || (min != LauncherConstants.kMinOutput)) {
+    if ((max != maxVal) || (min != minVal)) {
       m_pidController.setOutputRange(min, max);
       minVal= min;
       maxVal = max;  
