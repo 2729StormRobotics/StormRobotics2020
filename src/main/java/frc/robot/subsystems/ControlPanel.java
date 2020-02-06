@@ -27,6 +27,8 @@ public class ControlPanel extends SubsystemBase {
   private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
 
      String color;
+     int count = 0;
+     String colorString;
 
   /**
    * Creates a new ControlPanel.
@@ -62,18 +64,58 @@ public class ControlPanel extends SubsystemBase {
 
     if (match.color == (Constants.ControlPanelConstants.kRedTarget) {
       color = "Red";
+      colorString = "Red";
     } else if (match.color == Constants.ControlPanelConstants.kYellowTarget) {
       color = "Yellow";
     } else if (match.color == Constants.ControlPanelConstants.kGreenTarget) {
       color = "Green";
     } else if (match.color == Constants.ControlPanelConstants.kBlueTarget) {
       color = "Blue";
+      colorString = "Blue";
     } else {
       color = "Unknown";
     }
 
   }
+  public int colorCount(){
+    String lastColor = color;
+    
+    //Counts how many times red and blue have passed 
+    if (lastColor == "Red" && colorString == "Blue" || lastColor == "Blue" && colorString == "Red"){
+      count++;
+      lastColor = colorString;
+    }
+      else if (lastColor == "" && (colorString == "Blue" || colorString =="Red")){
+        lastColor = colorString; 
+      }
+      return count;
+    }
 
+//checks to see if wheel has passed 8 times    
+public boolean isSpun(){
+  Boolean spun= false;
+  if (colorCount() >= 8){
+    spun = true;
+  }
+  return spun;
+}
+
+//Controls motor speed 
+public void wheelMotorPower(){
+  if (isSpun() == false){
+    startMotors(.4);
+  }
+  else if (isSpun() == true){
+    startMotors(.18);
+  }
+
+}
+//stops motor after Red & Blue is passed 8 times
+public void wheelStop(){
+  if (isSpun() == true && colorCount() >=8){
+    stopSpinning();
+  }
+}
   // stops the color panel motor
   public void stopSpinning() {
 
