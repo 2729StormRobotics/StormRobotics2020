@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import frc.robot.subsystems.Drivetrain;
 import static frc.robot.Constants.LimelightConstants.*; 
 
 public class Limelight extends SubsystemBase {
@@ -21,10 +20,10 @@ public class Limelight extends SubsystemBase {
    */
 
   // Create variables for the different values given from the limelight
-  private double xOffset;
-  private double ty;
-  private double ta;
-  private double tv;
+  private double xOffset; // Positive values mean that target is to the right of the camera; negative values mean target is to the left. Measured in degrees
+  private double yOffset; // Positive values mean that target is above the camera; negative values mean target is below. Measured in degrees
+  private double ta; // Returns a value of the percentage of the image the target takes
+  private double tv; // Sends 1 if a target is detected, 0 if none are present
 
   // Create a network table for the limelight
   private final NetworkTable m_limelightTable;
@@ -37,13 +36,15 @@ public class Limelight extends SubsystemBase {
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(1);
   }
 
-  // Returns a value of the offset on the x-axis of the camera to the target. Negative values mean the target is to the left of the target
+  /**
+   * Returns a value of the offset on the x-axis of the camera to the target. Negative values mean the target is to the left of the camera
+   */
   public double getXOffset() {
     return xOffset;
   }
 
   /**
-   * Returns true if a target is detected.
+   * Returns true if a target is detected
    */
   public boolean isTargetDetected() {
     return (tv > 0.0);
@@ -57,14 +58,14 @@ public class Limelight extends SubsystemBase {
   }
 
   /**
-   *  Calculates the total angle by adding the mount angle with the y-axis offset angle of the limelight
+   *  Calculates the total angle by adding the mounting angle with the y-axis offset angle of the limelight
    */
   public double limelightAngle() {
-    return (kLimelightAngle + ty);
+    return (kLimelightAngle + yOffset);
   }
 
   /**
-   * Return the distance from the limelight to the target (hypotenuse)
+   * Return the distance from the limelight to the target (floor distance)
    */
   public double limelightDistance() {
     return (kPortHeight - kLimelightHeight) / Math.cos(Math.toRadians(kLimelightAngle + ty) + kLimelightOffset);
@@ -72,8 +73,8 @@ public class Limelight extends SubsystemBase {
 
   public void updateLimelight() {
     // Updates the values of the limelight on the network table
-    tx = m_limelightTable.getEntry("tx").getDouble(0.0);
-    ty = m_limelightTable.getEntry("ty").getDouble(0.0);
+    xOffset = m_limelightTable.getEntry("tx").getDouble(0.0);
+    yOffset = m_limelightTable.getEntry("ty").getDouble(0.0);
     ta = m_limelightTable.getEntry("ta").getDouble(0.0);
     tv = m_limelightTable.getEntry("tv").getDouble(0.0);
 
@@ -82,7 +83,7 @@ public class Limelight extends SubsystemBase {
   public void log() {
     // Updates the SmartDashboard with limelight values
     SmartDashboard.putNumber("LimelightX", xOffset);
-    SmartDashboard.putNumber("LimelightY", ty);
+    SmartDashboard.putNumber("LimelightY", yOffset);
     SmartDashboard.putNumber("LimelightArea", ta);
     SmartDashboard.putNumber("LimelightDetection", tv);
     SmartDashboard.putBoolean("Target Centered", isTargetCentered());
