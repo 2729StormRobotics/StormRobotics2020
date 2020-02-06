@@ -27,6 +27,7 @@ public class Launcher extends SubsystemBase {
 
   private CANPIDController m_pidController;
   
+  //variables for constants
   private double pVal;
   private double iVal;
   private double dVal;
@@ -51,6 +52,7 @@ public class Launcher extends SubsystemBase {
     motorInit(m_leftLauncher, false);
     motorInit(m_rightLauncher, true);
 
+    //instantiate PID coefficients
     pVal = LauncherConstants.kP;
     iVal = LauncherConstants.kI;
     dVal = LauncherConstants.kD;
@@ -97,7 +99,8 @@ public class Launcher extends SubsystemBase {
     SmartDashboard.putNumber("Target Velocity", LauncherConstants.kTargetLaunchVelociy);
     SmartDashboard.putNumber("Left Speed", m_leftEncoder.getVelocity());
     SmartDashboard.putNumber("Right Speed", m_rightEncoder.getVelocity());
-    
+
+    //gets values from the dashboard
     double p = SmartDashboard.getNumber("Launcher P Gain", 0);
     double i = SmartDashboard.getNumber("Launcher I Gain", 0);
     double d = SmartDashboard.getNumber("Launcher D Gain", 0);
@@ -107,6 +110,8 @@ public class Launcher extends SubsystemBase {
     double min = SmartDashboard.getNumber("Launcher Min Output", 0);
     double setpoint = SmartDashboard.getNumber("Target Velocity", 0);
     
+
+    //reset PID constants if changed in dashboard
     if (p != LauncherConstants.kP) {
       m_pidController.setP(p);
       pVal = p;
@@ -137,6 +142,8 @@ public class Launcher extends SubsystemBase {
       minVal= min;
       maxVal = max;  
     }
+
+    //sets setpoint and control type to PID controller
     m_pidController.setReference(setpoint, ControlType.kVelocity);
 
   }
