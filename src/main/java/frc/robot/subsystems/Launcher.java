@@ -9,6 +9,7 @@ package frc.robot.subsystems;
  
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -25,6 +26,14 @@ public class Launcher extends SubsystemBase {
   private final CANEncoder m_rightEncoder;
 
   private CANPIDController m_pidController;
+  
+  private double pVal;
+  private double iVal;
+  private double dVal;
+  private double izVal;
+  private double ffVal;
+  private double minVal;
+  private double maxVal;
  
   /**
    * Creates a new Launcher.
@@ -41,6 +50,15 @@ public class Launcher extends SubsystemBase {
     // Initialize the the motors.
     motorInit(m_leftLauncher, false);
     motorInit(m_rightLauncher, true);
+
+    pVal = LauncherConstants.kP;
+    iVal = LauncherConstants.kI;
+    dVal = LauncherConstants.kD;
+    izVal = LauncherConstants.kIz;
+    ffVal = LauncherConstants.kFF;
+    minVal = LauncherConstants.kMinOutput;
+    maxVal = LauncherConstants.kMaxOutput;
+   
   }
  
   /**
@@ -76,7 +94,10 @@ public class Launcher extends SubsystemBase {
     SmartDashboard.putNumber("Launcher Feed Forward", LauncherConstants.kFF);
     SmartDashboard.putNumber("Launcher Max Output", LauncherConstants.kMaxOutput);
     SmartDashboard.putNumber("Launcher Min Output", LauncherConstants.kMinOutput);
-
+    SmartDashboard.putNumber("Target Velocity", LauncherConstants.kTargetLaunchVelociy);
+    SmartDashboard.putNumber("Left Speed", m_leftEncoder.getVelocity());
+    SmartDashboard.putNumber("Right Speed", m_rightEncoder.getVelocity());
+    
     double p = SmartDashboard.getNumber("Launcher P Gain", 0);
     double i = SmartDashboard.getNumber("Launcher I Gain", 0);
     double d = SmartDashboard.getNumber("Launcher D Gain", 0);
@@ -84,37 +105,39 @@ public class Launcher extends SubsystemBase {
     double ff = SmartDashboard.getNumber("Launcher Feed Forward", 0);
     double max = SmartDashboard.getNumber("Launcher Max Output", 0);
     double min = SmartDashboard.getNumber("Launcher Min Output", 0);
-
+    double setpoint = SmartDashboard.getNumber("Target Velocity", 0);
+    
     if (p != LauncherConstants.kP) {
       m_pidController.setP(p);
-      p = LauncherConstants.kP;
+      pVal = p;
     }
 
-    if (p != LauncherConstants.kI) {
+    if (i != LauncherConstants.kI) {
       m_pidController.setI(i);
-      i = LauncherConstants.kI;
+      iVal = i;
     }
 
     if (d != LauncherConstants.kD) {
       m_pidController.setD(d);
-      d = LauncherConstants.kD;
+      dVal = d;
     }
 
     if (iz != LauncherConstants.kIz) {
       m_pidController.setIZone(iz);
-      iz = LauncherConstants.kIz;
+      izVal = iz;
     }
 
     if (ff != LauncherConstants.kFF) {
       m_pidController.setFF(ff);
-      ff = LauncherConstants.kFF;
+      ffVal = ff;
     }
 
     if ((max != LauncherConstants.kMaxOutput) || (min != LauncherConstants.kMinOutput)) {
       m_pidController.setOutputRange(min, max);
-      LauncherConstants.kMinOutput = min;
-      LauncherConstants.kMaxOutput = max;
+      minVal= min;
+      maxVal = max;  
     }
+    m_pidController.setReference(setpoint, ControlType.kVelocity);
 
   }
  
