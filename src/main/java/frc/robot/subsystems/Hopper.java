@@ -10,7 +10,6 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.LoadingConstants;
 
@@ -29,23 +28,27 @@ public class Hopper extends SubsystemBase {
   }
 
   public void motorInit(TalonSRX motor) {
-    motor.configFactoryDefault(); // configures the factory defaults in case and changes were previously made to the motor  
+    // configures the factory defaults in case and changes were previously made to the motor
+    motor.configFactoryDefault();   
   }
 
-  // starts the hopper motor to transfer the power cells from the intake to the cellavator
+  /**
+   * starts the hopper motor to transfer the power cells from the intake to the cellavator
+   */ 
   public void startHopperMotor(double speed) {
-    m_hopperMotor.set(ControlMode.Current, speed);
+    m_hopperMotor.set(ControlMode.PercentOutput, speed);;
   }
 
-  // stops the hopper motor
+  /**
+  *stops the hopper motor
+  */
   public void stopHopperMotor() {
     m_hopperMotor.set(ControlMode.PercentOutput, 0);
 
   }
 
-  // displays the speed of the hopper motor on the smart dashboard
   public void log() {
-    SmartDashboard.putNumber("Hopper Motor Speed", m_hopperMotor.getActiveTrajectoryVelocity());
+
   }
 
   @Override
