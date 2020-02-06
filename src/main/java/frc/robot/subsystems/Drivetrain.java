@@ -117,7 +117,7 @@ public class Drivetrain extends SubsystemBase {
   private void motorInit(CANSparkMax motor, boolean invert) {
     motor.restoreFactoryDefaults(); // Resets settings in motor in case they are changed
     motor.setIdleMode(IdleMode.kBrake); // Sets the motors to brake mode from the beginning
-    motor.setSmartCurrentLimit(DriveConstans.kDrivetrainCurrentLimit);
+    motor.setSmartCurrentLimit(DriveConstants.kDrivetrainCurrentLimit);
     motor.setInverted(invert);
 
     encoderInit(motor.getEncoder()); // Initializes encoder within motor
