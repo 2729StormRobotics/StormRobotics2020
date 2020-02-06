@@ -84,5 +84,13 @@ public final class Constants {
         public static final class LimeLightConstants {
     
         }
+
+        public static final class PartyConstants {
+
+            public static final int kLedBlinkinDriverPort = 0; // Needs to be adjusted
+
+            // Each possible LED mode correlates to a value for the Spark, as defined in the Rev Blinkin docs
+            public static final double kDancePartySparkValue = -0.97; // Pattern: Rainbow, Pallete: Party
+        }
     
     }
