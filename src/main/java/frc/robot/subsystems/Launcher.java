@@ -77,7 +77,7 @@ public class Launcher extends SubsystemBase {
    
   }
 
-  private void pidInit() {
+  private void startPID() {
     m_pidController = m_leftLauncher.getPIDController();
 
     //set the PID coefficients
@@ -146,6 +146,13 @@ public class Launcher extends SubsystemBase {
     //sets setpoint and control type to PID controller
     m_pidController.setReference(setpoint, ControlType.kVelocity);
 
+  }
+
+  public void stopPID() {
+    m_pidController.setP(0);
+    m_pidController.setI(0);
+    m_pidController.setD(0);
+    
   }
  
   /**
