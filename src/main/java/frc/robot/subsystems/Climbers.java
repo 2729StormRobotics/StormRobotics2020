@@ -76,31 +76,19 @@ public class Climbers extends SubsystemBase {
     motor.set(0.0);
   }
 
-  private void rightClimberUp(CANSparkMax motor) {
-    motor.set(0.5); //0.5 is just a random value. Needs to be tested
-  }
-
-  private void leftClimberUp(CANSparkMax motor) {
-    motor.set(0.5); //0.5 is just a random value. Needs to be tested
+  private void climb(CANSparkMax motor, double speed) {
+    motor.set(speed); //0.5 is just a random value. Needs to be tested
   }
 
   public void climberUp(CANSparkMax motorOne, CANSparkMax motorTwo) {
-    leftClimberUp(motorOne); //Uses the leftClimberUp method
-    rightClimberUp(motorTwo); //Uses the rightClimberUp method
-  }
-
-  private void rightClimberDown(CANSparkMax motor) {
-    motor.set(-0.5); //-0.5 is just a random value. Needs to be tested
-  }
-
-  private void leftClimberDown(CANSparkMax motor) {
-    motor.set(-0.5); //-0.5 is just a random value. Needs to be tested
+    climb(motorOne, 0.5); //FIXME 0.5 is a random value.
+    climb(motorTwo, 0.5); //FIXME 0.5 is a random value.
   }
 
   public void climberDown(CANSparkMax motorOne, CANSparkMax motorTwo) {
 
-    leftClimberDown(motorOne); //Uses the leftClimberDown method
-    rightClimberDown(motorTwo); //Uses the rightClimberDowm method
+    climb(motorOne, -0.5); //FIXME 0.5 is a random value.
+    climb(motorTwo, -0.5); //FIXME 0.5 is a random value.
   }
 
   private double getRightEncoderValue() {
