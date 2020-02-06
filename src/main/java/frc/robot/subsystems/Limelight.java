@@ -20,26 +20,26 @@ public class Limelight extends SubsystemBase {
    * Creates a new Limelight.
    */
 
-  // Declare a local instance of the drivetrain subsystem
-   private Drivetrain m_drivetrain;
-
   // Create variables for the different values given from the limelight
-  public double tx;
-  public double ty;
-  public double ta;
-  public double tv;
+  private double xOffset;
+  private double ty;
+  private double ta;
+  private double tv;
 
   // Create a network table for the limelight
   private final NetworkTable m_limelightTable;
 
-  // Returns a value of the offset on the x-axis of the camera to the target
-  public double getTX() {
-    return tx;
+  public Limelight() {
+    // Gets the network table for the limelight
+    m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+
+    // Settings for the network table for the limelight
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(1);
   }
 
-  // Returns a value of 0 or 1 depending on whether or not a target is detected
-  public double getTV() {
-    return tv;
+  // Returns a value of the offset on the x-axis of the camera to the target. Negative values mean the target is to the left of the target
+  public double getXOffset() {
+    return xOffset;
   }
 
   /**
@@ -53,13 +53,13 @@ public class Limelight extends SubsystemBase {
    * Returns true if the target is within a range of the center crosshair of the camera
    */
   public boolean isTargetCentered() {
-    return ((tx > -1.5) && (tx < 1.5) && (tx != 0.0));
+    return ((xOffset > -1.5) && (xOffset < 1.5) && (xOffset != 0.0));
   }
 
   /**
    *  Calculates the total angle by adding the mount angle with the y-axis offset angle of the limelight
    */
-  public double LimelightAngle() {
+  public double limelightAngle() {
     return (kLimelightAngle + ty);
   }
 
@@ -67,30 +67,32 @@ public class Limelight extends SubsystemBase {
    * Return the distance from the limelight to the target (hypotenuse)
    */
   public double limelightDistance() {
-    return (kPortHeight - kLimelightHeight) / Math.tan(Math.toRadians(kLimelightAngle + ty));
+    return (kPortHeight - kLimelightHeight) / Math.cos(Math.toRadians(kLimelightAngle + ty) + kLimelightOffset);
   }
 
-  public Limelight() {
-    // Gets the network table for the limelight
-    m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
-  }
-
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-
-    // Posts information from the limelight to the SmartDashboard and to the network table
+  public void updateLimelight() {
+    // Updates the values of the limelight on the network table
     tx = m_limelightTable.getEntry("tx").getDouble(0.0);
     ty = m_limelightTable.getEntry("ty").getDouble(0.0);
     ta = m_limelightTable.getEntry("ta").getDouble(0.0);
     tv = m_limelightTable.getEntry("tv").getDouble(0.0);
 
-    SmartDashboard.putNumber("LimelightX", tx);
+  }
+
+  public void log() {
+    // Updates the SmartDashboard with limelight values
+    SmartDashboard.putNumber("LimelightX", xOffset);
     SmartDashboard.putNumber("LimelightY", ty);
     SmartDashboard.putNumber("LimelightArea", ta);
     SmartDashboard.putNumber("LimelightDetection", tv);
     SmartDashboard.putBoolean("Target Centered", isTargetCentered());
     SmartDashboard.putBoolean("Target Detected", isTargetDetected());
     SmartDashboard.putNumber("Distance (INCHES)", limelightDistance());
+  }
+
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
+    log();
   }
 }
