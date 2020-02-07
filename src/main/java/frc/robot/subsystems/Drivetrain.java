@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import com.analog.adis16470.frc.ADIS16470_IMU;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -40,6 +41,9 @@ public class Drivetrain extends SubsystemBase {
   private final CANEncoder m_leftMotorEncoder2;
   private final CANEncoder m_rightMotorEncoder1;
   private final CANEncoder m_rightMotorEncoder2;
+
+  // Declare gyro
+  private final ADIS16470_IMU m_imu;
 
   private boolean m_lowGear = false;
 
@@ -75,6 +79,8 @@ public class Drivetrain extends SubsystemBase {
     m_leftMotorEncoder2 = m_leftMotor2.getEncoder();
     m_rightMotorEncoder1 = m_rightMotor1.getEncoder();
     m_rightMotorEncoder2 = m_rightMotor2.getEncoder();
+
+    m_imu = new ADIS16470_IMU();
 
     gearShift = new Solenoid(DriveConstants.kDriveSolenoid);
 
