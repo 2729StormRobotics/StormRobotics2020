@@ -33,7 +33,7 @@ public final class Constants {
     
             public static final double kWheelDiameter = 6; // Inches
 
-            //constant for the distance that mechanism travels for every pulse of the encoder
+            // constant for the distance that mechanism travels for every pulse of the encoder
             public static final double kEncoderDistancePerPulse = 0; // ADD CONVERSION
             // constant for the speed of the motor per pulse of the encoder
             public static final double kEncoderSpeedPerPulse = 0; // ADD CONVERSION
