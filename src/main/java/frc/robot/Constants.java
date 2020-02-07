@@ -87,19 +87,19 @@ public final class Constants {
             public static final double kRedTargetR = 0.476;
             public static final double kRedTargetG = 0.376;
             public static final double kRedTargetB = 0.15;
-            //Yellow
+            // Yellow
             public static final double kYellowTargetR = 0.381;
             public static final double kYellowTargetG = 0.545;
             public static final double kYellowTargetB = 0.136;
-            //Green
+            // Green
             public static final double kGreenTargetR = 0.18;
             public static final double kGreenTargetG = 0.568;
             public static final double kGreenTargetB = 0.249;
-            //Blue
+            // Blue
             public static final double kBlueTargetR = 0.15;
             public static final double kBlueTargetG = 0.4467;
             public static final double kBlueTargetB = 0.40;
-            //Colors
+            // Colors
             public static final Color kRedTarget = new Color(kRedTargetR, kRedTargetG, kRedTargetB);
             public static final Color kYellowTarget = new Color(kYellowTargetR, kYellowTargetG, kYellowTargetB);
             public static final Color kGreenTarget = new Color(kBlueTargetR, kBlueTargetG, kBlueTargetB);
