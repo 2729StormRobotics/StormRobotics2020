@@ -88,6 +88,7 @@ public class Drivetrain extends SubsystemBase {
     addChild("Right Motors", m_rightMotors);
     addChild("Drivetrain", m_Drive);
     addChild("Shift Gears", gearShift);
+    addChild("Gyro", m_imu);
 
   }
 
@@ -225,6 +226,7 @@ public class Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("Right Speed", getRightSpeed());
     SmartDashboard.putNumber("Left Distance", getLeftEncoderAverage());
     SmartDashboard.putNumber("Right Distance", getRightEncoderAverage());
+    SmartDashboard.putNumber("Robot Angle", getRobotAngle());
     SmartDashboard.putData("Drive Control Type", m_chooser);
   }
 
