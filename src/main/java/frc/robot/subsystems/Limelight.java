@@ -25,14 +25,16 @@ public class Limelight extends SubsystemBase {
   private double ta; // Returns a value of the percentage of the image the target takes
   private double tv; // Sends 1 if a target is detected, 0 if none are present
 
+  private Integer pipeline; // Used to identify which pipline the limelight uses (0-9)
+
   // Create a network table for the limelight
   private final NetworkTable m_limelightTable;
 
   public Limelight() {
     // Gets the network table for the limelight
     m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
-
-    // Settings for the network table for the limelight
+  
+    // Reset the default settings and pipleines to the Limelight
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(1);
   }
 
@@ -69,6 +71,33 @@ public class Limelight extends SubsystemBase {
    */
   public double limelightDistance() {
     return (kPortHeight - kLimelightHeight) / Math.cos(Math.toRadians(kLimelightAngle + yOffset) + kLimelightOffset);
+  }
+
+  /**
+   * Chooses which pipeline to use on the limelight and prevents invalid values from being sent
+   * 
+   * @param Pipeline Which pipeline to use on the limelight (0-9)
+   */
+  public void setPipeline(Integer pipeline) {
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(pipeline);
+    if (pipeline < 0) {
+      pipeline = 0;
+    }else if (pipeline > 9) {
+      pipeline = 9;
+    }
+    
+    m_limelightTable.getEntry("Pipeline").setValue(pipeline);
+  }
+
+  /**
+   * Returns the value of the pipeline from the network table
+   * 
+   * @return pipelineValue
+   */
+  public double getPipeline() {
+    NetworkTableEntry pipeline = m_limelightTable.getEntry("Pipeline");
+    double pipelineValue = pipeline.getDouble(0.0);
+    return pipelineValue;
   }
 
   public void updateLimelight() {
