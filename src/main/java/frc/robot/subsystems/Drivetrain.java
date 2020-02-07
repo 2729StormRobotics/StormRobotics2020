@@ -42,7 +42,7 @@ public class Drivetrain extends SubsystemBase {
   private final CANEncoder m_rightMotorEncoder1;
   private final CANEncoder m_rightMotorEncoder2;
 
-  // Declare gyro
+  // Declare the gyro.
   private final ADIS16470_IMU m_imu;
 
   private boolean m_lowGear = false;
@@ -80,6 +80,7 @@ public class Drivetrain extends SubsystemBase {
     m_rightMotorEncoder1 = m_rightMotor1.getEncoder();
     m_rightMotorEncoder2 = m_rightMotor2.getEncoder();
 
+    // Instantiate the gyro.
     m_imu = new ADIS16470_IMU();
 
     gearShift = new Solenoid(DriveConstants.kDriveSolenoid);
