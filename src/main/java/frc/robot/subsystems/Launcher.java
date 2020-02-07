@@ -152,6 +152,8 @@ public class Launcher extends SubsystemBase {
     m_pidController.setP(0);
     m_pidController.setI(0);
     m_pidController.setD(0);
+    m_pidController.setFF(0);
+    m_pidController.setIZone(0);
     
   }
  
@@ -210,5 +212,6 @@ public class Launcher extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    log()
   }
 }
