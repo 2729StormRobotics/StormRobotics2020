@@ -31,7 +31,7 @@ public final class Constants {
             // pistons that shift the gear of the drive train 
             public static final int kDriveSolenoid = 7;
     
-            public static final double kWheelDiameter = 6; 
+            public static final double kWheelDiameter = 6; // Inches
 
             //constant for the distance that mechanism travels for every pulse of the encoder
             public static final double kEncoderDistancePerPulse = 0; // ADD CONVERSION
