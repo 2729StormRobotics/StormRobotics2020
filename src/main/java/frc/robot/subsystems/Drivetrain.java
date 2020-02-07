@@ -120,6 +120,13 @@ public class Drivetrain extends SubsystemBase {
     resetRightEncoders();
   }
 
+  /**
+   * Resets the gyro to a heading of zero degrees.
+   */
+  public void resetGyro() {
+    m_imu.reset();
+  }
+
   private void motorInit(CANSparkMax motor, boolean invert) {
     motor.restoreFactoryDefaults(); // Resets settings in motor in case they are changed
     motor.setIdleMode(IdleMode.kBrake); // Sets the motors to brake mode from the beginning
@@ -190,6 +197,15 @@ public class Drivetrain extends SubsystemBase {
   // gets the speed by averaging the left and the right speeds
   public double getAverageSpeed() {
     return (getRightSpeed() + getLeftSpeed()) / 2.0;
+  }
+
+  /**
+   * Get the angle of the robot.
+   * 
+   * @return The angle that the robot is facing in degrees.
+   */
+  public double getRobotAngle() {
+    return m_imu.getAngle();
   }
 
   // changes the drive type using the SmartDashboard
