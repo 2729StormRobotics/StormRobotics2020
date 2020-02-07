@@ -26,8 +26,13 @@ public class Party extends SubsystemBase {
 
   // Methods for each LED mode
   public void danceParty() {
+
+    // Set LED blinkin to the spark motor double
     m_ledDriver.set(PartyConstants.kDancePartySparkValue);
   }
+
+  
+
   public void intakeSuccessful() {}
 
   @Override
