@@ -11,13 +11,13 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.Constants.ControlPanelConstants;
 import edu.wpi.first.wpilibj.util.Color;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.ColorMatch;
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.DriverStation;
 
 public class ControlPanel extends SubsystemBase {
 
@@ -29,6 +29,7 @@ public class ControlPanel extends SubsystemBase {
      String color;
      int count = 0;
      String colorString;
+     String gameData;
 
   /**
    * Creates a new ControlPanel.
@@ -47,15 +48,6 @@ public class ControlPanel extends SubsystemBase {
 
   }
  
-  // sets RBG values for each color target
-  // still need to add color target constants 
-  public void getRBGValues() { 
-    // private final Color kRedTarget = ColorMatch.makeColor(0.476, 0.376, 0.15);
-    // private final Color kYellowTarget = ColorMatch.makeColor(0.381, 0.545, 0.136);
-    // private final Color kGreenTarget = ColorMatch.makeColor(0.18, 0.568, 0.249);
-    // private final Color kBlueTarget = ColorMatch.makeColor(0.15, 0.4467, 0.40);
-  }
-
   // displays the color based on RBG values
   public void getColorSensorValue() {
 
@@ -81,17 +73,67 @@ public class ControlPanel extends SubsystemBase {
     String lastColor = color;
     
     //Counts how many times red and blue have passed 
-    if (lastColor == "Red" && colorString == "Blue" || lastColor == "Blue" && colorString == "Red"){
+    if (lastColor.equals("Red") && colorString.equals("Blue") || lastColor.equals("Blue") && colorString.equals("Red")){
       count++;
       lastColor = colorString;
     }
-      else if (lastColor == "" && (colorString == "Blue" || colorString =="Red")){
+      else if (lastColor.equals("") && (colorString.equals("Blue") || colorString.equals("Red"))){
         lastColor = colorString; 
       }
       return count;
     }
 
 //checks to see if wheel has passed 8 times    
+public void setColor(){
+  //Gets data sent from the drivers station
+  gameData = DriverStation.getInstance().getGameSpecificMessage();
+
+  if(gameData.length() > 0)
+{
+  switch (gameData.charAt(0))
+  {
+    case 'B' :  //Blue
+        findBlue();
+      break;
+    case 'G' :  //Green
+        findGreen();
+      break;
+    case 'R' :  //Red
+        findRed();
+      break;
+    case 'Y' :  //Yellow
+        findYellow();
+      break;
+    default :
+
+      break;
+  }
+} else {
+  //Code for no data received yet
+}
+
+}
+public void findBlue(){
+  startMotors(.18);
+  if (color == "Red")
+    startMotors(0);
+}
+public void findRed(){
+  startMotors(.18);
+  if (color == "Blue")
+    startMotors(0);
+}
+public void findGreen(){
+  startMotors(.18);
+  if (color == "Yellow")
+    startMotors(0);
+}
+public void findYellow(){
+  startMotors(.18);
+  if (color == "Green")
+    startMotors(0);
+}
+
 public boolean isSpun(){
   Boolean spun= false;
   if (colorCount() >= 8){
@@ -106,7 +148,7 @@ public void wheelMotorPower(){
     startMotors(.4);
   }
   else if (isSpun() == true){
-    startMotors(.18);
+    startMotors(0);
   }
 
 }
