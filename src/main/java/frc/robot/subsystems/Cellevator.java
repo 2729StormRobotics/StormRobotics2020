@@ -66,22 +66,22 @@ public class Cellevator extends SubsystemBase {
   /** 
    * gets the beam break value to see if there is a power cell present at the top of the cellavator
    */ 
-  public void isTopBallPresent() {
-    m_beamBreakHolder.get();
+  public boolean isTopBallPresent() {
+    return m_beamBreakHolder.get();
     }
 
   /** 
    * gets the beam break value to see if there is a power cell present at the middle of the cellavator
    */ 
-  public void isMiddleBallPresent() {
-    m_beamBreakMiddle.get();
+  public boolean isMiddleBallPresent() {
+    return m_beamBreakMiddle.get();
   }
 
   /** 
    * gets the beam break value to see if there is a power cell present at the bottom of the cellavator
    */ 
-  public void isBottomBallPresent() {
-    m_beamBreakLoader.get();
+  public boolean isBottomBallPresent() {
+    return m_beamBreakLoader.get();
   }
 
   /** 
