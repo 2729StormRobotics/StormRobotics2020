@@ -76,7 +76,7 @@ public class Limelight extends SubsystemBase {
   /**
    * Chooses which pipeline to use on the limelight and prevents invalid values from being sent
    * 
-   * @param Pipeline Which pipeline to use on the limelight (0-9)
+   * @param pipeline Which pipeline to use on the limelight (0-9)
    */
   public void setPipeline(int pipeline) {
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(pipeline);
