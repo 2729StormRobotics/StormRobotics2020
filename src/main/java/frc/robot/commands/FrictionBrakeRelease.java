@@ -20,12 +20,13 @@ public class FrictionBrakeRelease extends InstantCommand {
     m_climbers = subsystem;
     addRequirements(m_climbers);
     // Use addRequirements() here to declare subsystem dependencies.
+    // depends on the Climbers subsytem
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     m_climbers.m_frictionBrake.set(false);
-    // before command starts, friction brake is off
+    // before command starts, the piston is not released
   }
 }
