@@ -71,16 +71,18 @@ public class Climbers extends SubsystemBase {
     encoder.setPosition(0);
   }
 
-  public void stopMotor(CANSparkMax motor) {
+  public void stopMotor() {
     //Sets the speed of the motor to 0.
-    motor.set(0.0);
+    m_leftClimber.set(0.0);
+    m_rightClimber.set(0.0);
   }
 
-  private void climb(CANSparkMax motor, double speed) {
-    motor.set(speed); //The motor goes at a speed given to it. Not a specific speed
+  public void climb(double speed) {
+    m_leftClimber.set(speed); //The motor goes at a speed given to it. Not a specific speed
+    m_rightClimber.set(speed);
   }
 
-  public void climberUp(CANSparkMax motorOne, CANSparkMax motorTwo) {
+  /*public void climberUp(CANSparkMax motorOne, CANSparkMax motorTwo) {
     climb(motorOne, 0.5); //FIXME 0.5 is a random value. This value needs to be tested.
     climb(motorTwo, 0.5); //FIXME 0.5 is a random value. This value needs to be tested.
   }
@@ -89,7 +91,7 @@ public class Climbers extends SubsystemBase {
 
     climb(motorOne, -0.5); //FIXME 0.5 is a random value. This value needs to be tested.
     climb(motorTwo, -0.5); //FIXME 0.5 is a random value. This value needs to be tested.
-  }
+  }*/
 
   private double getRightEncoderValue() {
    return m_rightEncoder.getPosition(); //Get the position of the right encoder.
