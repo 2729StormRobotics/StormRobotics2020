@@ -24,9 +24,12 @@ public class FrictionBrakeRelease extends InstantCommand {
   }
 
   // Called when the command is initially scheduled.
+  
+  /** 
+   *before command starts, the piston is not released
+  */ 
   @Override
   public void initialize() {
     m_climbers.m_frictionBrake.set(false);
-    // before command starts, the piston is not released
   }
 }
