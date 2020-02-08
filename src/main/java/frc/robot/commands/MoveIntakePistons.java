@@ -16,12 +16,13 @@ import frc.robot.subsystems.Intake;
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class MoveIntakePistons extends InstantCommand {
 
+  // uses the intake subsystem for the command to run
   private final Intake m_intake;
 
   public MoveIntakePistons(Intake intake) {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_intake = intake;
-    addRequirements(m_intake);
+    m_intake = intake; // sets the command parameter equal to the intake subsystem
+    addRequirements(m_intake); // adds the intake subsystem as a requirement for this command to run
   }
 
   // Called when the command is initially scheduled.
