@@ -9,8 +9,10 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
+import edu.wpi.first.wpilibj.smartdashboard.*;
 
 import frc.robot.subsystems.*;
+import static frc.robot.Constants.LimelightConstants.*;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -20,27 +22,45 @@ public class LimelightAlign extends PIDCommand {
   private final Limelight m_limelight;
   private final Drivetrain m_drivetrain;
 
+  // A fixed speed for the robot to spin if no target is detected
+  private final static double steeringAdjust = 0.25;
+
   /**
    * Creates a new LimelightAlign.
    */
   public LimelightAlign(Limelight limesub, Drivetrain drivesub) {
     super(
         // The controller that the command will use
-        new PIDController(0, 0, 0),
+        new PIDController(kLimelightAlignP, kLimelightAlignI, kLimelightAlignD),
         // This should return the measurement
-        () -> 0,
+        () -> limesub.getXOffset(),
         // This should return the setpoint (can also be a constant)
         () -> 0,
         // This uses the output
         output -> {
           // Use the output here
+
+          /**
+           * If a target is detected when the command is called the robot will align itself to the target. If no target is found it will spin at a fixed speed until one comes into range
+           */
+          if (limesub.isTargetDetected()) {
+            drivesub.tankDrive(output, -output, true);
+          }else {
+            drivesub.tankDrive(steeringAdjust, -steeringAdjust, true);
+          }
+
         });
-        
-        m_limelight = limesub;
+
+        m_limelight = limesub;  
         m_drivetrain = drivesub;
+
+        // Sends a PID table to the SmartDashboard
+        SmartDashboard.putData("AlignmentPID", getController());
 
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.
+    
+        getController().setTolerance(kLimelightAlignTolerance);
   }
 
   // Returns true when the command should end.
