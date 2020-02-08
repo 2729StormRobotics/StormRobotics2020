@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import com.analog.adis16470.frc.ADIS16470_IMU;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -40,6 +41,9 @@ public class Drivetrain extends SubsystemBase {
   private final CANEncoder m_leftMotorEncoder2;
   private final CANEncoder m_rightMotorEncoder1;
   private final CANEncoder m_rightMotorEncoder2;
+
+  // Declare the gyro.
+  private final ADIS16470_IMU m_imu;
 
   private boolean m_lowGear = false;
 
@@ -76,12 +80,16 @@ public class Drivetrain extends SubsystemBase {
     m_rightMotorEncoder1 = m_rightMotor1.getEncoder();
     m_rightMotorEncoder2 = m_rightMotor2.getEncoder();
 
+    // Instantiate the gyro.
+    m_imu = new ADIS16470_IMU();
+
     gearShift = new Solenoid(DriveConstants.kDriveSolenoid);
 
     addChild("Left Motors", m_leftMotors);
     addChild("Right Motors", m_rightMotors);
     addChild("Drivetrain", m_Drive);
     addChild("Shift Gears", gearShift);
+    addChild("Gyro", m_imu);
 
   }
 
@@ -112,6 +120,13 @@ public class Drivetrain extends SubsystemBase {
   public void resetAllEncoders() {
     resetLeftEncoders();
     resetRightEncoders();
+  }
+
+  /**
+   * Resets the gyro to a heading of zero degrees.
+   */
+  public void resetGyro() {
+    m_imu.reset();
   }
 
   private void motorInit(CANSparkMax motor, boolean invert) {
@@ -186,6 +201,15 @@ public class Drivetrain extends SubsystemBase {
     return (getRightSpeed() + getLeftSpeed()) / 2.0;
   }
 
+  /**
+   * Get the angle of the robot.
+   * 
+   * @return The angle that the robot is facing in degrees.
+   */
+  public double getRobotAngle() {
+    return m_imu.getAngle();
+  }
+
   // changes the drive type using the SmartDashboard
   private void updateDriveType() {
     m_driveType = m_chooser.getSelected();
@@ -203,6 +227,7 @@ public class Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("Right Speed", getRightSpeed());
     SmartDashboard.putNumber("Left Distance", getLeftEncoderAverage());
     SmartDashboard.putNumber("Right Distance", getRightEncoderAverage());
+    SmartDashboard.putNumber("Robot Angle", getRobotAngle());
     SmartDashboard.putData("Drive Control Type", m_chooser);
   }
 

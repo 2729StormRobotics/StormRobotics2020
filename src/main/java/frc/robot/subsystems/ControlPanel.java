@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.I2C;
 
 public class ControlPanel extends SubsystemBase {
 
-  private final WPI_TalonSRX m_controlPanelMotor = new WPI_TalonSRX(Constants.ControlPanelConstants.kSpinnerMotorPort);
+  private final WPI_TalonSRX m_controlPanelMotor = new WPI_TalonSRX(ControlPanelConstants.kSpinnerMotorPort);
   private final ColorMatch m_colorMatch = new ColorMatch();
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
   private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
@@ -61,14 +61,14 @@ public class ControlPanel extends SubsystemBase {
     Color detectedColor = m_colorSensor.getColor();
     ColorMatchResult match = m_colorMatch.matchClosestColor(detectedColor);
 
-    if (match.color == (Constants.ControlPanelConstants.kRedTarget) {
+    if (match.color == ControlPanelConstants.kRedTarget) {
       color = "Red";
       colorString = "Red";
-    } else if (match.color == Constants.ControlPanelConstants.kYellowTarget) {
+    } else if (match.color == ControlPanelConstants.kYellowTarget) {
       color = "Yellow";
-    } else if (match.color == Constants.ControlPanelConstants.kGreenTarget) {
+    } else if (match.color == ControlPanelConstants.kGreenTarget) {
       color = "Green";
-    } else if (match.color == Constants.ControlPanelConstants.kBlueTarget) {
+    } else if (match.color == ControlPanelConstants.kBlueTarget) {
       color = "Blue";
       colorString = "Blue";
     } else {

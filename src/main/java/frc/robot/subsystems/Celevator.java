@@ -14,9 +14,9 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.LoadingConstants;
+import frc.robot.Constants.CelevatorConstants;
 
-public class Loading extends SubsystemBase {
+public class Celevator extends SubsystemBase {
   /**
    * Creates a new Loading.
    */
@@ -26,17 +26,17 @@ public class Loading extends SubsystemBase {
   private final DigitalInput m_beamBreakLoader;
 
 
-  public Loading() {
+  public Celevator() {
 
     
-    m_holderMotor = new CANSparkMax(LoadingConstants.kLowCellevatorMotorPort, MotorType.kBrushed);
-    m_loaderMotor = new CANSparkMax(LoadingConstants.kHighCellevatorMotor2Port, MotorType.kBrushed);
-    m_beamBreakHolder = new DigitalInput(LoadingConstants.kBeamBreakOutput1Port);
-    m_beamBreakLoader = new DigitalInput(LoadingConstants.kBeamBreakOutput2Port);
+    m_holderMotor = new CANSparkMax(CelevatorConstants.kHolderMotorPort, MotorType.kBrushed);
+    m_loaderMotor = new CANSparkMax(CelevatorConstants.kLoaderMotorPort, MotorType.kBrushed);
+    m_beamBreakHolder = new DigitalInput(CelevatorConstants.kBeamBreakHolderPort);
+    m_beamBreakLoader = new DigitalInput(CelevatorConstants.kBeamBreakLoaderPort);
 
     //intializes the motors 
-    motorInit(m_holderMotor, LoadingConstants.kHolderMotorInverted);
-    motorInit(m_loaderMotor, LoadingConstants.kLoaderMotorInverted);
+    motorInit(m_holderMotor, CelevatorConstants.kHolderMotorInverted);
+    motorInit(m_loaderMotor, CelevatorConstants.kLoaderMotorInverted);
     
   }
 
@@ -44,7 +44,7 @@ public class Loading extends SubsystemBase {
     motor.restoreFactoryDefaults(); // Reset settings in motor in case they are changed
     motor.setIdleMode(IdleMode.kBrake); // Sets the motors to brake mode from the beginning
     motor.setInverted(invert); // Inverts the motor if needed
-    motor.setSmartCurrentLimit(LoadingConstants.kLoadingCurrentLimit);
+    motor.setSmartCurrentLimit(CelevatorConstants.kCelevatorCurrentLimit);
   }
 
   // starts the loader motors

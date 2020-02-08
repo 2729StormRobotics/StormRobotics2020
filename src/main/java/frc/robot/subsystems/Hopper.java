@@ -11,7 +11,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.LoadingConstants;
+import frc.robot.Constants.HopperConstants;
 
 public class Hopper extends SubsystemBase {
 
@@ -21,7 +21,7 @@ public class Hopper extends SubsystemBase {
    * Creates a new Hopper.
    */
   public Hopper() {
-    m_hopperMotor = new TalonSRX(LoadingConstants.kLoadingMotorPort);
+    m_hopperMotor = new TalonSRX(HopperConstants.kHopperMotorPort);
   
     motorInit(m_hopperMotor);
     
