@@ -13,22 +13,30 @@ import frc.robot.Constants.PartyConstants;
 
 public class Party extends SubsystemBase {
   
-  // Create instance of led driver, created as motor controller because it is controlled by standard PWM signal
-  private final Spark m_ledDriver;
+  // Create instances of led driver, created as motor controller because it is controlled by standard PWM signal
+  private final Spark m_ledDriver1;
+  private final Spark m_ledDriver2;
   
   /**
    * Creates a new Party.
    */
   public Party() {    
     // Instantiate led driver and assign to its port
-    m_ledDriver = new Spark(PartyConstants.kLedBlinkinDriverPort);
+    m_ledDriver1 = new Spark(PartyConstants.kLedBlinkinDriver1Port);
+    m_ledDriver2 = new Spark(PartyConstants.kLedBlinkinDriver2Port);
+  }
+
+  // Method for setting LED mode to normal: Red and Orange Color Waves
+  public void setToNormal() {
+    m_ledDriver1.set(PartyConstants.kNormal);
+    m_ledDriver2.set(PartyConstants.kNormal);
   }
 
   // Methods for each LED mode
-  public void danceParty() {
-
+  public void turnGreen() {
     // Set LED blinkin to the spark motor double
-    m_ledDriver.set(PartyConstants.kDancePartySparkValue);
+    m_ledDriver1.set(PartyConstants.kGreen);
+    m_ledDriver2.set(PartyConstants.kGreen);
   }
 
   
