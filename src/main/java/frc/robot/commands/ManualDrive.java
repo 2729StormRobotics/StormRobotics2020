@@ -26,7 +26,7 @@ public class ManualDrive extends CommandBase {
     m_leftSpeed = leftSpeed;
     m_rightSpeed = rightSpeed;
 
-    // Attach the local instane of the subsystem--in this case, drivetrain--to the command.
+    // Attach the local instance of the subsystem--in this case, drivetrain--to the command.
     addRequirements(m_drivetrain);
   }
 
@@ -38,9 +38,8 @@ public class ManualDrive extends CommandBase {
   // Called repeatedly when this Command is scheduled to run
   @Override
   public void execute() {
-    // Repeatedly passes the parameters--reverse speed, forward speed, turn speed,
-    // and if inputs are squared, which increases fine control at lower speeds--
-    //to the triggerDrive
+    // Repeatedly passes the parameters--left speed, right speed, and if inputs are
+    //squared, which increases fine control at lower speeds--to the tankDrive
     m_drivetrain.tankDrive(m_leftSpeed, m_rightSpeed, true);
   }
 
