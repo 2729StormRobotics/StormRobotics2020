@@ -15,6 +15,11 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.LauncherConstants;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Compressor;
+import frc.robot.Constants.LauncherConstants;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+
  
 public class Launcher extends SubsystemBase {
  
@@ -24,11 +29,22 @@ public class Launcher extends SubsystemBase {
   private final CANEncoder m_leftEncoder;
   private final CANEncoder m_rightEncoder;
 
+  private final DoubleSolenoid pistonAdjustment;
+  private final Compressor airCompressor;
+
  
   /**
    * Creates a new Launcher.
    */
   public Launcher() {
+
+    //instantiate air compressor
+    airCompressor = new Compressor();
+    airCompressor.start();
+
+    //solenoid port
+    pistonAdjustment = new DoubleSolenoid(LauncherConstants.kLeftLauncherMotorPort, LauncherConstants.kRightLauncherMotorPort);
+
     // Instantiate the motors.
     m_leftLauncher = new CANSparkMax(LauncherConstants.kLeftLauncherMotorPort, MotorType.kBrushless);
     m_rightLauncher = new CANSparkMax(LauncherConstants.kRightLauncherMotorPort, MotorType.kBrushless);
@@ -40,6 +56,9 @@ public class Launcher extends SubsystemBase {
     // Initialize the the motors.
     motorInit(m_leftLauncher, LauncherConstants.kInvertLauncher1);
     motorInit(m_rightLauncher, LauncherConstants.kInvertLauncher2);
+
+    //initialize pistons
+    pistonInit();
 
   }
  
@@ -57,6 +76,11 @@ public class Launcher extends SubsystemBase {
    
   }
  
+  //set pistons to default retracted position
+  private void pistonInit() {
+    pistonPush(false);
+  }
+
   /**
    * Initialize an encoder.
    * 
@@ -83,6 +107,11 @@ public class Launcher extends SubsystemBase {
     rightLauncher.set(0);
   }
  
+  //extend/retract pistons
+  public void pistonPush(boolean out) {
+    pistonAdjustment.set(out ? Value.kForward : Value.kReverse);
+  }
+
   //get left launcher speed in RPM
   private double getLeftLauncherSpeed() {
     return m_leftEncoder.getVelocity();

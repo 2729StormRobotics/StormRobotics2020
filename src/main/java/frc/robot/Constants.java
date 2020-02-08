@@ -72,6 +72,7 @@ public final class Constants {
             // piston (double solenoid) that adjusts the angle of the launcher
             public static final int kLongLaunchSolenoidPort = 3;
             public static final int kShortLaunchSolenoidPort = 4;
+            
 
             //used in inverting launcher motor
             public static final boolean kInvertLauncher1 = true;
