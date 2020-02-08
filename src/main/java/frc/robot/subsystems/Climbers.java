@@ -25,7 +25,7 @@ public class Climbers extends SubsystemBase {
   private final CANEncoder m_leftEncoder;
   private final CANEncoder m_rightEncoder;
   
-  private final Solenoid m_frictionBrake;
+  public final Solenoid m_frictionBrake;
 
   /**
    * Creates a new Climbers.
@@ -103,7 +103,7 @@ public class Climbers extends SubsystemBase {
     return ((getRightEncoderValue() + getLeftEncoderValue()) / 2); //Finds the average of the encoders.
   }
 
-  public void frictionBrakerOn(boolean on) {
+  public void FrictionBrakerOn(boolean on) {
     m_frictionBrake.set(on); //Sets frictionBreak to the value inputted.
   }  
   
