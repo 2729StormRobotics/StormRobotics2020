@@ -46,24 +46,14 @@ public final class Constants {
         public static final class LauncherConstants {
             public static final int kRightLauncherMotorPort = 13;
             public static final int kLeftLauncherMotorPort = 14;
-
-            public static final double kEncoderSpeedPerPulse = 1; // ADD CONVERSION
     
             // piston (double solenoid) that adjusts the angle of the launcher
             public static final int kLongLaunchSolenoidPort = 3;
             public static final int kShortLaunchSolenoidPort = 4;
 
-            //PID Constants
-            public static final double kP = 0.0;
-            public static final double kI = 0.0;
-            public static final double kD = 0.0;
-            public static final double kIz = 0.0;
-            public static final double kFF = 0.0;
-            public static final double kMaxOutput = 1; 
-            public static final double kMinOutput = -1;
-            public static final int kMaxRPM = 5700;
-            public static final double kTargetLaunchVelociy = 0.0;
-
+            //used in inverting launcher motor
+            public static final boolean kInvertLauncher1 = true;
+            public static final boolean kInvertLauncher2 = false;         
             
         }
     

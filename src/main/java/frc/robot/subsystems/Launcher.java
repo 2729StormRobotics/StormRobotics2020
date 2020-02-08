@@ -38,8 +38,8 @@ public class Launcher extends SubsystemBase {
     m_rightEncoder = m_rightLauncher.getEncoder();
  
     // Initialize the the motors.
-    motorInit(m_leftLauncher, false);
-    motorInit(m_rightLauncher, true);
+    motorInit(m_leftLauncher, LauncherConstants.kInvertLauncher1);
+    motorInit(m_rightLauncher, LauncherConstants.kInvertLauncher2);
 
   }
  
@@ -64,8 +64,7 @@ public class Launcher extends SubsystemBase {
    */
   private void encoderInit(CANEncoder encoder) {
     // Set the automatic conversion factor for the encoder. This allows
-    // the encoder to output data in a specified unit.
-    encoder.setVelocityConversionFactor(LauncherConstants.kEncoderSpeedPerPulse);
+    
     encoderReset(encoder); // Reset the encoder to 0, just in case
   }
  
