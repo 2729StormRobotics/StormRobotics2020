@@ -62,6 +62,9 @@ public final class Constants {
             // piston (double solenoid) that raises and lowers the intake
             public static final int kIntakeRaiseSolenoidPort = 5;
             public static final int kIntakeLowerSolenoidPort = 2;
+
+            public static final double kIntakeMotorSpeed = 1.0; //TODO: Test and update this value.
+
         }
 
         public static final class HopperConstants {
