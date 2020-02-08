@@ -18,7 +18,11 @@ public class MoveHopperMotor extends CommandBase {
    */
   public MoveHopperMotor(Hopper subsystems) {
     // Use addRequirements() here to declare subsystem dependencies.
+    
+    // Creates our local instances of each variable from the parameters
     m_Hopper = subsystems;
+
+    // Attaches our local instance of the subsystem to this command
     addRequirements(m_Hopper);
     
 
@@ -32,12 +36,14 @@ public class MoveHopperMotor extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // sets the hopper motor to run when command starts
     m_Hopper.startHopperMotor(HopperConstants.kHopperMotorSpeed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    // stops the hopper motor if command is interupped
     m_Hopper.stopHopperMotor();
   }
 
