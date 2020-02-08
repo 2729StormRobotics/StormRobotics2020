@@ -30,8 +30,6 @@ public class Launcher extends SubsystemBase {
   private final CANEncoder m_rightEncoder;
 
   private final DoubleSolenoid pistonAdjustment;
-  private final Compressor airCompressor;
-
  
   /**
    * Creates a new Launcher.
@@ -39,8 +37,6 @@ public class Launcher extends SubsystemBase {
   public Launcher() {
 
     //instantiate air compressor
-    airCompressor = new Compressor();
-    airCompressor.start();
 
     //solenoid port
     pistonAdjustment = new DoubleSolenoid(LauncherConstants.kLeftLauncherMotorPort, LauncherConstants.kRightLauncherMotorPort);
