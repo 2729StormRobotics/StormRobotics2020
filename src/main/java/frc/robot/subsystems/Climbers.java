@@ -25,7 +25,7 @@ public class Climbers extends SubsystemBase {
   private final CANEncoder m_leftEncoder;
   private final CANEncoder m_rightEncoder;
   
-  public final Solenoid m_frictionBrake;
+  private final Solenoid m_frictionBrake;
 
   /**
    * Creates a new Climbers.
