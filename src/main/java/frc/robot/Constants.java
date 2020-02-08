@@ -128,28 +128,26 @@ public final class Constants {
             public static final int kFrictionSolenoidPort = 6; // piston that applies the friction brake on the hanging elevator
         }
     
-        public static final class LimeLightConstants {
-           public static final double kLimeLightOffest = 13.67;
-            public static final double kLimeLightHeight = 43; 
-            public static final double kLimeLightAngle = 0; //NEED CORRECT ANGLE 
-            public static final double kPortHeight = 98.25;
+        public static final class LimelightConstants {
 
-            //Alignment constants for LimeLight
-            public static final double kLimeLightAlignP = 1.0; 
-            public static final double kLimeLightAlignI = 0.0;
-            public static final double kLimeLightAlignD = 0.0;
-            public static final double kLimeLightTolernce = 5.0;
-            public static final double kLimeLightAlignTolerance = 1.5;
+            public static final double kLimelightOffset = 13.67; // In inches
+            public static final double kLimelightHeight = 43; // In inches
+            public static final double kLimelightAngle = 48; // In degrees
+            public static final double kPortHeight = 98.25; // In inches
+
+            // Alignment constants for LimeLight
+            public static final double kLimelightAlignP = 1.0; 
+            public static final double kLimelightAlignI = 0.0;
+            public static final double kLimelightAlignD = 0.0;
+            public static final double kLimelightTolernce = 5.0;
+            public static final double kLimelightAlignTolerance = 1.5;
         
-            //Distance constants for LimeLight
-            public static final double kLimeLightDistanceP = 1.0; 
-            public static final double kLimeLightDistanceI = 0.0;
-            public static final double kLimeLightDistanceD = 0.0;
-            public static final double kLimeLightDistance = 50.0;
-            public static final double kLimeLightDistanceTolernce = 5.0;
-            
-            
-        
+            // Distance constants for LimeLight
+            public static final double kLimelightDistanceP = 1.0; 
+            public static final double kLimelightDistanceI = 0.0;
+            public static final double kLimelightDistanceD = 0.0;
+            public static final double kLimelightDistance = 50.0;
+            public static final double kLimelightDistanceTolerance = 5.0;
         }
     
     }
