@@ -14,10 +14,10 @@ import frc.robot.subsystems.Climbers;
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class FrictionBrakeRelease extends InstantCommand {
-  Climbers m_climbers;
+  Climbers m_climbers;   
 
-  public FrictionBrakeRelease() {
-    m_climbers = new Climbers();
+  public FrictionBrakeRelease(Climbers subsystem) {
+    m_climbers = subsystem;
     addRequirements(m_climbers);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -25,6 +25,7 @@ public class FrictionBrakeRelease extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_climbers.m_frictionBrake.set(true);
+    m_climbers.m_frictionBrake.set(false);
+    // before command starts, friction brake is off
   }
 }
