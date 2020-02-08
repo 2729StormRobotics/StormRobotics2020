@@ -71,7 +71,8 @@ public final class Constants {
         public static final class CelevatorConstants {
 
             // beam breakers detect the number of powercells in the cellevator
-            public static final int kBeamBreakLoaderPort = 0;
+            public static final int kBeamBreakLoaderPort = 0; // PORT NUMBERS STILL NEED TO BE UPDATED
+            public static final int kBeamBreakMiddlePort = 0;
             public static final int kBeamBreakHolderPort = 0;
 
             // motors in cellevator that transport powercells to launcher
