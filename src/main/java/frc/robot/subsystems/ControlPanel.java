@@ -135,7 +135,7 @@ public void findYellow(){
 }
 
 public boolean isSpun(){
-  Boolean spun= false;
+  boolean spun = false;
   if (colorCount() >= 8){
     spun = true;
   }
