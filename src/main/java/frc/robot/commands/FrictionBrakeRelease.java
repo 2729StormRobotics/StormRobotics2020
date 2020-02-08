@@ -16,12 +16,7 @@ import frc.robot.subsystems.Climbers;
 public class FrictionBrakeRelease extends InstantCommand {
   Climbers m_climbers;
 
-  // public FrictionBrakeRelease() {
-  //   // Use addRequirements() here to declare subsystem dependencies.
-  // }
-  // // Called when the command is initially scheduled.
-  // @Override
-  
+  @Override
   public void initialize() {
     m_climbers = new Climbers();
     addRequirements(m_climbers);
