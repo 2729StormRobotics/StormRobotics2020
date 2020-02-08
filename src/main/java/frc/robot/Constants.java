@@ -44,6 +44,19 @@ public final class Constants {
             // Current limit for the drivetrain motors in amps
             public static final int kDrivetrainCurrentLimit = 60;
 
+            public static final class PointTurnPID {
+                // Our PID values for PointTurn
+                public static final double kP = 0.0; //TBD
+                public static final double kI = 0.0; //TBD
+                public static final double kD = 0.0; //TBD
+
+                // Degrees away from setpoint at which PointTurn can end
+                public static final double kPositionTolerance = 1.0; //TBD
+
+                // Maximum angular speed in degrees per second at which PointTurn can end
+                public static final double kVelocityTolerance = 1.0; //TBD
+            }
+
         }
     
         public static final class LauncherConstants {
