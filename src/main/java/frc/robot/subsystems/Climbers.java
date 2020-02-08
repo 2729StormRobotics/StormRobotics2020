@@ -44,7 +44,11 @@ public class Climbers extends SubsystemBase {
     motorInit(m_rightClimber, false);
   }
 
-  @Override
+  public Solenoid getM_frictionBrake() {
+	return m_frictionBrake;
+}
+
+@Override
   public void periodic() {
     // This method will be called once per scheduler run
     log(); //Log on periodic
@@ -104,7 +108,7 @@ public class Climbers extends SubsystemBase {
   }
 
   public void FrictionBrakerOn(boolean on) {
-    m_frictionBrake.set(on); //Sets frictionBreak to the value inputted.
+    getM_frictionBrake().set(on); //Sets frictionBreak to the value inputted.
   }  
   
   public void log() {
