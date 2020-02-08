@@ -15,8 +15,10 @@ import static frc.robot.Constants.DriveConstants.*;
 
 public class PointTurn extends PIDCommand {
 
+  // Declare the drivetrain member variable
   private final Drivetrain m_drivetrain;
 
+  // Declare the variable for the initial angle.
   private static double m_initialAngle;
 
   /**
@@ -62,6 +64,7 @@ public class PointTurn extends PIDCommand {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    // Return whether or not the angle and angular velocity are within their respective tolerances.
     return getController().atSetpoint();
   }
 }
