@@ -12,6 +12,9 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.LauncherConstants;
@@ -24,6 +27,8 @@ public class Launcher extends SubsystemBase {
   private final CANEncoder m_leftEncoder;
   private final CANEncoder m_rightEncoder;
 
+  private final DoubleSolenoid m_toggleLaunchPiston;
+
  
   /**
    * Creates a new Launcher.
@@ -32,6 +37,9 @@ public class Launcher extends SubsystemBase {
     // Instantiate the motors.
     m_leftLauncher = new CANSparkMax(LauncherConstants.kLeftLauncherMotorPort, MotorType.kBrushless);
     m_rightLauncher = new CANSparkMax(LauncherConstants.kRightLauncherMotorPort, MotorType.kBrushless);
+
+    // Instantiate the piston
+    m_toggleLaunchPiston = new DoubleSolenoid(LauncherConstants.kLongLaunchSolenoidPort, LauncherConstants.kShortLaunchSolenoidPort);
  
     // Instantiate the encoder.
     m_leftEncoder = m_leftLauncher.getEncoder();
@@ -96,6 +104,16 @@ public class Launcher extends SubsystemBase {
   //get average speed of left and right launchers
   private double getLauncherAvgSpeed() {
     return ((getLeftLauncherSpeed() + getRightLauncherSpeed()) / 2.0);
+  }
+
+  // raises the launcher mechanism using pistons to do short distance launch
+  public void goToShortDistance() {
+    m_toggleLaunchPiston.set(Value.kReverse);
+  }
+
+  // lowers the launcher mechanism using pistons to do long distance launch
+  public void goToLongDistance() {
+    m_toggleLaunchPiston.set(Value.kForward);
   }
  
   //add info to the dashboard
