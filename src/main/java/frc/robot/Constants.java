@@ -10,13 +10,13 @@ package frc.robot;
 import edu.wpi.first.wpilibj.util.Color;
 
 /*   The Consta s class
- * provides a convenient p ce for tea  s to hol robot-wide 
+ * provides a convenient p ce for tea  s to hol robot-wide
  * merical or constants.   r any other purpose.  All constants sho d be
- * 
+ *
  * declared globally (i.e. public static).  Do not put anything functional in this class.
  *
- * 
- * 
+ *
+ *
  *   <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
@@ -28,9 +28,9 @@ public final class Constants {
             public static final int kRightDriveMotor1Port = 3;
             public static final int kRightDriveMotor2Port = 12;
 
-            // pistons that shift the gear of the drive train 
+            // pistons that shift the gear of the drive train
             public static final int kDriveSolenoid = 7;
-    
+
             public static final double kWheelDiameter = 6; // Inches
 
             // constant for the distance that mechanism travels for every pulse of the encoder
@@ -45,20 +45,20 @@ public final class Constants {
             public static final int kDrivetrainCurrentLimit = 60;
 
         }
-    
+
         public static final class LauncherConstants {
             public static final int kRightLauncherMotorPort = 13;
             public static final int kLeftLauncherMotorPort = 14;
-    
+
             // piston (double solenoid) that adjusts the angle of the launcher
             public static final int kLongLaunchSolenoidPort = 3;
             public static final int kShortLaunchSolenoidPort = 4;
         }
-    
+
         public static final class IntakeConstants {
-           
+
             public static final int kIntakeMotorPort = 7;
-            
+
             // piston (double solenoid) that raises and lowers the intake
             public static final int kIntakeRaiseSolenoidPort = 5;
             public static final int kIntakeLowerSolenoidPort = 2;
@@ -66,8 +66,9 @@ public final class Constants {
 
         public static final class HopperConstants {
             public static final int kHopperMotorPort = 6;
+            public static final double kHopperMotorSpeed = 1.0; //TODO: Change the speed after testing.
         }
-    
+
         public static final class CelevatorConstants {
 
             // beam breakers detect the number of powercells in the cellevator
@@ -85,9 +86,9 @@ public final class Constants {
             // Define the current limit for the celevator motors
             public static final int kCelevatorCurrentLimit = 45;
         }
-    
+
         public static final class ControlPanelConstants {
-    
+
             public static final int kSpinnerMotorPort = 9; // motor for the wheel that spins the control panal
 
             public static final int kColorSensorPort = 0; // Color sensor that senses the colors on the control panel
@@ -116,9 +117,9 @@ public final class Constants {
             public static final Color kBlueTarget = new Color(kGreenTargetR, kGreenTargetG, kGreenTargetB);
 
         }
-    
+
         public static final class ClimberConstants {
-    
+
             public static final double kEncoderDistancePerPulse = 0; // ADD CONVERSION
             public static final double kEncoderSpeedPerPulse = 0; // ADD CONVERSION
 
@@ -127,7 +128,7 @@ public final class Constants {
 
             public static final int kFrictionSolenoidPort = 6; // piston that applies the friction brake on the hanging elevator
         }
-    
+
         public static final class LimelightConstants {
 
             public static final double kLimelightOffset = 13.67; // In inches
@@ -136,18 +137,18 @@ public final class Constants {
             public static final double kPortHeight = 98.25; // In inches
 
             // Alignment constants for LimeLight
-            public static final double kLimelightAlignP = 1.0; 
+            public static final double kLimelightAlignP = 1.0;
             public static final double kLimelightAlignI = 0.0;
             public static final double kLimelightAlignD = 0.0;
             public static final double kLimelightTolernce = 5.0;
             public static final double kLimelightAlignTolerance = 1.5;
-        
+
             // Distance constants for LimeLight
-            public static final double kLimelightDistanceP = 1.0; 
+            public static final double kLimelightDistanceP = 1.0;
             public static final double kLimelightDistanceI = 0.0;
             public static final double kLimelightDistanceD = 0.0;
             public static final double kLimelightDistance = 50.0;
             public static final double kLimelightDistanceTolerance = 5.0;
         }
-    
+
     }
