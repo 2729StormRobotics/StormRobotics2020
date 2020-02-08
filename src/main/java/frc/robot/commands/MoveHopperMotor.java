@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Hopper;
+import frc.robot.Constants.HopperConstants;
 
 public class MoveHopperMotor extends CommandBase {
   private final Hopper m_Hopper;
@@ -31,7 +32,7 @@ public class MoveHopperMotor extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_Hopper.startHopperMotor(kHopperMotorSpeed);
+    m_Hopper.startHopperMotor(HopperConstants.kHopperMotorSpeed);
   }
 
   // Called once the command ends or is interrupted.
