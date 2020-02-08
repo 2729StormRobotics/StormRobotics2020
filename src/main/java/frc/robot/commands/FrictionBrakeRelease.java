@@ -16,20 +16,20 @@ import frc.robot.subsystems.Climbers;
 public class FrictionBrakeRelease extends InstantCommand {
   Climbers m_climbers;   
 
-  public FrictionBrakeRelease(Climbers subsystem) {
-    m_climbers = subsystem;
-    addRequirements(m_climbers);
-    // Use addRequirements() here to declare subsystem dependencies.
-    // depends on the Climbers subsytem
-  }
+  // public FrictionBrakeRelease(Climbers subsystem) {
+  
+  //  Use addRequirements() here to declare subsystem dependencies.
+  //  depends on the Climbers subsytem
+  // }
 
-  // Called when the command is initially scheduled.
+  // // Called when the command is initially scheduled.
   
   /** 
    *before command starts, the piston is not released
   */ 
   @Override
   public void initialize() {
+    addRequirements(m_climbers);
     m_climbers.m_frictionBrake.set(false);
   }
 }
