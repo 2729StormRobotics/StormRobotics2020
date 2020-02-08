@@ -44,10 +44,6 @@ public class Climbers extends SubsystemBase {
     motorInit(m_rightClimber, false);
   }
 
-  public Solenoid getM_frictionBrake() {
-	return m_frictionBrake;
-}
-
 @Override
   public void periodic() {
     // This method will be called once per scheduler run
@@ -107,8 +103,8 @@ public class Climbers extends SubsystemBase {
     return ((getRightEncoderValue() + getLeftEncoderValue()) / 2); //Finds the average of the encoders.
   }
 
-  public void FrictionBrakerOn(boolean on) {
-    getM_frictionBrake().set(on); //Sets frictionBreak to the value inputted.
+  public void frictionBrakerOn(boolean on) {
+    m_frictionBrake.set(on); //Sets frictionBreak to the value inputted.
   }  
   
   public void log() {

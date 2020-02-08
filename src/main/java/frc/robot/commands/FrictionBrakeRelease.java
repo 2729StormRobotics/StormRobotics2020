@@ -20,6 +20,6 @@ public class FrictionBrakeRelease extends InstantCommand {
   public void initialize() {
     m_climbers = new Climbers();
     addRequirements(m_climbers);
-    m_climbers.getM_frictionBrake().set(false); 
+    m_climbers.frictionBrakerOn(false); 
   }
 }
