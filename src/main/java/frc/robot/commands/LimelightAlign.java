@@ -44,16 +44,15 @@ public class LimelightAlign extends PIDCommand {
            * If a target is detected when the command is called the robot will align itself to the target. If no target is found it will spin at a fixed speed until one comes into range
            */
           if (limesub.isTargetDetected()) {
-            drivesub.tankDrive(output, -output, true);
+            drivesub.arcadeDrive(0, -output, true);
           }else {
-            drivesub.tankDrive(steeringAdjust, -steeringAdjust, true);
+            drivesub.arcadeDrive(0, steeringAdjust, true);
           }
-
         });
 
         m_limelight = limesub;  
         m_drivetrain = drivesub;
-
+        
         // Sends a PID table to the SmartDashboard
         SmartDashboard.putData("AlignmentPID", getController());
 
