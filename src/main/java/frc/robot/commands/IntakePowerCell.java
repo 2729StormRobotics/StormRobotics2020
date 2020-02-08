@@ -9,6 +9,8 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
+// import sun.jvm.hotspot.code.ConstantDoubleValue;
+import static frc.robot.Constants.IntakeConstants.*;
 
 public class IntakePowerCell extends CommandBase {
   private final Intake m_intake;
@@ -34,7 +36,7 @@ public class IntakePowerCell extends CommandBase {
   @Override
   public void initialize() {
     // Once command is initialized, set the intake arm motors to run for intaking the power cells
-    m_intake.startIntakeMotor(m_speed);
+    m_intake.startIntakeMotor(kIntakeMotorSpeed);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
