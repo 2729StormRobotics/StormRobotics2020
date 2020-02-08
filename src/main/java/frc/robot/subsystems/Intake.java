@@ -81,6 +81,21 @@ public class Intake extends SubsystemBase {
     SmartDashboard.putData("Intake Status", m_intakePiston);
   }
 
+  /* 
+  * gets the position of the intake pistons 
+  * if it is lowered, then it will raise the intake and vice versa
+  **/
+
+  public void toggleIntakePistons() {
+    Value intakeState = m_intakePiston.get();
+    if (intakeState == Value.kForward) {
+      raiseIntake();
+    }
+    else {
+      lowerIntake();
+    }
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
