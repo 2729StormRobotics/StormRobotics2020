@@ -30,7 +30,7 @@ public class Climbers extends SubsystemBase {
   /**
    * Creates a new Climbers.
    */
-  public Climbers() {
+  private Climbers() {
 
     m_leftClimber = new CANSparkMax(ClimberConstants.kLeftClimberMotorPort, MotorType.kBrushless);
     m_rightClimber = new CANSparkMax(ClimberConstants.kRightClimberMotorPort, MotorType.kBrushless);
@@ -44,7 +44,10 @@ public class Climbers extends SubsystemBase {
     motorInit(m_rightClimber, false);
   }
 
-  @Override
+
+
+
+@Override
   public void periodic() {
     // This method will be called once per scheduler run
     log(); //Log on periodic
