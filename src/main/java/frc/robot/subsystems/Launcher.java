@@ -13,7 +13,6 @@ import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import com.revrobotics.CANPIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.LauncherConstants;
  
@@ -25,16 +24,6 @@ public class Launcher extends SubsystemBase {
   private final CANEncoder m_leftEncoder;
   private final CANEncoder m_rightEncoder;
 
-  private CANPIDController m_pidController;
-  
-  //variables for constants
-  private double pVal;
-  private double iVal;
-  private double dVal;
-  private double izVal;
-  private double ffVal;
-  private double minVal;
-  private double maxVal;
  
   /**
    * Creates a new Launcher.
@@ -52,15 +41,6 @@ public class Launcher extends SubsystemBase {
     motorInit(m_leftLauncher, false);
     motorInit(m_rightLauncher, true);
 
-    //instantiate PID coefficients
-    pVal = LauncherConstants.kP;
-    iVal = LauncherConstants.kI;
-    dVal = LauncherConstants.kD;
-    izVal = LauncherConstants.kIz;
-    ffVal = LauncherConstants.kFF;
-    minVal = LauncherConstants.kMinOutput;
-    maxVal = LauncherConstants.kMaxOutput;
-   
   }
  
   /**
@@ -75,86 +55,6 @@ public class Launcher extends SubsystemBase {
     motor.setInverted(invert); // Whether or not to invert motor.
     encoderInit(motor.getEncoder());
    
-  }
-
-  private void startPID() {
-    m_pidController = m_leftLauncher.getPIDController();
-
-    //set the PID coefficients
-    m_pidController.setP(LauncherConstants.kP);
-    m_pidController.setI(LauncherConstants.kI);
-    m_pidController.setD(LauncherConstants.kD);
-    m_pidController.setIZone(LauncherConstants.kIz);
-    m_pidController.setFF(LauncherConstants.kFF);
-    m_pidController.setOutputRange(LauncherConstants.kMinOutput, LauncherConstants.kMaxOutput);
-
-    // display PID coefficients on SmartDashboard
-    SmartDashboard.putNumber("Launcher P Gain", LauncherConstants.kP);
-    SmartDashboard.putNumber("Launcher I Gain", LauncherConstants.kI);
-    SmartDashboard.putNumber("Launcher D Gain", LauncherConstants.kD);
-    SmartDashboard.putNumber("Launcher I Zone", LauncherConstants.kIz);
-    SmartDashboard.putNumber("Launcher Feed Forward", LauncherConstants.kFF);
-    SmartDashboard.putNumber("Launcher Max Output", LauncherConstants.kMaxOutput);
-    SmartDashboard.putNumber("Launcher Min Output", LauncherConstants.kMinOutput);
-    SmartDashboard.putNumber("Target Velocity", LauncherConstants.kTargetLaunchVelociy);
-    SmartDashboard.putNumber("Left Speed", m_leftEncoder.getVelocity());
-    SmartDashboard.putNumber("Right Speed", m_rightEncoder.getVelocity());
-
-    //gets values from the dashboard
-    double p = SmartDashboard.getNumber("Launcher P Gain", 0);
-    double i = SmartDashboard.getNumber("Launcher I Gain", 0);
-    double d = SmartDashboard.getNumber("Launcher D Gain", 0);
-    double iz = SmartDashboard.getNumber("Launcher I Zone", 0);
-    double ff = SmartDashboard.getNumber("Launcher Feed Forward", 0);
-    double max = SmartDashboard.getNumber("Launcher Max Output", 0);
-    double min = SmartDashboard.getNumber("Launcher Min Output", 0);
-    double setpoint = SmartDashboard.getNumber("Target Velocity", 0);
-    
-
-    //reset PID constants if changed in dashboard
-    if (p != pVal) {
-      m_pidController.setP(p);
-      pVal = p;
-    }
-
-    if (i != iVal) {
-      m_pidController.setI(i);
-      iVal = i;
-    }
-
-    if (d != dVal) {
-      m_pidController.setD(d);
-      dVal = d;
-    }
-
-    if (iz != izVal) {
-      m_pidController.setIZone(iz);
-      izVal = iz;
-    }
-
-    if (ff != ffVal) {
-      m_pidController.setFF(ff);
-      ffVal = ff;
-    }
-
-    if ((max != maxVal) || (min != minVal)) {
-      m_pidController.setOutputRange(min, max);
-      minVal= min;
-      maxVal = max;  
-    }
-
-    //sets setpoint and control type to PID controller
-    m_pidController.setReference(setpoint, ControlType.kVelocity);
-
-  }
-
-  public void stopPID() {
-    m_pidController.setP(0);
-    m_pidController.setI(0);
-    m_pidController.setD(0);
-    m_pidController.setFF(0);
-    m_pidController.setIZone(0);
-    
   }
  
   /**
@@ -184,26 +84,26 @@ public class Launcher extends SubsystemBase {
     rightLauncher.set(0);
   }
  
-  //get left speed in RPM
-  private double getLeftSpeed() {
+  //get left launcher speed in RPM
+  private double getLeftLauncherSpeed() {
     return m_leftEncoder.getVelocity();
   }
  
-  //get right speed in RPM
-  private double getRightSpeed() {
+  //get right launcher speed in RPM
+  private double getRightLauncherSpeed() {
     return m_rightEncoder.getVelocity();
   }
  
-  //get average speed
-  private double getSpeed() {
-    return ((getLeftSpeed() + getRightSpeed()) / 2.0);
+  //get average speed of left and right launchers
+  private double getLauncherAvgSpeed() {
+    return ((getLeftLauncherSpeed() + getRightLauncherSpeed()) / 2.0);
   }
  
   //add info to the dashboard
   public void log() {
     SmartDashboard.putNumber("Left Launcher Speed(RPM)", m_leftEncoder.getVelocity());
     SmartDashboard.putNumber("Right Launcher Speed(RPM)", m_rightEncoder.getVelocity());
-    SmartDashboard.putNumber("Average Launcher Speed(RPM)", getSpeed());
+    SmartDashboard.putNumber("Average Launcher Speed(RPM)", getLauncherAvgSpeed());
   }
  
   
