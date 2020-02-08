@@ -7,30 +7,24 @@
 
 package frc.robot.commands;
 
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
 public class ManualDrive extends CommandBase {
   private final Drivetrain m_drivetrain;
-  private final DoubleSupplier m_reverseSpeed;
-  private final DoubleSupplier m_forwardSpeed;
-  private final DoubleSupplier m_turnSpeed;
+  private final Double m_leftSpeed;
+  private final Double m_rightSpeed;
 
-  /**
-   * @param reverse     The backwards speed of the robot
-   * @param forward     The forwards speed of the robot
-   * @param turn        The turning speed of the robot
-   * @param subsystem   The subsystem being used by the command--in this case, the drivetrain
-   */
-
-  public ManualDrive(DoubleSupplier reverse, DoubleSupplier forward, DoubleSupplier turn, Drivetrain subsystem) {
+/**
+ * @param leftSpeed   speed of left motors
+ * @param rightSpeed  speed of right motors
+ * @param subsystem   the subsystem being used--in this case, the drivetrain
+ */
+  public ManualDrive(Double leftSpeed, Double rightSpeed, Drivetrain subsystem) {
     // These are the local instances of the parameter variables for ManualDrive.
     m_drivetrain = subsystem;
-    m_reverseSpeed = reverse;
-    m_forwardSpeed = forward;
-    m_turnSpeed = turn;
+    m_leftSpeed = leftSpeed;
+    m_rightSpeed = rightSpeed;
 
     // Attach the local instane of the subsystem--in this case, drivetrain--to the command.
     addRequirements(m_drivetrain);
@@ -47,7 +41,7 @@ public class ManualDrive extends CommandBase {
     // Repeatedly passes the parameters--reverse speed, forward speed, turn speed,
     // and if inputs are squared, which increases fine control at lower speeds--
     //to the triggerDrive
-    m_drivetrain.triggerDrive(m_reverseSpeed.getAsDouble(), m_forwardSpeed.getAsDouble(), m_turnSpeed.getAsDouble(), true);
+    m_drivetrain.tankDrive(m_leftSpeed, m_rightSpeed, true);
   }
 
   // Make this return true when this Command no longer needs to run execute()
