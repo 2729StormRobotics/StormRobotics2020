@@ -92,7 +92,7 @@ public class ControlPanel extends SubsystemBase {
 
 //checks to see if wheel has passed 8 times    
 public boolean isSpun(){
-  Boolean spun= false;
+  boolean spun = false;
   if (colorCount() >= 8){
     spun = true;
   }
@@ -101,7 +101,8 @@ public boolean isSpun(){
 
 //Controls motor speed 
 public void wheelMotorPower(){
-  if (isSpun() == false){
+  boolean spun = isSpun();
+  if (spun == false){
     startMotors(.4);
   }
   else if (isSpun() == true){
