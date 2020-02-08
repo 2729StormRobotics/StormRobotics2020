@@ -1,0 +1,26 @@
+# EditorConfig: https://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+[*]
+# Enforce Unix style line endings (\n only).
+end_of_line = lf
+# Use UTF-8 encoding.
+charset = utf-8
+# Force space characters for indentation.
+indent_style = space
+# Always indent by 2 characters.
+indent_size = 2
+# Remove whitespace characters at the end of line.
+trim_trailing_whitespace = true
+# Always end files with a blank line.
+insert_final_newline = true
+
+[*.md]
+# Do not remove whitespace characters at the end of line for markdown.
+trim_trailing_whitespace = false
+
+[{*.bat, *.cmd}]
+# Enforce Windows style line endings (\r\n) for windows commands.
+end_of_line = crlf
