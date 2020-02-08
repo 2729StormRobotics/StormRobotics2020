@@ -30,6 +30,7 @@ public class ControlPanel extends SubsystemBase {
      int count = 0;
      String colorString;
      String gameData;
+     String targetColor;
 
   /**
    * Creates a new ControlPanel.
@@ -86,6 +87,7 @@ public class ControlPanel extends SubsystemBase {
 //checks to see if wheel has passed 8 times    
 public void setColor(){
   //Gets data sent from the drivers station
+ 
   gameData = DriverStation.getInstance().getGameSpecificMessage();
 
   if(gameData.length() > 0)
@@ -93,16 +95,16 @@ public void setColor(){
   switch (gameData.charAt(0))
   {
     case 'B' :  //Blue
-        findBlue();
+        targetColor = "Red";
       break;
     case 'G' :  //Green
-        findGreen();
+        targetColor = "Yellow";
       break;
     case 'R' :  //Red
-        findRed();
+        targetColor = "Blue";
       break;
     case 'Y' :  //Yellow
-        findYellow();
+        targetColor = "Green";
       break;
     default :
 
@@ -113,26 +115,12 @@ public void setColor(){
 }
 
 }
-public void findBlue(){
+public void findTargetColor(){
   startMotors(.18);
-  if (color == "Red")
+  if (color.equals(targetColor))
     startMotors(0);
 }
-public void findRed(){
-  startMotors(.18);
-  if (color == "Blue")
-    startMotors(0);
-}
-public void findGreen(){
-  startMotors(.18);
-  if (color == "Yellow")
-    startMotors(0);
-}
-public void findYellow(){
-  startMotors(.18);
-  if (color == "Green")
-    startMotors(0);
-}
+
 
 public boolean isSpun(){
   boolean spun = false;
