@@ -43,7 +43,7 @@ public class Hopper extends SubsystemBase {
   *stops the hopper motor
   */
   public void stopHopperMotor() {
-    m_hopperMotor.set(ControlMode.PercentOutput, 0);\
+    m_hopperMotor.set(ControlMode.PercentOutput, 0);
 
   }
 
