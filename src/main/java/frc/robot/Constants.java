@@ -7,16 +7,20 @@
 
 package frc.robot;
 
-/**
- * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
- * constants.  This class should not be used for any other purpose.  All constants should be
+import edu.wpi.first.wpilibj.util.Color;
+
+/*   The Consta s class
+ * provides a convenient p ce for tea  s to hol robot-wide 
+ * merical or constants.   r any other purpose.  All constants sho d be
+ * 
  * declared globally (i.e. public static).  Do not put anything functional in this class.
  *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
+ * 
+ * 
+ *   <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-        // ADD THE PORT NUMBERS TO CONSTANTS
 
         public static final class DriveConstants {
             public static final int kLeftDriveMotor1Port = 0;
@@ -24,13 +28,22 @@ public final class Constants {
             public static final int kRightDriveMotor1Port = 3;
             public static final int kRightDriveMotor2Port = 12;
 
-            // pistons that change the gear of the drive train
+            // pistons that shift the gear of the drive train 
             public static final int kDriveSolenoid = 7;
     
-            public static final double kWheelDiameter = 0; // ADD UNIT OF MEASUREMENT
+            public static final double kWheelDiameter = 6; // Inches
 
+            // constant for the distance that mechanism travels for every pulse of the encoder
             public static final double kEncoderDistancePerPulse = 0; // ADD CONVERSION
+            // constant for the speed of the motor per pulse of the encoder
             public static final double kEncoderSpeedPerPulse = 0; // ADD CONVERSION
+
+            public static final boolean kLeftEncoderInverted = false;
+            public static final boolean kRightEncoderInverted = false;
+
+            // Current limit for the drivetrain motors in amps
+            public static final int kDrivetrainCurrentLimit = 60;
+
         }
     
         public static final class LauncherConstants {
@@ -50,20 +63,27 @@ public final class Constants {
             public static final int kIntakeRaiseSolenoidPort = 5;
             public static final int kIntakeLowerSolenoidPort = 2;
         }
+
+        public static final class HopperConstants {
+            public static final int kHopperMotorPort = 6;
+        }
     
-        public static final class LoadingConstants {
+        public static final class CelevatorConstants {
 
             // beam breakers detect the number of powercells in the cellevator
-            public static final int kBeamBreakOutput1Port = 0;
-            public static final int kBeamBreakOutput2Port = 0;
+            public static final int kBeamBreakLoaderPort = 0;
+            public static final int kBeamBreakHolderPort = 0;
 
             // motors in cellevator that transport powercells to launcher
-            public static final int kLowCellevatorMotorPort = 5;
-            public static final int kHighCellevatorMotor2Port = 8;
+            public static final int kHolderMotorPort = 5;
+            public static final int kLoaderMotorPort = 8;
 
-            // motors in ramp that transport powercells from intake to cellevator
-            public static final int kLoadingMotorPort = 6;
+            // Define if a motor is inverted or not
+            public static final boolean kHolderMotorInverted = false;
+            public static final boolean kLoaderMotorInverted = false;
 
+            // Define the current limit for the celevator motors
+            public static final int kCelevatorCurrentLimit = 45;
         }
     
         public static final class ControlPanelConstants {
@@ -71,17 +91,45 @@ public final class Constants {
             public static final int kSpinnerMotorPort = 9; // motor for the wheel that spins the control panal
 
             public static final int kColorSensorPort = 0; // Color sensor that senses the colors on the control panel
+
+            /*values the color sensor values to detect the colors on control panel
+            red*/
+            public static final double kRedTargetR = 0.476;
+            public static final double kRedTargetG = 0.376;
+            public static final double kRedTargetB = 0.15;
+            // Yellow
+            public static final double kYellowTargetR = 0.381;
+            public static final double kYellowTargetG = 0.545;
+            public static final double kYellowTargetB = 0.136;
+            // Green
+            public static final double kGreenTargetR = 0.18;
+            public static final double kGreenTargetG = 0.568;
+            public static final double kGreenTargetB = 0.249;
+            // Blue
+            public static final double kBlueTargetR = 0.15;
+            public static final double kBlueTargetG = 0.4467;
+            public static final double kBlueTargetB = 0.40;
+            // Colors
+            public static final Color kRedTarget = new Color(kRedTargetR, kRedTargetG, kRedTargetB);
+            public static final Color kYellowTarget = new Color(kYellowTargetR, kYellowTargetG, kYellowTargetB);
+            public static final Color kGreenTarget = new Color(kBlueTargetR, kBlueTargetG, kBlueTargetB);
+            public static final Color kBlueTarget = new Color(kGreenTargetR, kGreenTargetG, kGreenTargetB);
+
         }
     
-        public static final class HangerConstants {
+        public static final class ClimberConstants {
     
-            public static final int kRightHangerMotorPort = 2;
-            public static final int kLeftHangerMotorPort = 1;
+            public static final double kEncoderDistancePerPulse = 0; // ADD CONVERSION
+            public static final double kEncoderSpeedPerPulse = 0; // ADD CONVERSION
+
+            public static final int kRightClimberMotorPort = 2;
+            public static final int kLeftClimberMotorPort = 1;
 
             public static final int kFrictionSolenoidPort = 6; // piston that applies the friction brake on the hanging elevator
         }
     
         public static final class LimeLightConstants {
+           public static final double kLimeLightOffest = 13.67;
             public static final double kLimeLightHeight = 43; 
             public static final double kLimeLightAngle = 0; //NEED CORRECT ANGLE 
             public static final double kPortHeight = 98.25;
@@ -90,7 +138,7 @@ public final class Constants {
             public static final double kLimeLightAlignP = 1.0; 
             public static final double kLimeLightAlignI = 0.0;
             public static final double kLimeLightAlignD = 0.0;
-            public static final double kLimeLightTolernce = 5.0
+            public static final double kLimeLightTolernce = 5.0;
             public static final double kLimeLightAlignTolerance = 1.5;
         
             //Distance constants for LimeLight
@@ -99,6 +147,8 @@ public final class Constants {
             public static final double kLimeLightDistanceD = 0.0;
             public static final double kLimeLightDistance = 50.0;
             public static final double kLimeLightDistanceTolernce = 5.0;
+            
+            
         
         }
     
