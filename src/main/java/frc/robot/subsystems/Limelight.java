@@ -22,10 +22,10 @@ public class Limelight extends SubsystemBase {
   // Create variables for the different values given from the limelight
   private double xOffset; // Positive values mean that target is to the right of the camera; negative values mean target is to the left. Measured in degrees
   private double yOffset; // Positive values mean that target is above the camera; negative values mean target is below. Measured in degrees
-  private double ta; // Returns a value of the percentage of the image the target takes
-  private double tv; // Sends 1 if a target is detected, 0 if none are present
+  private double targetArea; // Returns a value of the percentage of the image the target takes
+  private double targetValue; // Sends 1 if a target is detected, 0 if none are present
 
-  private Integer pipeline; // Used to identify which pipline the limelight uses (0-9)
+  private int pipeline; // Used to identify which pipline the limelight uses (0-9)
 
   // Create a network table for the limelight
   private final NetworkTable m_limelightTable;
@@ -39,7 +39,7 @@ public class Limelight extends SubsystemBase {
   }
 
   /**
-   * Returns a value of the offset on the x-axis of the camera to the target. Negative values mean the target is to the left of the camera
+   * Returns a value of the offset on the x-axis of the camera to the target in degrees. Negative values mean the target is to the left of the camera
    */
   public double getXOffset() {
     return xOffset;
@@ -49,7 +49,7 @@ public class Limelight extends SubsystemBase {
    * Returns true if a target is detected
    */
   public boolean isTargetDetected() {
-    return (tv > 0.0);
+    return (targetValue > 0.0);
   }
 
   /**
@@ -60,14 +60,14 @@ public class Limelight extends SubsystemBase {
   }
 
   /**
-   *  Calculates the total angle by adding the mounting angle with the y-axis offset angle of the limelight
+   *  Calculates the total angle by adding the mounting angle with the y-axis offset angle of the limelight in degrees
    */
   public double limelightAngle() {
     return (kLimelightAngle + yOffset);
   }
 
   /**
-   * Return the distance from the limelight to the target (floor distance)
+   * Return the distance from the limelight to the target in inches (floor distance)
    */
   public double limelightDistance() {
     return (kPortHeight - kLimelightHeight) / Math.cos(Math.toRadians(kLimelightAngle + yOffset) + kLimelightOffset);
@@ -78,15 +78,14 @@ public class Limelight extends SubsystemBase {
    * 
    * @param Pipeline Which pipeline to use on the limelight (0-9)
    */
-  public void setPipeline(Integer pipeline) {
+  public void setPipeline(int pipeline) {
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(pipeline);
+    m_limelightTable.getEntry("Pipeline").setValue(pipeline);
     if (pipeline < 0) {
       pipeline = 0;
     }else if (pipeline > 9) {
       pipeline = 9;
     }
-    
-    m_limelightTable.getEntry("Pipeline").setValue(pipeline);
   }
 
   /**
@@ -104,17 +103,16 @@ public class Limelight extends SubsystemBase {
     // Updates the values of the limelight on the network table
     xOffset = m_limelightTable.getEntry("tx").getDouble(0.0);
     yOffset = m_limelightTable.getEntry("ty").getDouble(0.0);
-    ta = m_limelightTable.getEntry("ta").getDouble(0.0);
-    tv = m_limelightTable.getEntry("tv").getDouble(0.0);
+    targetArea = m_limelightTable.getEntry("ta").getDouble(0.0);
+    targetValue = m_limelightTable.getEntry("tv").getDouble(0.0);
 
   }
 
   public void log() {
     // Updates the SmartDashboard with limelight values
-    SmartDashboard.putNumber("LimelightX", xOffset);
-    SmartDashboard.putNumber("LimelightY", yOffset);
-    SmartDashboard.putNumber("LimelightArea", ta);
-    SmartDashboard.putNumber("LimelightDetection", tv);
+    SmartDashboard.putNumber("LimelightXOffset", xOffset);
+    SmartDashboard.putNumber("LimelightYOffset", yOffset);
+    SmartDashboard.putNumber("LimelightAreaPercentage", targetArea);
     SmartDashboard.putBoolean("Target Centered", isTargetCentered());
     SmartDashboard.putBoolean("Target Detected", isTargetDetected());
     SmartDashboard.putNumber("Distance (INCHES)", limelightDistance());
@@ -123,6 +121,7 @@ public class Limelight extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    updateLimelight();
     log();
   }
 }
