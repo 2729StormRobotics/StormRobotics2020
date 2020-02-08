@@ -41,6 +41,9 @@ public final class Constants {
             public static final boolean kLeftEncoderInverted = false;
             public static final boolean kRightEncoderInverted = false;
 
+            // Current limit for the drivetrain motors in amps
+            public static final int kDrivetrainCurrentLimit = 60;
+
         }
     
         public static final class LauncherConstants {
@@ -60,20 +63,27 @@ public final class Constants {
             public static final int kIntakeRaiseSolenoidPort = 5;
             public static final int kIntakeLowerSolenoidPort = 2;
         }
+
+        public static final class HopperConstants {
+            public static final int kHopperMotorPort = 6;
+        }
     
-        public static final class LoadingConstants {
+        public static final class CelevatorConstants {
 
             // beam breakers detect the number of powercells in the cellevator
-            public static final int kBeamBreakOutput1Port = 0;
-            public static final int kBeamBreakOutput2Port = 0;
+            public static final int kBeamBreakLoaderPort = 0;
+            public static final int kBeamBreakHolderPort = 0;
 
             // motors in cellevator that transport powercells to launcher
-            public static final int kLowCellevatorMotorPort = 5;
-            public static final int kHighCellevatorMotor2Port = 8;
+            public static final int kHolderMotorPort = 5;
+            public static final int kLoaderMotorPort = 8;
 
-            // motors in ramp that transport powercells from intake to cellevator
-            public static final int kLoadingMotorPort = 6;
+            // Define if a motor is inverted or not
+            public static final boolean kHolderMotorInverted = false;
+            public static final boolean kLoaderMotorInverted = false;
 
+            // Define the current limit for the celevator motors
+            public static final int kCelevatorCurrentLimit = 45;
         }
     
         public static final class ControlPanelConstants {
