@@ -44,6 +44,11 @@ public final class Constants {
             // Current limit for the drivetrain motors in amps
             public static final int kDrivetrainCurrentLimit = 60;
 
+            //Constants for DriveDistance.
+            //TODO: Update these constants with the correct values.
+            public static final double kMaxSpeed = 0; //Meters per second
+            public static final double kMaxAcceleration = 0; //Meters per (second^2)
+
             public static final class PointTurnPID {
               // Our PID values for PointTurn
               public static final double kP = 0.0; //TODO: Test and update this value.
