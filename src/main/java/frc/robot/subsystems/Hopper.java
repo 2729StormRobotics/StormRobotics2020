@@ -37,7 +37,7 @@ public class Hopper extends SubsystemBase {
    * starts the hopper motor to transfer the power cells from the intake to the
    * cellavator
    */
-  public void runHopperMotor(double speed) {
+  public void startHopperMotor(double speed) {
     m_hopperMotor.set(ControlMode.PercentOutput, speed);
   }
 

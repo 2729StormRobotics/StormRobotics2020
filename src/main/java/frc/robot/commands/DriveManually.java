@@ -33,6 +33,7 @@ public class DriveManually extends CommandBase {
   // Called just before this Command runs the first time.
   @Override
   public void initialize() {
+    m_drivetrain.stopDrive();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

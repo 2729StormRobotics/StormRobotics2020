@@ -99,7 +99,7 @@ public class Climbers extends SubsystemBase {
     return ((getRightEncoderValue() + getLeftEncoderValue()) / 2); // Finds the average of the encoders.
   }
 
-  public void frictionBrakerOn(boolean on) {
+  public void engageFrictionBrake(boolean on) {
     m_frictionBrake.set(on); // Sets frictionBreak to the value inputted.
   }
 
