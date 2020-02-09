@@ -8,47 +8,48 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.HopperConstants;
+import static frc.robot.Constants.HopperConstants.*;
 
 public class Hopper extends SubsystemBase {
 
-  private final TalonSRX m_hopperMotor;
+  private final WPI_TalonSRX m_hopperMotor;
 
   /**
    * Creates a new Hopper.
    */
   public Hopper() {
-    m_hopperMotor = new TalonSRX(HopperConstants.kHopperMotorPort);
-  
+    m_hopperMotor = new WPI_TalonSRX(kHopperMotorPort);
+
     motorInit(m_hopperMotor);
-    
   }
 
-  public void motorInit(TalonSRX motor) {
-    // configures the factory defaults in case and changes were previously made to the motor
-    motor.configFactoryDefault();   
-  }
-
-  /**
-   * starts the hopper motor to transfer the power cells from the intake to the cellavator
-   */ 
-  public void startHopperMotor(double speed) {
-    m_hopperMotor.set(ControlMode.PercentOutput, speed);;
+  public void motorInit(WPI_TalonSRX motor) {
+    // configures the factory defaults in case and changes were previously made to
+    // the motor
+    motor.configFactoryDefault();
   }
 
   /**
-  *stops the hopper motor
-  */
+   * starts the hopper motor to transfer the power cells from the intake to the
+   * cellavator
+   */
+  public void runHopperMotor(double speed) {
+    m_hopperMotor.set(ControlMode.PercentOutput, speed);
+  }
+
+  /**
+   * stops the hopper motor
+   */
   public void stopHopperMotor() {
     m_hopperMotor.set(ControlMode.PercentOutput, 0);
-
   }
 
   public void log() {
-
+    SmartDashboard.putData("Hopper Speed", m_hopperMotor);
   }
 
   @Override
