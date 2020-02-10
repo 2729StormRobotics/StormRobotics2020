@@ -21,6 +21,8 @@ public class Cellevator extends SubsystemBase {
   private final DigitalInput m_beamBreakTop;
   private final DigitalInput m_beamBreakBottom;
   private final DigitalInput m_beamBreakMiddle;
+  private int powerCellCount;
+  private boolean previousBBMiddle;
 
   /**
    * Creates a new Cellevator subsystem
@@ -31,6 +33,8 @@ public class Cellevator extends SubsystemBase {
     m_beamBreakBottom = new DigitalInput(kBeamBreakLoaderPort);
     m_beamBreakTop = new DigitalInput(kBeamBreakHolderPort);
     m_beamBreakMiddle = new DigitalInput(kBeamBreakMiddlePort);
+    powerCellCount = 0;
+    previousBBMiddle = false;
 
     // intializes the motors
     motorInit(m_holderMotor, kHolderMotorInverted);
@@ -59,15 +63,17 @@ public class Cellevator extends SubsystemBase {
    */
   public boolean isTopBallPresent() {
     return m_beamBreakTop.get();
-  }
+    }
 
   /**
    * Gets the beam break value to see if there is a power cell present at the
    * middle of the cellavator
+   * sets the previous boolean to the value so that it is stroed for the next time that this method is called
    */
   public boolean isMiddleBallPresent() {
+    previousBBMiddle = m_beamBreakMiddle.get();
     return m_beamBreakMiddle.get();
-  }
+    }
 
   /**
    * Gets the beam break value to see if there is a power cell present at the
@@ -77,7 +83,6 @@ public class Cellevator extends SubsystemBase {
     return m_beamBreakBottom.get();
   }
 
-
   /**
    * Stops the holder motor
    */
@@ -85,6 +90,22 @@ public class Cellevator extends SubsystemBase {
     runHolderMotor(0);
   }
 
+  /**
+   * adds to the count
+   * @return
+   */
+  public int addPowerCellCount() {
+    powerCellCount += 1;
+    return powerCellCount;
+  }
+  /**
+   * subtracts from the count 
+   * @return
+   */
+  public int subtractPowerCellCount() {
+    powerCellCount -= 1;
+    return powerCellCount;
+  }
 
   /**
    * displays data onto SmartDashboard
