@@ -12,7 +12,6 @@ import frc.robot.subsystems.Launcher;
 
 public class ToggleLaunchAngle extends CommandBase {
   private final Launcher m_launchAngle;
-  private final boolean isExtended;
   
   /**
    * Creates a new ToggleLaunchAngle.
