@@ -19,7 +19,6 @@ import static frc.robot.Constants.LimelightConstants.*;
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class LimelightAlign extends PIDCommand {
   // A fixed speed for the robot to spin if no target is detected
-  private final static double steeringAdjust = 0.25;
 
   /**
    * Creates a new LimelightAlign.
