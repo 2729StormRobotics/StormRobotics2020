@@ -9,7 +9,6 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -68,14 +67,24 @@ public class Launcher extends SubsystemBase {
     encoderInit(motor.getEncoder());
   }
  
-  //set pistons to default retracted position
+  // set pistons to default retracted position
   private void pistonInit() {
-    pistonPush(false);
+    launchPistonPush(false);
   }
 
-  //extends pistons if true
-  private void pistonPush(boolean out) {
-    m_pistonAdjustment.set(out ? Value.kForward : Value.kReverse);
+  /**
+   * Extends pistons depending on current state, probably used in autonomous command
+   * @param out Piston is out, or extended, then return true
+   */
+  public void launchPistonPush(boolean out) {
+    m_pistonAdjustment.set(out ? Value.kForward : Value.kReverse); // TODO: Need to update which direction is forward after testing
+  }
+
+  /**
+   * Extends or retracts pistons depending on current state
+   */
+  public void toggleLaunchPiston() {
+    m_pistonAdjustment.set(m_pistonAdjustment.get() == Value.kForward ? Value.kReverse : Value.kForward);
   }
 
 
@@ -104,12 +113,12 @@ public class Launcher extends SubsystemBase {
   }
 
   // get left launcher speed in RPM
-  private double getLeftLauncherSpeed() {
+  public double getLeftLauncherSpeed() {
     return m_leftEncoder.getVelocity();
   }
 
   // get right launcher speed in RPM
-  private double getRightLauncherSpeed() {
+  public double getRightLauncherSpeed() {
     return m_rightEncoder.getVelocity();
   }
 
