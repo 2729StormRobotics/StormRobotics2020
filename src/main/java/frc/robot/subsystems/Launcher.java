@@ -36,8 +36,6 @@ public class Launcher extends SubsystemBase {
    */
   public Launcher() {
 
-    //instantiate air compressor
-
     //solenoid port
     pistonAdjustment = new DoubleSolenoid(LauncherConstants.kLeftLauncherMotorPort, LauncherConstants.kRightLauncherMotorPort);
 
