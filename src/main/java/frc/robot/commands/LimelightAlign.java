@@ -18,10 +18,6 @@ import static frc.robot.Constants.LimelightConstants.*;
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class LimelightAlign extends PIDCommand {
-  // Adds variables for the limelight and drivetrain subsystem
-  private final Limelight m_limelight;
-  private final Drivetrain m_drivetrain;
-
   // A fixed speed for the robot to spin if no target is detected
   private final static double steeringAdjust = 0.25;
 
@@ -32,39 +28,35 @@ public class LimelightAlign extends PIDCommand {
     super(
         // The controller that the command will use
         new PIDController(kLimelightAlignP, kLimelightAlignI, kLimelightAlignD),
-        // This should return the measurement
+        // This should return the measurement (Angle offset on the X-axis of the camera)
         () -> limesub.getXOffset(),
         // This should return the setpoint (can also be a constant)
         () -> 0,
         // This uses the output
         output -> {
-          // Use the output here
-
           /**
-           * If a target is detected when the command is called the robot will align itself to the target. If no target is found it will spin at a fixed speed until one comes into range
+           * If a target is detected when the command is called the robot will align
+           * itself to the target using arcade drive. If no target is found it will spin
+           * at a fixed speed until one comes into range
            */
           if (limesub.isTargetDetected()) {
             drivesub.arcadeDrive(0, -output, true);
-          }else {
+          } else {
             drivesub.arcadeDrive(0, steeringAdjust, true);
           }
         });
 
-        m_limelight = limesub;  
-        m_drivetrain = drivesub;
-        
-        // Sends a PID table to the SmartDashboard
+    // Sends a PID table to the SmartDashboard
         SmartDashboard.putData("AlignmentPID", getController());
-
     // Use addRequirements() here to declare subsystem dependencies.
+        addRequirements(limesub, drivesub);
     // Configure additional PID options by calling `getController` here.
-    
         getController().setTolerance(kLimelightAlignTolerance);
   }
 
-  // Returns true when the command should end.
+  // Returns true when the target is within the angle tolerance
   @Override
   public boolean isFinished() {
-    return false;
+    return getController().atSetpoint();
   }
 }
