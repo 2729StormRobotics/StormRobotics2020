@@ -214,6 +214,7 @@ public final class Constants {
         public static final double kLimelightAlignD = 0.0;
         public static final double kLimelightTolernce = 5.0;
         public static final double kLimelightAlignTolerance = 1.5;
+        public static final double kSteeringAdjust = 0.25;
 
         // Distance PID constants for LimeLight
         public static final double kLimelightDistanceP = 1.0;
