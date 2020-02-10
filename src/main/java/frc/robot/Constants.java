@@ -98,12 +98,12 @@ public final class Constants {
         public static final boolean kInvertRightLauncher = !kInvertLeftLauncher;
 
         // the PID values needed to launch with PID
-        public static final double kP = 0;
-        public static final double kI = 0;
-        public static final double kD = 0;
-        public static final double kF = 0;
-        public static final double kMinOutput = 0;
-        public static final double kMaxOutput = 0;
+        public static final double kP = 0; // TODO: test and update this value
+        public static final double kI = 0; // TODO: test and update this value
+        public static final double kD = 0; // TODO: test and update this value
+        public static final double kF = 0; // TODO: test and update this value
+        public static final double kMinOutput = 0; // TODO: test and update this value
+        public static final double kMaxOutput = 0; // TODO: test and update this value
 
     }
 
