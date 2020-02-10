@@ -12,6 +12,9 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.LauncherConstants.*;
@@ -24,13 +27,15 @@ public class Launcher extends SubsystemBase {
   private final CANEncoder m_leftEncoder;
   private final CANEncoder m_rightEncoder;
 
+  private final DoubleSolenoid pistonAdjustment;
+
   /**
    * Creates a new Launcher.
    */
   public Launcher() {
 
     //solenoid port
-    pistonAdjustment = new DoubleSolenoid(LauncherConstants.kLeftLauncherMotorPort, LauncherConstants.kRightLauncherMotorPort);
+    pistonAdjustment = new DoubleSolenoid(kLeftLauncherMotorPort, kRightLauncherMotorPort);
 
     // Instantiate the motors.
     m_leftLauncher = new CANSparkMax(kLeftLauncherMotorPort, MotorType.kBrushless);
@@ -67,6 +72,12 @@ public class Launcher extends SubsystemBase {
   private void pistonInit() {
     pistonPush(false);
   }
+
+  //extends pistons if true
+  private void pistonPush(boolean out) {
+    pistonAdjustment.set(out ? Value.kForward : Value.kReverse);
+  }
+
 
   /**
    * Initialize an encoder.
