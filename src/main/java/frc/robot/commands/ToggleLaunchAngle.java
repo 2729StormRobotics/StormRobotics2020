@@ -8,22 +8,26 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Launcher;
 
 public class ToggleLaunchAngle extends CommandBase {
-  private final Launcher m_launch;
+  private final Launcher m_launchAngle;
   
   /**
    * Creates a new ToggleLaunchAngle.
    */
-  public ToggleLaunchAngle() {
-    // 
+  public ToggleLaunchAngle(Launcher angle) {
+    // Set launcher subsystem equal to command parameter
+    m_launchAngle = angle;
     
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(m_launchAngle);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    m_launchAngle.toggleLaunchDistance();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

@@ -27,6 +27,8 @@ public class Launcher extends SubsystemBase {
   private final CANEncoder m_leftEncoder;
   private final CANEncoder m_rightEncoder;
 
+  private final DoubleSolenoid m_launchAnglePiston;
+
   /**
    * Creates a new Launcher.
    */
@@ -39,9 +41,12 @@ public class Launcher extends SubsystemBase {
     m_leftEncoder = m_leftLauncher.getEncoder();
     m_rightEncoder = m_rightLauncher.getEncoder();
 
-    // Initialize the the motors.
+    // Initialize the motors.
     motorInit(m_leftLauncher, kInvertLeftLauncher);
     motorInit(m_rightLauncher, kInvertRightLauncher);
+
+    // Initialize the pistons that will shift the launcher angle
+    m_launchAnglePiston = new DoubleSolenoid(kLongLaunchSolenoidPort, kShortLaunchSolenoidPort);
 
   }
 
@@ -96,6 +101,31 @@ public class Launcher extends SubsystemBase {
   // get average speed of left and right launchers
   public double getLauncherAvgSpeed() {
     return ((getLeftLauncherSpeed() + getRightLauncherSpeed()) / 2.0);
+  }
+
+  // raise launcher to higher angle launch, good for short distance launch
+  public void goToShortDistanceLaunch() {
+    m_launchAnglePiston.set(Value.kReverse);
+  }
+
+  // raise launcher to higher angle launch, good for short distance launch
+  public void goToLongDistanceLaunch() {
+    m_launchAnglePiston.set(Value.kForward);
+  }
+
+  /*
+   * gets the position of the launch pistons if it is lowered, then it will raise
+   * the intake and vice versa
+   **/
+  public void toggleLaunchDistance() {
+    Value launchState = m_launchAnglePiston.get();
+    if (launchState == Value.kForward) {
+      // Raise the launcher through the pistons
+      goToShortDistanceLaunch();
+    } else {
+      // Lower the launcher through the pistons
+      goToLongDistanceLaunch();
+    }
   }
 
   // add info to the dashboard
