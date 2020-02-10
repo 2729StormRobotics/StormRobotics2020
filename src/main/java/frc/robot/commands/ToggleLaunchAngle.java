@@ -12,14 +12,15 @@ import frc.robot.subsystems.Launcher;
 
 public class ToggleLaunchAngle extends CommandBase {
   private final Launcher m_launchAngle;
+  private final boolean m_isExtended;
   
   /**
    * Creates a new ToggleLaunchAngle.
    */
-  public ToggleLaunchAngle(Launcher angle, Boolean extended) {
+  public ToggleLaunchAngle(Boolean extended, Launcher launcher) {
     // Set launcher subsystem equal to command parameter
-    m_launchAngle = angle;
-    isExtended = extended;
+    m_launchAngle = launcher;
+    m_isExtended = extended;
     
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_launchAngle);
@@ -28,7 +29,7 @@ public class ToggleLaunchAngle extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_launchAngle.launchPistonPush(isExtended);
+    m_launchAngle.launchPistonPush(m_isExtended);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
