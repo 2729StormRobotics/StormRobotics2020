@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.DriveConstants;
+import static frc.robot.Constants.DriveConstants.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.Solenoid;
 
@@ -33,10 +33,9 @@ public class Drivetrain extends SubsystemBase {
   private final SpeedControllerGroup m_leftMotors;
   private final SpeedControllerGroup m_rightMotors;
 
-  private final DifferentialDrive m_Drive;
+  private final DifferentialDrive m_drive;
 
   // Creates variables for encoders
-
   private final CANEncoder m_leftMotorEncoder1;
   private final CANEncoder m_leftMotorEncoder2;
   private final CANEncoder m_rightMotorEncoder1;
@@ -50,25 +49,26 @@ public class Drivetrain extends SubsystemBase {
   private String m_driveType = "Tank"; // adds a String object to store the drive type in
   SendableChooser<String> m_chooser = new SendableChooser<>();
 
-  private final Solenoid gearShift;
+  private final Solenoid m_gearShift;
 
   // Creates a new Drivetrain.
   public Drivetrain() {
 
     // Sets variables equal to their ports and types
-    m_leftMotor1 = new CANSparkMax(DriveConstants.kLeftDriveMotor1Port, MotorType.kBrushless);
-    m_leftMotor2 = new CANSparkMax(DriveConstants.kLeftDriveMotor2Port, MotorType.kBrushless);
-    m_rightMotor1 = new CANSparkMax(DriveConstants.kRightDriveMotor1Port, MotorType.kBrushless);
-    m_rightMotor2 = new CANSparkMax(DriveConstants.kRightDriveMotor2Port, MotorType.kBrushless);
+    m_leftMotor1 = new CANSparkMax(kLeftDriveMotor1Port, MotorType.kBrushless);
+    m_leftMotor2 = new CANSparkMax(kLeftDriveMotor2Port, MotorType.kBrushless);
+    m_rightMotor1 = new CANSparkMax(kRightDriveMotor1Port, MotorType.kBrushless);
+    m_rightMotor2 = new CANSparkMax(kRightDriveMotor2Port, MotorType.kBrushless);
 
-    motorInit(m_rightMotor1, DriveConstants.kRightEncoderInverted);
-    motorInit(m_rightMotor2, DriveConstants.kRightEncoderInverted);
-    motorInit(m_leftMotor1, DriveConstants.kLeftEncoderInverted);
-    motorInit(m_leftMotor2, DriveConstants.kLeftEncoderInverted);
+    motorInit(m_rightMotor1, kRightSideInverted);
+    motorInit(m_rightMotor2, kRightSideInverted);
+    motorInit(m_leftMotor1, kLeftSideInverted);
+    motorInit(m_leftMotor2, kLeftSideInverted);
+
     m_leftMotors = new SpeedControllerGroup(m_leftMotor1, m_leftMotor2);
     m_rightMotors = new SpeedControllerGroup(m_rightMotor1, m_rightMotor2);
 
-    m_Drive = new DifferentialDrive(m_leftMotors, m_rightMotors);
+    m_drive = new DifferentialDrive(m_leftMotors, m_rightMotors);
 
     // adds options to the drive type
     m_chooser.addOption("Tank Drive", "Tank");
@@ -83,20 +83,34 @@ public class Drivetrain extends SubsystemBase {
     // Instantiate the gyro.
     m_imu = new ADIS16470_IMU();
 
-    gearShift = new Solenoid(DriveConstants.kDriveSolenoid);
+    m_gearShift = new Solenoid(kDriveSolenoid);
 
     addChild("Left Motors", m_leftMotors);
     addChild("Right Motors", m_rightMotors);
-    addChild("Drivetrain", m_Drive);
-    addChild("Shift Gears", gearShift);
+    addChild("Drivetrain", m_drive);
+    addChild("Shift Gears", m_gearShift);
     addChild("Gyro", m_imu);
-
   }
 
-  private void encoderInit(CANEncoder encoder) {
+  private void motorInit(CANSparkMax motor, boolean invert) {
+    motor.restoreFactoryDefaults(); // Resets settings in motor in case they are changed
+    motor.setIdleMode(IdleMode.kBrake); // Sets the motors to brake mode from the beginning
+    motor.setSmartCurrentLimit(kDrivetrainCurrentLimit);
+    motor.setInverted(invert);
+
+    encoderInit(motor.getEncoder(), m_lowGear); // Initializes encoder within motor
+  }
+
+  private void encoderInit(CANEncoder encoder, boolean lowGear) {
     // Converts the input into desired value for distance and velocity
-    encoder.setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);
-    encoder.setVelocityConversionFactor(DriveConstants.kEncoderSpeedPerPulse);
+    if (lowGear) {
+      encoder.setPositionConversionFactor(kLowGearDistancePerPulse);
+      encoder.setVelocityConversionFactor(kLowGearSpeedPerPulse);
+    }
+    else {
+      encoder.setPositionConversionFactor(kHighGearDistancePerPulse);
+      encoder.setVelocityConversionFactor(kHighGearSpeedPerPulse);
+    }
     encoderReset(encoder);
   }
 
@@ -129,15 +143,6 @@ public class Drivetrain extends SubsystemBase {
     m_imu.reset();
   }
 
-  private void motorInit(CANSparkMax motor, boolean invert) {
-    motor.restoreFactoryDefaults(); // Resets settings in motor in case they are changed
-    motor.setIdleMode(IdleMode.kBrake); // Sets the motors to brake mode from the beginning
-    motor.setSmartCurrentLimit(DriveConstants.kDrivetrainCurrentLimit);
-    motor.setInverted(invert);
-
-    encoderInit(motor.getEncoder()); // Initializes encoder within motor
-  }
-
   // Gets left side distance by averaging left encoders
   private double getLeftEncoderAverage() {
     return (m_leftMotorEncoder1.getPosition() + m_leftMotorEncoder2.getPosition()) / 2.0;
@@ -156,34 +161,43 @@ public class Drivetrain extends SubsystemBase {
   // Drives the motor using tank drive
   // Change the squareInputs if needed
   public void tankDrive(double leftPower, double rightPower, boolean squareInputs) {
-    m_Drive.tankDrive(leftPower, rightPower);
+    m_drive.tankDrive(leftPower, rightPower, squareInputs);
   }
 
   // Drives the motors using arcade drive
   public void arcadeDrive(double speed, double turn, boolean squareInputs) {
-    m_Drive.arcadeDrive(speed, turn, true);
+    m_drive.arcadeDrive(speed, turn, squareInputs);
   }
 
   // Drives the motor using trigger drive
   public void triggerDrive(double reverse, double forward, double turn, boolean squareInputs) {
-    m_Drive.arcadeDrive(forward - reverse, turn);
+    m_drive.arcadeDrive(forward - reverse, turn, squareInputs);
   }
 
   // sets motor values to zero to stop
   public void stopDrive() {
-    m_Drive.tankDrive(0, 0);
+    m_drive.tankDrive(0, 0);
   }
 
-  // all motors go at half speed when shiftLow is activated
+  // Activate the shifting pistons to shift into low gear
   public void shiftLow() {
-    m_Drive.setMaxOutput(0.5);
     m_lowGear = true;
+    shiftGears();
   }
 
-  // all motors go at full speed when shiftHigh is activated
+  // Deactivate the shifting positions to shift into high gear
   public void shiftHigh() {
-    m_Drive.setMaxOutput(1.0);
     m_lowGear = false;
+    shiftGears();
+  }
+
+  // Method to handle updating the pistons and encoder conversions
+  private void shiftGears() {
+    m_gearShift.set(m_lowGear);
+    encoderInit(m_leftMotorEncoder1, m_lowGear);
+    encoderInit(m_leftMotorEncoder2, m_lowGear);
+    encoderInit(m_rightMotorEncoder1, m_lowGear);
+    encoderInit(m_rightMotorEncoder2, m_lowGear);
   }
 
   // gets the speed from the left motors
@@ -202,7 +216,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   /**
-   * Get the angle of the robot.
+   * Get the orientation of the robot.
    * 
    * @return The angle that the robot is facing in degrees.
    */
