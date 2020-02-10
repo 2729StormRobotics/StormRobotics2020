@@ -27,7 +27,7 @@ public class Launcher extends SubsystemBase {
   private final CANEncoder m_leftEncoder;
   private final CANEncoder m_rightEncoder;
 
-  private final DoubleSolenoid pistonAdjustment;
+  private final DoubleSolenoid m_pistonAdjustment;
 
   /**
    * Creates a new Launcher.
@@ -35,7 +35,7 @@ public class Launcher extends SubsystemBase {
   public Launcher() {
 
     //solenoid port
-    pistonAdjustment = new DoubleSolenoid(kLeftLauncherMotorPort, kRightLauncherMotorPort);
+    m_pistonAdjustment = new DoubleSolenoid(kLeftLauncherMotorPort, kRightLauncherMotorPort);
 
     // Instantiate the motors.
     m_leftLauncher = new CANSparkMax(kLeftLauncherMotorPort, MotorType.kBrushless);
@@ -75,7 +75,7 @@ public class Launcher extends SubsystemBase {
 
   //extends pistons if true
   private void pistonPush(boolean out) {
-    pistonAdjustment.set(out ? Value.kForward : Value.kReverse);
+    m_pistonAdjustment.set(out ? Value.kForward : Value.kReverse);
   }
 
 
