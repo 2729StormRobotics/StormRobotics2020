@@ -40,7 +40,7 @@ public class LimelightAlign extends PIDCommand {
            * at a fixed speed until one comes into range
            */
           if (limesub.isTargetDetected()) {
-            drivesub.arcadeDrive(0, -output, true);
+            drivesub.arcadeDrive(0, output, true);
           } else {
             drivesub.arcadeDrive(0, steeringAdjust, true);
           }
