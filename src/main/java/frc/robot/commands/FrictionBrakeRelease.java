@@ -8,26 +8,23 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Climbers;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class MoveIntakePistons extends InstantCommand {
+public class FrictionBrakeRelease extends InstantCommand {
+  private final Climbers m_climbers;
 
-  // uses the intake subsystem for the command to run
-  private final Intake m_intake;
+  public FrictionBrakeRelease(Climbers subsystem) {
+    m_climbers = subsystem;
 
-  public MoveIntakePistons(Intake intake) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    m_intake = intake; // sets the command parameter equal to the intake subsystem
-    addRequirements(m_intake); // adds the intake subsystem as a requirement for this command to run
+    addRequirements(m_climbers);
   }
 
-  // Called when the command is initially scheduled.
-  // when it is initailized it will run the method that toggles between raising and lowering the intake
+
   @Override
   public void initialize() {
-    m_intake.toggleIntakePistons();
+    m_climbers.engageFrictionBrake(true);
   }
 }
