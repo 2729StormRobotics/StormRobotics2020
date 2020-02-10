@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.CellevatorConstants;
 import frc.robot.subsystems.Cellevator;
 
 public class CellevatorHolder extends CommandBase {
@@ -34,42 +35,6 @@ public class CellevatorHolder extends CommandBase {
   @Override
   public void initialize() {
     
-    if (m_cellevator.isBottomBallPresent() && m_cellevator.isMiddleBallPresent() && m_cellevator.isTopBallPresent()) {
-      // if the cellevator is empty, then do not move the motor
-      runHolderMotor = false;
-    }
-    else if (m_cellevator.isBottomBallPresent() && !m_cellevator.isMiddleBallPresent() && !m_cellevator.isTopBallPresent()) {
-      // if there is a power cell in the bottom and nowhere else, move it to the middle
-      runHolderMotor = true;
-      runUntil = true;
-    }
-    else if (!m_cellevator.isBottomBallPresent() && m_cellevator.isMiddleBallPresent() && !m_cellevator.isTopBallPresent()) {
-      // if there is a power cell in the middle and nowhere else, do not move the motor
-      runHolderMotor = false;
-    }
-    else if(m_cellevator.isBottomBallPresent() && m_cellevator.isMiddleBallPresent() && !m_cellevator.isTopBallPresent()) {
-      // if there is a power cell in the bottom and the middle, move them both to the top
-      runHolderMotor = true;
-      runUntil = false;
-    }
-    else if (!m_cellevator.isBottomBallPresent() && m_cellevator.isMiddleBallPresent() && m_cellevator.isTopBallPresent()) {
-      // if there is a power cell in the middle and the top, do not move the motor
-      runHolderMotor = false;
-    }
-    else if (m_cellevator.isBottomBallPresent() && m_cellevator.isMiddleBallPresent() && m_cellevator.isTopBallPresent()) {
-      // if the cellevator is full, then do not run the motor
-      runHolderMotor = false;
-    }
-    else if (!m_cellevator.isBottomBallPresent() && !m_cellevator.isMiddleBallPresent() && m_cellevator.isTopBallPresent()) {
-      // if there is only a power cell at the top, then do not move the motor
-      // this will probably never happen but may occur if launching stops in the middle of the cycle
-      runHolderMotor = false;
-    }
-    else if (m_cellevator.isBottomBallPresent() && !m_cellevator.isMiddleBallPresent() && m_cellevator.isTopBallPresent()) {
-      // if there is a power cell at the top and the bottom, then do not run the motor
-      // this should never happen during normal operation, it is only for safety
-      runHolderMotor = false;
-    }
   }
 
 /**
