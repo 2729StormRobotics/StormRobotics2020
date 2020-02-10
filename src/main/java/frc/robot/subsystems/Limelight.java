@@ -34,7 +34,7 @@ public class Limelight extends SubsystemBase {
     // Gets the network table for the limelight
     m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
 
-    // Reset the default settings and piplines to the Limelight
+    // Reset the default settings and pipelines to the Limelight
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
   }
 
