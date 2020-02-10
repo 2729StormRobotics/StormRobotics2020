@@ -12,13 +12,13 @@ import frc.robot.subsystems.Climbers;
 
 
 public class FrictionBrakeRelease extends InstantCommand {
-
+  //This command uses the Climbers subsystem
   private final Climbers m_climbers;
 
   public FrictionBrakeRelease(Climbers subsystem) {
-    m_climbers = subsystem;
+    m_climbers = subsystem; //the parqameter is equal to the climbers subsystem
 
-    addRequirements(m_climbers);
+    addRequirements(m_climbers); //adds the subsystem as a requirement for the command to run
   }
 
 
