@@ -27,6 +27,7 @@ public class Launcher extends SubsystemBase {
   private final CANEncoder m_leftEncoder;
   private final CANEncoder m_rightEncoder;
 
+  // Made change
   private final DoubleSolenoid m_launchAnglePiston;
 
   /**
@@ -46,6 +47,7 @@ public class Launcher extends SubsystemBase {
     motorInit(m_rightLauncher, kInvertRightLauncher);
 
     // Initialize the pistons that will shift the launcher angle
+    // Made change
     m_launchAnglePiston = new DoubleSolenoid(kLongLaunchSolenoidPort, kShortLaunchSolenoidPort);
 
   }
