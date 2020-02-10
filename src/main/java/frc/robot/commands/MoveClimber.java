@@ -9,18 +9,15 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climbers;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import static frc.robot.Constants.ClimberConstants.*;
 public class MoveClimber extends CommandBase {
+  private final Climbers m_climbers;  //declares climber
+  private final double m_speed;     //declares a speed variable
 
-private final Climbers m_climbers;  
-  private final double m_speed; 
   public MoveClimber(double speed, Climbers climbers) {
-    m_speed = speed;
-    m_climbers = climbers;
-    addRequirements(m_climbers);
+    m_speed = speed;            //initializing speed
+    m_climbers = climbers;     //initailizing climber
+    addRequirements(m_climbers);      //it requires the climber subsystem to run the command
   }
 
   // Called when the command is initially scheduled.
@@ -31,11 +28,7 @@ private final Climbers m_climbers;
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_climbers.climb(m_speed);
-
-
-  
-
+    m_climbers.climb(m_speed);  //moves the climber using the speed
 
   }
 
@@ -43,13 +36,12 @@ private final Climbers m_climbers;
   @Override
   public void end(boolean interrupted) {
     
-
-    m_climbers.stopMotor();
+    m_climbers.stopMotor(); //when the command is finished the motors stop
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return false;   //false because it is a default command
   }
 }
