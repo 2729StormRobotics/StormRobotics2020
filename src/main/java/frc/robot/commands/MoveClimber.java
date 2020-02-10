@@ -36,7 +36,7 @@ public class MoveClimber extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     
-    m_climbers.stopMotor(); //when the command is finished the motors stop
+    m_climbers.stopClimb(); //when the command is finished the motors stop
   }
 
   // Returns true when the command should end.
