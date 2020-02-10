@@ -33,35 +33,11 @@ public class Climbers extends SubsystemBase {
   /**
    * Creates a new Climbers subsystem.
    */
-<<<<<<< HEAD
   private Climbers() {
-=======
-  public Climbers() {
+
     m_leftClimber = new CANSparkMax(kLeftClimberMotorPort, MotorType.kBrushless);
     m_rightClimber = new CANSparkMax(kRightClimberMotorPort, MotorType.kBrushless);
-<<<<<<< HEAD
->>>>>>> 2ff813a9f863b0d4c97a8c3ea607076c4fcf04c1
 
-    m_frictionBrake = new Solenoid(kFrictionSolenoidPort);
-
-    motorInit(m_leftClimber, kLeftClimberMotorInverted);
-    motorInit(m_rightClimber, kRightClimberMotorInverted);
-
-    m_climberMotors = new SpeedControllerGroup(m_leftClimber, m_rightClimber);
-
-<<<<<<< HEAD
-
-
-
-@Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-    log(); //Log on periodic
-=======
-    m_leftEncoder = m_leftClimber.getEncoder();
-    m_rightEncoder = m_rightClimber.getEncoder();
->>>>>>> 2ff813a9f863b0d4c97a8c3ea607076c4fcf04c1
-=======
 
     m_frictionBrake = new Solenoid(kFrictionSolenoidPort);
 
@@ -72,7 +48,6 @@ public class Climbers extends SubsystemBase {
 
     m_leftEncoder = m_leftClimber.getEncoder();
     m_rightEncoder = m_rightClimber.getEncoder();
->>>>>>> 2ff813a9f863b0d4c97a8c3ea607076c4fcf04c1
   }
 
   private void motorInit(CANSparkMax motor, boolean invert) {
