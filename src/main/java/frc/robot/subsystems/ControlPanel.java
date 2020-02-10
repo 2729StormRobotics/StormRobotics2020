@@ -11,7 +11,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.ControlPanelConstants;
+import static frc.robot.Constants.ControlPanelConstants.*;
 import edu.wpi.first.wpilibj.util.Color;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
@@ -20,113 +20,101 @@ import edu.wpi.first.wpilibj.I2C;
 
 public class ControlPanel extends SubsystemBase {
 
-  private final WPI_TalonSRX m_controlPanelMotor = new WPI_TalonSRX(ControlPanelConstants.kSpinnerMotorPort);
-  private final ColorMatch m_colorMatch = new ColorMatch();
-  private final I2C.Port i2cPort = I2C.Port.kOnboard;
-  private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
+  private final WPI_TalonSRX m_controlPanelMotor;
+  private final ColorMatch m_colorMatch;
+  private final ColorSensorV3 m_colorSensor;
 
-     String color;
-     int count = 0;
-     String colorString;
+  private String color;
+  private int count = 0;
+  private String colorString;
 
   /**
    * Creates a new ControlPanel.
    */
   public ControlPanel() {
-
+    m_controlPanelMotor = new WPI_TalonSRX(kSpinnerMotorPort);
     m_controlPanelMotor.configFactoryDefault();
-    addChild("Control Panel Motor", m_controlPanelMotor);  
 
+    m_colorSensor = new ColorSensorV3(I2C.Port.kOnboard);
+
+    m_colorMatch = new ColorMatch();
+    m_colorMatch.setConfidenceThreshold(kConfidence);
+
+    addChild("Control Panel Motor", m_controlPanelMotor);
   }
 
-  // starts the control panel motors
-  public void startMotors(double speed) {
-
+  // Spins the control panel
+  public void spinMotor(double speed) {
     m_controlPanelMotor.set(speed);
-
-  }
- 
-  // sets RBG values for each color target
-  // still need to add color target constants 
-  public void getRBGValues() { 
-    // private final Color kRedTarget = ColorMatch.makeColor(0.476, 0.376, 0.15);
-    // private final Color kYellowTarget = ColorMatch.makeColor(0.381, 0.545, 0.136);
-    // private final Color kGreenTarget = ColorMatch.makeColor(0.18, 0.568, 0.249);
-    // private final Color kBlueTarget = ColorMatch.makeColor(0.15, 0.4467, 0.40);
   }
 
   // displays the color based on RBG values
-  public void getColorSensorValue() {
-
+  private void detectColor() {
     Color detectedColor = m_colorSensor.getColor();
-    ColorMatchResult match = m_colorMatch.matchClosestColor(detectedColor);
+    ColorMatchResult match = m_colorMatch.matchColor(detectedColor);
 
-    if (match.color == ControlPanelConstants.kRedTarget) {
+    if (match.color == kRedTarget) {
       color = "Red";
       colorString = "Red";
-    } else if (match.color == ControlPanelConstants.kYellowTarget) {
+    } else if (match.color == kYellowTarget) {
       color = "Yellow";
-    } else if (match.color == ControlPanelConstants.kGreenTarget) {
+    } else if (match.color == kGreenTarget) {
       color = "Green";
-    } else if (match.color == ControlPanelConstants.kBlueTarget) {
+    } else if (match.color == kBlueTarget) {
       color = "Blue";
       colorString = "Blue";
     } else {
       color = "Unknown";
     }
-
   }
-  public int colorCount(){
+
+  public int colorCount() {
     String lastColor = color;
-    
-    //Counts how many times red and blue have passed 
-    if (lastColor == "Red" && colorString == "Blue" || lastColor == "Blue" && colorString == "Red"){
+
+    // Counts how many times red and blue have passed
+    if (lastColor == "Red" && colorString == "Blue" || lastColor == "Blue" && colorString == "Red") {
       count++;
       lastColor = colorString;
+    } else if (lastColor == "" && (colorString == "Blue" || colorString == "Red")) {
+      lastColor = colorString;
     }
-      else if (lastColor == "" && (colorString == "Blue" || colorString =="Red")){
-        lastColor = colorString; 
-      }
-      return count;
+    return count;
+  }
+
+  // checks to see if wheel has passed 8 times
+  public boolean isSpun() {
+    Boolean spun = false;
+    if (colorCount() >= 8) {
+      spun = true;
     }
-
-//checks to see if wheel has passed 8 times    
-public boolean isSpun(){
-  Boolean spun= false;
-  if (colorCount() >= 8){
-    spun = true;
-  }
-  return spun;
-}
-
-//Controls motor speed 
-public void wheelMotorPower(){
-  if (isSpun() == false){
-    startMotors(.4);
-  }
-  else if (isSpun() == true){
-    startMotors(.18);
+    return spun;
   }
 
-}
-//stops motor after Red & Blue is passed 8 times
-public void wheelStop(){
-  if (isSpun() == true && colorCount() >=8){
-    stopSpinning();
+  // Controls motor speed
+  public void wheelMotorPower() {
+    if (isSpun() == false) {
+      spinMotor(.4); // TODO Determine ideal speeds, then add to constants
+    } else if (isSpun() == true) {
+      spinMotor(.18); // TODO Determine ideal speeds, then add to constants
+    }
   }
-}
+
+  // stops motor after Red & Blue is passed 8 times
+  public void wheelStop() {
+    if (isSpun() == true && colorCount() >= 8) {
+      stopSpinning();
+    }
+  }
+
   // stops the color panel motor
   public void stopSpinning() {
-
-    m_controlPanelMotor.set(0);
-
+    spinMotor(0.0);
   }
 
   // displays data onto SmartDashboard
   public void updateColor() {
-
-    SmartDashboard.putString("Color", color);
-
+    detectColor();
+    SmartDashboard.putString("Current Color", color);
   }
 
   @Override
