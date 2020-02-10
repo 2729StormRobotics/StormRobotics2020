@@ -41,7 +41,7 @@ public class LimelightAlign extends PIDCommand {
           if (limesub.isTargetDetected()) {
             drivesub.arcadeDrive(0, output, true);
           } else {
-            drivesub.arcadeDrive(0, steeringAdjust, true);
+            drivesub.arcadeDrive(0, ksteeringAdjust, true);
           }
         });
 
