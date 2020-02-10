@@ -84,6 +84,14 @@ public class Cellevator extends SubsystemBase {
   }
 
   /**
+   * returns the value of the beam break value before the current value
+   * @return
+   */
+  public boolean getBeamBreakMiddlePrevious() {
+    return previousBBMiddle;
+  }
+  
+  /**
    * Stops the holder motor
    */
   public void stopHolderMotor() {
