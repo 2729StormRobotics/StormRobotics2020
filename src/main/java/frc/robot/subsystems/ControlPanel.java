@@ -118,9 +118,9 @@ public void setTargetColor(){
 }
   
 public void findTargetColor(){
-  startMotors(.18);
+  spinMotor(.18);
   if (color.equals(targetColor))
-    startMotors(0);
+    spinMotor(0);
 }
 
   // checks to see if wheel has passed 8 times
