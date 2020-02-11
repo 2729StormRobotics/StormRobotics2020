@@ -23,6 +23,7 @@ public class Cellevator extends SubsystemBase {
   private final DigitalInput m_beamBreakMiddle;
   private int powerCellCount;
   private boolean previousBBMiddle;
+  private boolean previousBBBottom;
 
   /**
    * Creates a new Cellevator subsystem
@@ -35,6 +36,7 @@ public class Cellevator extends SubsystemBase {
     m_beamBreakMiddle = new DigitalInput(kBeamBreakMiddlePort);
     powerCellCount = 0;
     previousBBMiddle = false;
+    previousBBBottom = false;
 
     // intializes the motors
     motorInit(m_holderMotor, kHolderMotorInverted);
@@ -78,19 +80,29 @@ public class Cellevator extends SubsystemBase {
   /**
    * Gets the beam break value to see if there is a power cell present at the
    * bottom of the cellavator
+   * sets the previous boolean value so that it is stored when the method is called the next time
    */
   public boolean isBottomBallPresent() {
+    previousBBBottom = m_beamBreakMiddle.get();
     return m_beamBreakBottom.get();
   }
 
   /**
-   * returns the value of the beam break value before the current value
+   * returns the value of the beam break middle value before the current value
    * @return
    */
   public boolean getBeamBreakMiddlePrevious() {
     return previousBBMiddle;
   }
   
+  /**
+   * returns the value of the beam break bottom value before the current value
+   * @return
+   */
+  public boolean getBeamBreakBottomPrevious() {
+    return previousBBBottom;
+  }
+
   /**
    * Stops the holder motor
    */
