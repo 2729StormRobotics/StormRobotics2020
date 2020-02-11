@@ -30,15 +30,15 @@ public class Launcher extends SubsystemBase {
 
   private final CANPIDController m_pidController;
 
-  private final DoubleSolenoid m_pistonAdjustment;
+  private final DoubleSolenoid m_launchPiston;
 
   /**
    * Creates a new Launcher.
    */
   public Launcher() {
 
-    //solenoid port
-    m_pistonAdjustment = new DoubleSolenoid(kLeftLauncherMotorPort, kRightLauncherMotorPort);
+    // Instantiate the double solenoid for the launch pistons.
+    m_launchPiston = new DoubleSolenoid(kLeftLauncherMotorPort, kRightLauncherMotorPort);
 
     // Instantiate the motors.
     m_leftLauncher = new CANSparkMax(kLeftLauncherMotorPort, MotorType.kBrushless);
@@ -79,7 +79,7 @@ public class Launcher extends SubsystemBase {
     // Set the integral zone. This value is the maximum |error| for the integral gain to take effect.
     m_pidController.setIZone(LaunchPID.kIz);
     // Set the feed-forward constant.
-    m_pidController.setFF(LaunchPID.kFF);
+    m_pidController.setFF(LaunchPID.kF);
     // Set the output range.
     m_pidController.setOutputRange(LaunchPID.kMinOutput, LaunchPID.kMaxOutput);
   }
@@ -97,14 +97,20 @@ public class Launcher extends SubsystemBase {
     encoderInit(motor.getEncoder());
   }
  
-  //set pistons to default retracted position
+  /**
+   * Set the pistons to be retracted initially.
+   */
   private void pistonInit() {
     setLaunchPiston(false);
   }
 
-  //extends pistons if true
+  /**
+   * Set the launch pistons to be extended or retracted.
+   * 
+   * @param out Extend pistons if true, retract if false.
+   */
   public void setLaunchPiston(boolean out) {
-    m_pistonAdjustment.set(out ? Value.kForward : Value.kReverse);
+    m_launchPiston.set(out ? Value.kForward : Value.kReverse);
   }
 
 
@@ -126,18 +132,23 @@ public class Launcher extends SubsystemBase {
     encoder.setPosition(0);
   }
 
-  // sets speed of launcher motors to 0
+  /**
+   * Stop the launcher motors.
+   */
   public void stopMotors() {
     m_leftLauncher.set(0);
   }
 
-  // get left launcher speed in RPM
-  private double getLeftLauncherSpeed() {
+  /**
+   * Get the speed of the left motor in RPM (check if actually RPM or ticks / second)
+   * @return
+   */
+  public double getLeftLauncherSpeed() {
     return m_leftEncoder.getVelocity();
   }
 
   // get right launcher speed in RPM
-  private double getRightLauncherSpeed() {
+  public double getRightLauncherSpeed() {
     return m_rightEncoder.getVelocity();
   }
 
