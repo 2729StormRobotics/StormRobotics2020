@@ -27,8 +27,6 @@ public class Limelight extends SubsystemBase {
   private double targetArea; // Returns a value of the percentage of the image the target takes
   private double targetValue; // Sends 1 if a target is detected, 0 if none are present
 
-  private int pipeline; // Used to identify which pipline the limelight uses (0-9)
-
   // Create a network table for the limelight
   private final NetworkTable m_limelightTable;
 
@@ -36,8 +34,8 @@ public class Limelight extends SubsystemBase {
     // Gets the network table for the limelight
     m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
 
-    // Reset the default settings and pipleines to the Limelight
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(1);
+    // Reset the default settings and pipelines to the Limelight
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
   }
 
   /**
