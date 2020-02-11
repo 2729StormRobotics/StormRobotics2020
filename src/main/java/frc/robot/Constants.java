@@ -31,8 +31,8 @@ public final class Constants {
         public static final double kWheelDiameter = 6; // Inches
 
         // Gearing for calculations, given in output turns per motor turn
-        private static final double kHighGear = 14/58 * 18/38 * 32/34;
-        private static final double kLowGear = 14/58 * 18/38 * 22/44;
+        private static final double kHighGear = 14.0/58.0 * 18.0/38.0 * 32.0/34.0;
+        private static final double kLowGear = 14.0/58.0 * 18.0/38.0 * 22.0/44.0;
 
         // Conversions to calculate inches per encoder pulse in high gear
         public static final double kHighGearDistancePerPulse = Math.PI * kWheelDiameter * kHighGear;
@@ -73,7 +73,7 @@ public final class Constants {
         // Drive Distance constants
         public static final class DriveDistancePID {
             // Our PID values for PointTurn
-            public static final double kP = 0.0; // TODO: Test and update this value.
+            public static final double kP = 0.0; // TODO: Test and update this value
             public static final double kI = 0.0; // TODO: Test and update this value.
             public static final double kD = 0.0; // TODO: Test and update this value.
 
@@ -139,7 +139,12 @@ public final class Constants {
 
         // Define the current limit for the celevator motors
         public static final int kCellevatorCurrentLimit = 45;
-    }
+
+        // the constant speed for the holder motor
+        public static final double kHolderMotorSpeed = 0.5; // TODO: test and update value
+        
+        //speed for the loader Motor
+        public static final double kLoaderMotorSpeed = 0.5; //TODO: test and update value
 
     public static final class ControlPanelConstants {
         // Motor for the wheel that spins the control panal
@@ -177,7 +182,7 @@ public final class Constants {
 
     public static final class ClimberConstants {
         // Gearing for calculations, given in output turns per motor turn
-        private static final double kGearing = 10/58 * 16/60;
+        private static final double kGearing = 10.0/58.0 * 16.0/60.0;
 
         // Conversion for distance and speed per encoder pulse, given in inches
         public static final double kEncoderDistancePerPulse = 0; // ADD CONVERSION
@@ -223,4 +228,6 @@ public final class Constants {
         public static final double kLimelightDistance = 50.0;
         public static final double kLimelightDistanceTolerance = 5.0;
     }
+    }
 }
+
