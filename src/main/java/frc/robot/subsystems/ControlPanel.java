@@ -17,6 +17,7 @@ import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.ColorMatch;
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.DriverStation;
 
 public class ControlPanel extends SubsystemBase {
 
@@ -24,6 +25,8 @@ public class ControlPanel extends SubsystemBase {
   private final ColorMatch m_colorMatch;
   private final ColorSensorV3 m_colorSensor;
 
+  private String gameData;
+  private String targetColor;
   private String color;
   private int count = 0;
   private String colorString;
@@ -69,17 +72,54 @@ public class ControlPanel extends SubsystemBase {
   }
 
   public int colorCount() {
-    String lastColor = color;
-
-    // Counts how many times red and blue have passed
-    if (lastColor == "Red" && colorString == "Blue" || lastColor == "Blue" && colorString == "Red") {
+    String lastColor = color;    
+    //Counts how many times red and blue have passed 
+    if (lastColor.equals("Red") && colorString.equals("Blue") || lastColor.equals("Blue") && colorString.equals("Red")){
       count++;
       lastColor = colorString;
-    } else if (lastColor == "" && (colorString == "Blue" || colorString == "Red")) {
-      lastColor = colorString;
+      }
+      else if (lastColor.equals("") && (colorString.equals("Blue") || colorString.equals("Red"))){
+        lastColor = colorString; 
+      }
+      return count;
     }
-    return count;
+
+//checks to see if wheel has passed 8 times    
+public void setTargetColor(){
+  //Gets data sent from the drivers station
+ 
+  gameData = DriverStation.getInstance().getGameSpecificMessage();
+
+  if(gameData.length() > 0)
+{
+  switch (gameData.charAt(0))
+  {
+    case 'B' :  //Blue
+        targetColor = "Red";
+      break;
+    case 'G' :  //Green
+        targetColor = "Yellow";
+      break;
+    case 'R' :  //Red
+        targetColor = "Blue";
+      break;
+    case 'Y' :  //Yellow
+        targetColor = "Green";
+      break;
+    default :
+      break;
   }
+} else {
+  //Code for no data received yet
+}
+
+}
+  
+public void findTargetColor(){
+  spinMotor(.18);
+  if (color.equals(targetColor))
+    spinMotor(0);
+}
 
   // checks to see if wheel has passed 8 times
   public boolean isSpun() {
@@ -92,10 +132,10 @@ public class ControlPanel extends SubsystemBase {
 
   // Controls motor speed
   public void wheelMotorPower() {
-    if (isSpun() == false) {
+    if (!isSpun()) {
       spinMotor(.4); // TODO Determine ideal speeds, then add to constants
-    } else if (isSpun() == true) {
-      spinMotor(.18); // TODO Determine ideal speeds, then add to constants
+    } else if (isSpun()) {
+      findTargetColor();
     }
   }
 
