@@ -108,7 +108,6 @@ public class Launcher extends SubsystemBase {
   // sets speed of launcher motors to 0
   public void stopMotors() {
     m_leftLauncher.set(0);
-    m_rightLauncher.set(0);
   }
 
   // get left launcher speed in RPM
@@ -128,6 +127,10 @@ public class Launcher extends SubsystemBase {
 
   public void revToSpeed(double speed) {
 
+  }
+
+  public void stopRevving() {
+    stopMotors();
   }
 
   // add info to the dashboard
