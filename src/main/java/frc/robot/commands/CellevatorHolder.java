@@ -8,7 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.CellevatorConstants;
+import frc.robot.Constants.CellevatorConstants.*;
 import frc.robot.subsystems.Cellevator;
 
 public class CellevatorHolder extends CommandBase {
@@ -17,11 +17,11 @@ public class CellevatorHolder extends CommandBase {
   private boolean runHolderMotor = false;
   
   /**
-   * true = run until beam break middle 
-  * false = run until beam break holder
+   * true = run until beam break middle detects true and then false with the previous boolean value being true 
+   * false = run until top beam break 
   */
-
   private boolean runUntil; 
+
   /**
    * Creates a new CellevatorHolder.
    */
@@ -34,7 +34,33 @@ public class CellevatorHolder extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
+    if (m_cellevator.isBottomBallPresent() && !m_cellevator.getBeamBreakMiddlePrevious() && !m_cellevator.isMiddleBallPresent() && !m_cellevator.isTopBallPresent()) {
+      // the power cell is only present at the bottom, so holder motor runs --> it will run till the middle beam break detects a power cell and then does not  
+      runHolderMotor = true;
+    }
+    else if (!m_cellevator.isBottomBallPresent() && m_cellevator.getBeamBreakMiddlePrevious() && !m_cellevator.isMiddleBallPresent() && !m_cellevator.isTopBallPresent()) {
+      // the power cell is only present in the middle of the cellevator, so the holder does not run 
+      runHolderMotor = false;
+    }
+    else if (m_cellevator.isBottomBallPresent() && m_cellevator.getBeamBreakMiddlePrevious() && !m_cellevator.isMiddleBallPresent() && !m_cellevator.isTopBallPresent()) {
+      // there are power cells in the bottom and the middle, so the holder motor runs --> it runs until the middle beam break detects a power cell then does not
+      runHolderMotor = true;
+    }
+    else if (!m_cellevator.isBottomBallPresent() && m_cellevator.getBeamBreakMiddlePrevious() && !m_cellevator.isMiddleBallPresent() && m_cellevator.isTopBallPresent()) {
+      // there are power cells in the middle and the top of the cellevator, so the holder motor does not run
+      runHolderMotor = false;
+    }
+    else if (m_cellevator.isBottomBallPresent() && m_cellevator.getBeamBreakMiddlePrevious() && !m_cellevator.isMiddleBallPresent() && m_cellevator.isTopBallPresent()) {
+      // there are power cells in the bottom, middle, and the top of the cellevator, so the holder motor does not run
+      runHolderMotor = false;
+    }
+    else if (!m_cellevator.isBottomBallPresent() && !m_cellevator.getBeamBreakMiddlePrevious() && !m_cellevator.isMiddleBallPresent() && !m_cellevator.isTopBallPresent()) {
+      // the cellevator is empty, so the holder motor does not run
+      runHolderMotor = false;
+    }
+    else {
+      runHolderMotor = false;
+    }
   }
 
 /**
@@ -43,9 +69,10 @@ public class CellevatorHolder extends CommandBase {
   @Override
   public void execute() {
     if (runHolderMotor) {
-      m_cellevator.runHolderMotor(CellevatorConstants.kHolderMotorSpeed);
+      m_cellevator.runHolderMotor(kHolderMotorSpeed);
     }
-
+    
+    
 
   }
 
@@ -67,8 +94,8 @@ public class CellevatorHolder extends CommandBase {
       return true;
     }
     else if (runUntil) {
-      // running the motor until the middle beam break
-      return m_cellevator.isMiddleBallPresent();
+      // running the motor until the middle beam break sees false and the previous value is true
+      return (!m_cellevator.isMiddleBallPresent() && m_cellevator.getBeamBreakMiddlePrevious());
     }
     else {
       // running the motor until the top beam break
