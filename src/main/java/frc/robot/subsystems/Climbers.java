@@ -70,7 +70,7 @@ public class Climbers extends SubsystemBase {
     encoder.setPosition(0);
   }
 
-  private void climb(double speed) {
+  public void climb(double speed) {
     m_climberMotors.set(speed); // The motor goes at a speed given to it. Not a specific speed
   }
 
