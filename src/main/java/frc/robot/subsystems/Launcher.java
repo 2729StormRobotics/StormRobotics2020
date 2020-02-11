@@ -82,7 +82,7 @@ public class Launcher extends SubsystemBase {
   }
 
   //extends pistons if true
-  private void pistonPush(boolean out) {
+  public void pistonPush(boolean out) {
     m_pistonAdjustment.set(out ? Value.kForward : Value.kReverse);
   }
 
