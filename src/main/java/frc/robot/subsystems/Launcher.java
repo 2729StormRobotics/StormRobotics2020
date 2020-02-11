@@ -78,11 +78,11 @@ public class Launcher extends SubsystemBase {
  
   //set pistons to default retracted position
   private void pistonInit() {
-    pistonPush(false);
+    setLaunchPiston(false);
   }
 
   //extends pistons if true
-  public void pistonPush(boolean out) {
+  public void setLaunchPiston(boolean out) {
     m_pistonAdjustment.set(out ? Value.kForward : Value.kReverse);
   }
 
