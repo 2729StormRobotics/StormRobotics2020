@@ -98,7 +98,7 @@ public final class Constants {
         public static final boolean kInvertRightLauncher = !kInvertLeftLauncher;
 
         // PID constants for the launcher
-        public static final class LauncherPID {
+        public static final class LaunchPID {
             //Our PID values for the Launcher
             public static final double kP = 0; // TODO: test and update this value
             public static final double kI = 0; // TODO: test and update this value
