@@ -12,8 +12,6 @@ import com.revrobotics.ControlType;
 import com.revrobotics.CANPIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Launcher;
-import jdk.vm.ci.meta.Constant;
-import frc.robot.Constants;
 import frc.robot.Constants.LauncherConstants;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -25,9 +23,11 @@ public class FixedLaunch extends CommandBase {
   private final Launcher m_Launcher;
 
   /**
+   * 
    * Creates a new FixedLaunch.
    */
   public FixedLaunch(double launchSpeed, Launcher subsystem) {
+    // These are the local instances of the parameter variables for FixedLaunch
     m_launchSpeed = launchSpeed;
     m_Launcher = subsystem;
     addRequirements(m_Launcher);
@@ -36,6 +36,7 @@ public class FixedLaunch extends CommandBase {
   // Called just before this Command runs the first time.
   @Override
   public void initialize() {
+    // revs motor to input speed
     m_Launcher.revToSpeed(m_launchSpeed);
   }
 
@@ -47,6 +48,7 @@ public class FixedLaunch extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    // stops the motor if command is interrupted
     m_Launcher.stopRevving();
   }
 
