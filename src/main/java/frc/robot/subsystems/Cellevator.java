@@ -18,10 +18,11 @@ import static frc.robot.Constants.CellevatorConstants.*;
 
 public class Cellevator extends SubsystemBase {
   private final CANSparkMax m_holderMotor;
-  private final CANSparkMax m_loaderMotor;
-  private final DigitalInput m_beamBreakHolder;
-  private final DigitalInput m_beamBreakLoader;
+  private final DigitalInput m_beamBreakTop;
+  private final DigitalInput m_beamBreakBottom;
   private final DigitalInput m_beamBreakMiddle;
+  private int powerCellCount;
+  private boolean previousBBMiddle;
 
   /**
    * Creates a new Cellevator subsystem
@@ -29,14 +30,14 @@ public class Cellevator extends SubsystemBase {
   public Cellevator() {
 
     m_holderMotor = new CANSparkMax(kHolderMotorPort, MotorType.kBrushed);
-    m_loaderMotor = new CANSparkMax(kLoaderMotorPort, MotorType.kBrushed);
-    m_beamBreakHolder = new DigitalInput(kBeamBreakHolderPort);
-    m_beamBreakLoader = new DigitalInput(kBeamBreakLoaderPort);
+    m_beamBreakBottom = new DigitalInput(kBeamBreakLoaderPort);
+    m_beamBreakTop = new DigitalInput(kBeamBreakHolderPort);
     m_beamBreakMiddle = new DigitalInput(kBeamBreakMiddlePort);
+    powerCellCount = 0;
+    previousBBMiddle = false;
 
     // intializes the motors
     motorInit(m_holderMotor, kHolderMotorInverted);
-    motorInit(m_loaderMotor, kLoaderMotorInverted);
   }
 
   private void motorInit(CANSparkMax motor, boolean invert) {
@@ -46,14 +47,6 @@ public class Cellevator extends SubsystemBase {
     motor.setSmartCurrentLimit(kCellevatorCurrentLimit);
   }
 
-  /**
-   * Runs the loader motors
-   * 
-   * @param speed The speed to run the Loader motors
-   */
-  public void runLoaderMotor(double speed) {
-    m_loaderMotor.set(speed);
-  }
 
   /**
    * Runs the holder motors
@@ -69,32 +62,35 @@ public class Cellevator extends SubsystemBase {
    * of the cellavator
    */
   public boolean isTopBallPresent() {
-    return m_beamBreakHolder.get();
-  }
+    return m_beamBreakTop.get();
+    }
 
   /**
    * Gets the beam break value to see if there is a power cell present at the
    * middle of the cellavator
+   * sets the previous boolean to the value so that it is stroed for the next time that this method is called
    */
   public boolean isMiddleBallPresent() {
+    previousBBMiddle = m_beamBreakMiddle.get();
     return m_beamBreakMiddle.get();
-  }
+    }
 
   /**
    * Gets the beam break value to see if there is a power cell present at the
    * bottom of the cellavator
    */
   public boolean isBottomBallPresent() {
-    return m_beamBreakLoader.get();
+    return m_beamBreakBottom.get();
   }
 
   /**
-   * Stops the loader motor
+   * returns the value of the beam break value before the current value
+   * @return
    */
-  public void stopLoaderMotor() {
-    runLoaderMotor(0);
+  public boolean getBeamBreakMiddlePrevious() {
+    return previousBBMiddle;
   }
-
+  
   /**
    * Stops the holder motor
    */
@@ -103,22 +99,30 @@ public class Cellevator extends SubsystemBase {
   }
 
   /**
-   * Stops both the loader motor and holder motor
+   * adds to the count
+   * @return
    */
-  public void stopAllMotors() {
-    stopLoaderMotor();
-    stopHolderMotor();
+  public int addPowerCellCount() {
+    powerCellCount += 1;
+    return powerCellCount;
+  }
+  /**
+   * subtracts from the count 
+   * @return
+   */
+  public int subtractPowerCellCount() {
+    powerCellCount -= 1;
+    return powerCellCount;
   }
 
   /**
    * displays data onto SmartDashboard
    */
   public void log() {
-    SmartDashboard.putBoolean("Holder Beam Value", m_beamBreakHolder.get());
-    SmartDashboard.putBoolean("Loader Beam Value", m_beamBreakLoader.get());
+    SmartDashboard.putBoolean("Top Beam Value", m_beamBreakTop.get());
+    SmartDashboard.putBoolean("Bottom Beam Value", m_beamBreakBottom.get());
     SmartDashboard.putBoolean("Middle Beam Value", m_beamBreakMiddle.get());
     SmartDashboard.putNumber("Holder Motor Speed", m_holderMotor.get());
-    SmartDashboard.putNumber("Loader Motor Speed", m_loaderMotor.get());
   }
 
   @Override
