@@ -82,6 +82,11 @@ public final class Constants {
 
             // Maximum angular speed in degrees per second at which PointTurn can end
             public static final double kVelocityTolerance = 1.0; // TODO: Update this value.
+
+            public static final double kMaxVelocity = 0.0; //max velocity in meters per second
+            public static final double kMaxAcc = 0.0; //max velocity in meters per second squared
+
+            public static final double setPoint = 0.0; //setpoint in meters
         }
     }
 

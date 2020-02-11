@@ -11,6 +11,7 @@ import com.analog.adis16470.frc.ADIS16470_IMU;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
 import com.revrobotics.CANPIDController.AccelStrategy;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -44,6 +45,10 @@ public class Drivetrain extends SubsystemBase {
   private final CANEncoder m_rightMotorEncoder1;
   private final CANEncoder m_rightMotorEncoder2;
 
+  //pid controller
+  private final CANPIDController m_pidController1;
+  private final CANPIDController m_pidController2;
+
   // Declare the gyro.
   private final ADIS16470_IMU m_imu;
 
@@ -70,6 +75,10 @@ public class Drivetrain extends SubsystemBase {
 
     m_leftMotors = new SpeedControllerGroup(m_leftMotor1, m_leftMotor2);
     m_rightMotors = new SpeedControllerGroup(m_rightMotor1, m_rightMotor2);
+
+    //PID controllers for left and right side
+    m_pidController1 = m_leftMotor1.getPIDController();
+    m_pidController2 = m_rightMotor1.getPIDController();
 
     m_drive = new DifferentialDrive(m_leftMotors, m_rightMotors);
 
@@ -102,7 +111,24 @@ public class Drivetrain extends SubsystemBase {
     motor.setInverted(invert);
 
     encoderInit(motor.getEncoder(), m_lowGear); // Initializes encoder within motor
+    
+
   }
+
+  public void driveDistance() {
+    //assign values with PID controllers
+    m_pidController1.setP(DriveDistancePID.kP);
+    m_pidController2.setP(DriveDistancePID.kP);
+    m_pidController1.setI(DriveDistancePID.kI);
+    m_pidController2.setI(DriveDistancePID.kI);
+    m_pidController1.setD(DriveDistancePID.kD);
+    m_pidController2.setD(DriveDistancePID.kD);
+
+    m_pidController1.setReference(DriveDistancePID.setPoint, ControlType.kVelocity);
+    m_pidController2.setReference(DriveDistancePID.setPoint, ControlType.kVelocity);
+
+  }
+
 
   private void encoderInit(CANEncoder encoder, boolean lowGear) {
     // Converts the input into desired value for distance and velocity

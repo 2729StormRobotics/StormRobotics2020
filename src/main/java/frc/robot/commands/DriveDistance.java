@@ -12,27 +12,36 @@ import edu.wpi.first.wpilibj2.command.TrapezoidProfileCommand;
 
 import frc.robot.Constants.*;
 import frc.robot.subsystems.*;
+import frc.robot.subsystems.Drivetrain;
 
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class DriveDistance extends TrapezoidProfileCommand {
+
+
   /**
    * Creates a new DriveDistance.
    */
-  public DriveDistance(double distanceMeters, Drivetrain drive) {
+  public DriveDistance(double targetTravelDistance, Drivetrain drive) {
     super(
         // The motion profile to be executed
         new TrapezoidProfile(
-            // The motion profile constraints(limit max vel and acc)
-            new TrapezoidProfile.Constraints(, 0),
-            // Goal state
-            new TrapezoidProfile.State(),
-            // Initial state
-            new TrapezoidProfile.State()),
-        state -> {
-          // Use current trajectory state here
-        });
+            // Limit the max speed and acceleration
+            new TrapezoidProfile.Constraints(DriveConstants.kMaxSpeed, DriveConstants.kMaxAcceleration),
+            
+            // End desired distance at targetTravelDistance
+            new TrapezoidProfile.State(targetTravelDistance, 0)), //implicitely starts at 0
+            
+            // Send the profile state to the drivetrain
+            state -> {
+           } 
+           //Drivetrain.driveDistance();
+
+        );
   }
+
+  
+
 }
