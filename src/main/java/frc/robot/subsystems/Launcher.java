@@ -58,9 +58,30 @@ public class Launcher extends SubsystemBase {
     // Initialize the PID controller for the motor controller.
     m_pidController = m_leftLauncher.getPIDController();
 
+    //Initialize pid coefficients
+    pidInit();
+
     //initialize pistons
     pistonInit();
 
+  }
+
+  /**
+   * Set the PID coefficients for the PID Controller to use.
+   */
+  private void pidInit() {
+    // Set the proportional constant.
+    m_pidController.setP(LaunchPID.kP);
+    // Set the integral constant.
+    m_pidController.setI(LaunchPID.kI);
+    // Set the derivative constant.
+    m_pidController.setD(LaunchPID.kD);
+    // Set the integral zone. This value is the maximum |error| for the integral gain to take effect.
+    m_pidController.setIZone(LaunchPID.kIz);
+    // Set the feed-forward constant.
+    m_pidController.setFF(LaunchPID.kFF);
+    // Set the output range.
+    m_pidController.setOutputRange(LaunchPID.kMinOutput, LaunchPID.kMaxOutput);
   }
 
   /**
@@ -125,11 +146,20 @@ public class Launcher extends SubsystemBase {
     return ((getLeftLauncherSpeed() + getRightLauncherSpeed()) / 2.0);
   }
 
+  /**
+   * Set the motor controller to start the PID controller.
+   * 
+   * @param speed The target angular speed in RPM
+   */
   public void revToSpeed(double speed) {
-
+    m_pidController.setReference(speed, ControlType.kVelocity);
   }
 
+  /**
+   * Stop the PID controller.
+   */
   public void stopRevving() {
+    // Stopping the motors should stop the pid controller.
     stopMotors();
   }
 
