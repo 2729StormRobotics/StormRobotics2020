@@ -56,6 +56,10 @@ public final class Constants {
         public static final double kMaxSpeed = 0; // Meters per second
         public static final double kMaxAcceleration = 0; // Meters per (second^2)
 
+        public static final double kS = 0;  //TODO: Test for values
+        public static final double kV = 0;  //TODO: Test for values
+        public static final double kA = 0;  //TODO: Test for values
+
         // PointTurn constants
         public static final class PointTurnPID {
             // Our PID values for PointTurn

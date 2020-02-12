@@ -35,11 +35,10 @@ public class DriveDistance extends TrapezoidProfileCommand {
             new TrapezoidProfile.State(targetTravelDistance, 0)), //implicitely starts at 0
             
             // Send the profile state to the drivetrain
-            state -> {
-           } 
-           //Drivetrain.driveDistance();
-
-        );
+            state -> drive.setDriveStates(state, state), 
+            drive);
+        
+      drive.resetAllEncoders();
   }
 
   
