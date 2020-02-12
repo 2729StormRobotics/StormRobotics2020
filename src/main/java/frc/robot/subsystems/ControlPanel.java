@@ -77,9 +77,7 @@ public class ControlPanel extends SubsystemBase {
     if (lastColor.equals("Red") && colorString.equals("Blue") || lastColor.equals("Blue") && colorString.equals("Red")){
       count++;
       lastColor = colorString;
-    } else if (lastColor == "" && (colorString == "Blue" || colorString == "Red")) {
-      lastColor = colorString;
-    }
+      }
       else if (lastColor.equals("") && (colorString.equals("Blue") || colorString.equals("Red"))){
         lastColor = colorString; 
       }

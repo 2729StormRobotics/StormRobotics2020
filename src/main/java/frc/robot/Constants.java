@@ -31,8 +31,8 @@ public final class Constants {
         public static final double kWheelDiameter = 6; // Inches
 
         // Gearing for calculations, given in output turns per motor turn
-        private static final double kHighGear = 14/58 * 18/38 * 32/34;
-        private static final double kLowGear = 14/58 * 18/38 * 22/44;
+        private static final double kHighGear = 14.0/58.0 * 18.0/38.0 * 32.0/34.0;
+        private static final double kLowGear = 14.0/58.0 * 18.0/38.0 * 22.0/44.0;
 
         // Conversions to calculate inches per encoder pulse in high gear
         public static final double kHighGearDistancePerPulse = Math.PI * kWheelDiameter * kHighGear;
@@ -77,7 +77,7 @@ public final class Constants {
         // Drive Distance constants
         public static final class DriveDistancePID {
             // Our PID values for PointTurn
-            public static final double kP = 0.0; // TODO: Test and update this value.
+            public static final double kP = 0.0; // TODO: Test and update this value
             public static final double kI = 0.0; // TODO: Test and update this value.
             public static final double kD = 0.0; // TODO: Test and update this value.
 
@@ -106,6 +106,25 @@ public final class Constants {
         public static final boolean kInvertLeftLauncher = false;
         public static final boolean kInvertRightLauncher = !kInvertLeftLauncher;
 
+        // PID constants for the launcher
+        public static final class LaunchPID {
+            //Our PID values for the Launcher
+            public static final double kP = 0; // TODO: test and update this value
+            public static final double kI = 0; // TODO: test and update this value
+            public static final double kD = 0; // TODO: test and update this value
+
+            // Integral zone, which is the maximum |error| for the integral gain to take effect
+            public static final double kIz = 0; // TODO: test and update this value
+
+            // Feed-forward constant
+            public static final double kF = 0; // TODO: test and update this value
+
+            // Min and max output values
+            public static final double kMinOutput = -1;
+            public static final double kMaxOutput = 1;
+        }
+
+
     }
 
     public static final class IntakeConstants {
@@ -124,7 +143,6 @@ public final class Constants {
     }
 
     public static final class CellevatorConstants {
-
         // beam breakers detect the number of powercells in the cellevator
         public static final int kBeamBreakLoaderPort = 1; // TODO: Port Numbers still need to be updated
         public static final int kBeamBreakMiddlePort = 3;
@@ -140,6 +158,52 @@ public final class Constants {
 
         // Define the current limit for the celevator motors
         public static final int kCellevatorCurrentLimit = 45;
+
+        // the constant speed for the holder motor
+        public static final double kHolderMotorSpeed = 0.5; // TODO: test and update value
+        
+        //speed for the loader Motor
+        public static final double kLoaderMotorSpeed = 0.5; //TODO: test and update value
+        // piston that applies the friction brake on the hanging elevator
+        public static final int kFrictionSolenoidPort = 6;
+    }
+    
+    public static final class LimeLightConstants {
+        public static final double kLimeLightOffest = 13.67;
+        public static final double kLimeLightHeight = 43; 
+        public static final double kLimeLightAngle = 0; //NEED CORRECT ANGLE 
+        public static final double kPortHeight = 98.25;
+
+        //Alignment constants for LimeLight
+        public static final double kLimeLightAlignP = 1.0; 
+        public static final double kLimeLightAlignI = 0.0;
+        public static final double kLimeLightAlignD = 0.0;
+        public static final double kLimeLightTolernce = 5.0;
+        public static final double kLimeLightAlignTolerance = 1.5;
+    
+        //Distance constants for LimeLight
+        public static final double kLimeLightDistanceP = 1.0; 
+        public static final double kLimeLightDistanceI = 0.0;
+        public static final double kLimeLightDistanceD = 0.0;
+        public static final double kLimeLightDistance = 50.0;
+        public static final double kLimeLightDistanceTolernce = 5.0;
+        
+        
+    
+    }
+
+    public static final class PartyConstants {
+
+        // DIO port number constants for the two LED Blinkin Drivers
+        public static final int kLedBlinkinDriver1Port = 8;
+        public static final int kLedBlinkinDriver2Port = 9;
+
+        // Each possible LED mode correlates to a value for the Spark, as defined in the Rev Blinkin docs
+        public static final double kDancePartySparkValue = -0.97;   // Pattern: Rainbow, Pallete: Party
+        public static final double kNormal = 0.53;                  // Color 1 and 2: Color Waves set as normal
+        public static final double kRed = 0.61;                     // Solid Color: Red
+        public static final double kOrange = 0.65;                  // Solid Color: Orange
+        public static final double kGreen = 0.71;                   // Solid color: Green
     }
 
     public static final class ControlPanelConstants {
@@ -178,7 +242,7 @@ public final class Constants {
 
     public static final class ClimberConstants {
         // Gearing for calculations, given in output turns per motor turn
-        private static final double kGearing = 10/58 * 16/60;
+        private static final double kGearing = 10.0/58.0 * 16.0/60.0;
 
         // Conversion for distance and speed per encoder pulse, given in inches
         public static final double kEncoderDistancePerPulse = 0; // ADD CONVERSION
@@ -215,6 +279,7 @@ public final class Constants {
         public static final double kLimelightAlignD = 0.0;
         public static final double kLimelightTolernce = 5.0;
         public static final double kLimelightAlignTolerance = 1.5;
+        public static final double kSteeringAdjust = 0.25;
 
         // Distance PID constants for LimeLight
         public static final double kLimelightDistanceP = 1.0;
@@ -223,4 +288,6 @@ public final class Constants {
         public static final double kLimelightDistance = 50.0;
         public static final double kLimelightDistanceTolerance = 5.0;
     }
-}
+    }
+
+
