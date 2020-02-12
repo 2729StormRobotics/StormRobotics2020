@@ -47,6 +47,8 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // Set default commands once button bindings are finalized
+
+
     SmartDashboard.putData("Cellevator Subsystem", m_cellevator);
     SmartDashboard.putData("Cellevator Loader Subsystem", m_cellevatorLoader);
     SmartDashboard.putData("Climbers Subsystem", m_climbers);
@@ -73,19 +75,6 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // Set button bindings here once they are decided upon and finalized.
   }
-
-public void updateDashboard() {
-  m_cellevator.log();
-  m_cellevatorLoader.log();
-  m_climbers.log();
-  // Control Panel log does not exist, but it may not be necessary to have.
-  m_drivetrain.log();
-  m_hopper.log();
-  m_intake.log();
-  m_launcher.log();
-  m_limelight.log();
-  // Party log does not exist, but it may not be necessary to have.
-}
 
   //commented out because no auto yet
   /**
