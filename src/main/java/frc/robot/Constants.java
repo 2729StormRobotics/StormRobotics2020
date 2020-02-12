@@ -97,6 +97,25 @@ public final class Constants {
         public static final boolean kInvertLeftLauncher = false;
         public static final boolean kInvertRightLauncher = !kInvertLeftLauncher;
 
+        // PID constants for the launcher
+        public static final class LaunchPID {
+            //Our PID values for the Launcher
+            public static final double kP = 0; // TODO: test and update this value
+            public static final double kI = 0; // TODO: test and update this value
+            public static final double kD = 0; // TODO: test and update this value
+
+            // Integral zone, which is the maximum |error| for the integral gain to take effect
+            public static final double kIz = 0; // TODO: test and update this value
+
+            // Feed-forward constant
+            public static final double kF = 0; // TODO: test and update this value
+
+            // Min and max output values
+            public static final double kMinOutput = -1;
+            public static final double kMaxOutput = 1;
+        }
+
+
     }
 
     public static final class IntakeConstants {
@@ -115,7 +134,6 @@ public final class Constants {
     }
 
     public static final class CellevatorConstants {
-
         // beam breakers detect the number of powercells in the cellevator
         public static final int kBeamBreakLoaderPort = 1; // TODO: Port Numbers still need to be updated
         public static final int kBeamBreakMiddlePort = 3;
@@ -131,6 +149,47 @@ public final class Constants {
 
         // Define the current limit for the celevator motors
         public static final int kCellevatorCurrentLimit = 45;
+
+        // piston that applies the friction brake on the hanging elevator
+        public static final int kFrictionSolenoidPort = 6;
+    }
+    
+    public static final class LimeLightConstants {
+        public static final double kLimeLightOffest = 13.67;
+        public static final double kLimeLightHeight = 43; 
+        public static final double kLimeLightAngle = 0; //NEED CORRECT ANGLE 
+        public static final double kPortHeight = 98.25;
+
+        //Alignment constants for LimeLight
+        public static final double kLimeLightAlignP = 1.0; 
+        public static final double kLimeLightAlignI = 0.0;
+        public static final double kLimeLightAlignD = 0.0;
+        public static final double kLimeLightTolernce = 5.0;
+        public static final double kLimeLightAlignTolerance = 1.5;
+    
+        //Distance constants for LimeLight
+        public static final double kLimeLightDistanceP = 1.0; 
+        public static final double kLimeLightDistanceI = 0.0;
+        public static final double kLimeLightDistanceD = 0.0;
+        public static final double kLimeLightDistance = 50.0;
+        public static final double kLimeLightDistanceTolernce = 5.0;
+        
+        
+    
+    }
+
+    public static final class PartyConstants {
+
+        // DIO port number constants for the two LED Blinkin Drivers
+        public static final int kLedBlinkinDriver1Port = 8;
+        public static final int kLedBlinkinDriver2Port = 9;
+
+        // Each possible LED mode correlates to a value for the Spark, as defined in the Rev Blinkin docs
+        public static final double kDancePartySparkValue = -0.97;   // Pattern: Rainbow, Pallete: Party
+        public static final double kNormal = 0.53;                  // Color 1 and 2: Color Waves set as normal
+        public static final double kRed = 0.61;                     // Solid Color: Red
+        public static final double kOrange = 0.65;                  // Solid Color: Orange
+        public static final double kGreen = 0.71;                   // Solid color: Green
     }
 
     public static final class ControlPanelConstants {
@@ -206,6 +265,7 @@ public final class Constants {
         public static final double kLimelightAlignD = 0.0;
         public static final double kLimelightTolernce = 5.0;
         public static final double kLimelightAlignTolerance = 1.5;
+        public static final double kSteeringAdjust = 0.25;
 
         // Distance PID constants for LimeLight
         public static final double kLimelightDistanceP = 1.0;
