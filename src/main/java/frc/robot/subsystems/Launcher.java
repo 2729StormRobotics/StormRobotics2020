@@ -63,7 +63,6 @@ public class Launcher extends SubsystemBase {
 
     //initialize pistons
     pistonInit();
-
   }
 
   /**
@@ -113,6 +112,24 @@ public class Launcher extends SubsystemBase {
     m_launchPiston.set(out ? Value.kForward : Value.kReverse);
   }
 
+  /**
+   * Get the value of the launch piston solenoid.
+   * 
+   * @return The {@link Value} that the {@link DoubleSolenoid#get()} method returns
+   */
+  public Value getLaunchPistonValue() {
+    return m_launchPiston.get();
+  }
+
+  /**
+   * Get whether the pistons are extended or not.
+   * 
+   * @return true if extended, false if retracted.
+   */
+  public boolean getLaunchPiston() {
+    return getLaunchPistonValue() == Value.kForward;
+  }
+
 
   /**
    * Initialize an encoder.
@@ -140,19 +157,28 @@ public class Launcher extends SubsystemBase {
   }
 
   /**
-   * Get the speed of the left motor in RPM (check if actually RPM or ticks / second)
-   * @return
+   * Get the speed of the left motor.
+   * 
+   * @return The speed of the left motor in RPM.
    */
   public double getLeftLauncherSpeed() {
     return m_leftEncoder.getVelocity();
   }
 
-  // get right launcher speed in RPM
+  /**
+   * Get the speed of the right motor.
+   * 
+   * @return The speed of the right motor in RPM.
+   */
   public double getRightLauncherSpeed() {
     return m_rightEncoder.getVelocity();
   }
 
-  // get average speed of left and right launchers
+  /**
+   * Get the average speed of the launcher motors.
+   * 
+   * @return The average speed of both launcher motors in RPM.
+   */
   public double getLauncherAvgSpeed() {
     return ((getLeftLauncherSpeed() + getRightLauncherSpeed()) / 2.0);
   }
@@ -174,16 +200,19 @@ public class Launcher extends SubsystemBase {
     stopMotors();
   }
 
-  // add info to the dashboard
+  /**
+   * Add information to the dashboard repeatedly.
+   */
   public void log() {
     SmartDashboard.putNumber("Left Launcher Speed(RPM)", m_leftEncoder.getVelocity());
     SmartDashboard.putNumber("Right Launcher Speed(RPM)", m_rightEncoder.getVelocity());
     SmartDashboard.putNumber("Average Launcher Speed(RPM)", getLauncherAvgSpeed());
+    SmartDashboard.putBoolean("Launch Pistons Extended", getLaunchPiston());
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    // Log information to the dashboard repeatedly.
     log();
   }
 }
