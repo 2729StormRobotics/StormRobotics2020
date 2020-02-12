@@ -39,8 +39,8 @@ public class RobotContainer {
   private final Limelight m_limelight = new Limelight();
   private final Party m_party = new Party();
 
-  private final XboxController m_driverController = new XboxController(kDriverControlPort);
-  private final XboxController m_weaponsController = new XboxController(kWeaponsControlPort);
+  private final XboxController m_driverController = new XboxController(ControllerConstants.kDriverControlPort);
+  private final XboxController m_weaponsController = new XboxController(ControllerConstants.kWeaponsControlPort);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
