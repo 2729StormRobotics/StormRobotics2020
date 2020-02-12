@@ -155,10 +155,6 @@ public class Cellevator extends SubsystemBase {
     return powerCellCount;
   }
 
-  public int getPowerCellCount() {
-
-  }
-
   /**
    * displays data onto SmartDashboard
    */
