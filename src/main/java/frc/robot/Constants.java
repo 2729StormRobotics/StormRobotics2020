@@ -97,13 +97,24 @@ public final class Constants {
         public static final boolean kInvertLeftLauncher = false;
         public static final boolean kInvertRightLauncher = !kInvertLeftLauncher;
 
-        // the PID values needed to launch with PID
-        public static final double kP = 0; // TODO: test and update this value
-        public static final double kI = 0; // TODO: test and update this value
-        public static final double kD = 0; // TODO: test and update this value
-        public static final double kF = 0; // TODO: test and update this value
-        public static final double kMinOutput = 0; // TODO: test and update this value
-        public static final double kMaxOutput = 0; // TODO: test and update this value
+        // PID constants for the launcher
+        public static final class LaunchPID {
+            //Our PID values for the Launcher
+            public static final double kP = 0; // TODO: test and update this value
+            public static final double kI = 0; // TODO: test and update this value
+            public static final double kD = 0; // TODO: test and update this value
+
+            // Integral zone, which is the maximum |error| for the integral gain to take effect
+            public static final double kIz = 0; // TODO: test and update this value
+
+            // Feed-forward constant
+            public static final double kF = 0; // TODO: test and update this value
+
+            // Min and max output values
+            public static final double kMinOutput = -1;
+            public static final double kMaxOutput = 1;
+        }
+
 
     }
 
