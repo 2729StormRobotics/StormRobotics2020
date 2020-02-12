@@ -86,8 +86,7 @@ public class Launcher extends SubsystemBase {
   /**
    * Restore factory defaults, set idle mode to coast, and invert motor.
    * 
-   * @param motor  The motor to initialize
-   * @param invert Whether motor should be inverted
+   * @param motor The motor to initialize
    */
   private void motorInit(CANSparkMax motor) {
     motor.restoreFactoryDefaults(); // Just in case any settings persist between reboots.
