@@ -268,7 +268,7 @@ public final class Constants {
         public static final double kLimelightDistance = 50.0;
         public static final double kLimelightDistanceTolerance = 5.0;
     }
-    public static final class Controller {
+    public static final class ControllerConstants {
         public static final int kDriverControlPort = 0;
         public static final int kWeaponsControlPort = 1;
 
