@@ -65,30 +65,24 @@ public class Cellevator extends SubsystemBase {
   /**
    * Gets the beam break value to see if there is a power cell present at the top
    * of the cellevator
-   * sets the previous boolean value so that it is stored when the method is called the next time
    */
   public boolean isTopBallPresent() {
-    previousBBTop = m_beamBreakTop.get();
     return m_beamBreakTop.get();
     }
 
   /**
    * Gets the beam break value to see if there is a power cell present at the
    * middle of the cellevator
-   * sets the previous boolean to the value so that it is stroed for the next time that this method is called
    */
   public boolean isMiddleBallPresent() {
-    previousBBMiddle = m_beamBreakMiddle.get();
     return m_beamBreakMiddle.get();
     }
 
   /**
    * Gets the beam break value to see if there is a power cell present at the
    * bottom of the cellvator
-   * sets the previous boolean value so that it is stored when the method is called the next time
    */
   public boolean isBottomBallPresent() {
-    previousBBBottom = m_beamBreakMiddle.get();
     return m_beamBreakBottom.get();
   }
 
@@ -117,6 +111,27 @@ public class Cellevator extends SubsystemBase {
   }
 
   /**
+   * sets the boolean value of the previous middle beam break
+   */
+  public void setBeamBreakMiddlePrevious(boolean value) {
+    previousBBMiddle = value;
+  }
+
+  /** 
+   * sets the boolean value of the previous bottom beam break
+  */
+  public void setBeamBreakBottomPrevious(boolean value) {
+    previousBBBottom = value;
+  }
+
+  /** 
+   * sets the boolean value of the previous top beam break
+  */
+  public void setBeamBreakTopPrevious(boolean value) {
+    previousBBTop = value;
+  }
+
+  /**
    * Stops the holder motor
    */
   public void stopHolderMotor() {
@@ -138,6 +153,10 @@ public class Cellevator extends SubsystemBase {
   public int subtractPowerCellCount() {
     powerCellCount -= 1;
     return powerCellCount;
+  }
+
+  public int getPowerCellCount() {
+
   }
 
   /**
