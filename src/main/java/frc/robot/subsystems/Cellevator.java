@@ -155,6 +155,13 @@ public class Cellevator extends SubsystemBase {
     return powerCellCount;
   }
 
+  /** 
+   * returns the amount of power cells in the cellevator
+  */
+  public int getPowerCellCount() {
+    return powerCellCount;
+  }
+
   /**
    * displays data onto SmartDashboard
    */
