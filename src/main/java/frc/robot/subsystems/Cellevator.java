@@ -80,7 +80,7 @@ public class Cellevator extends SubsystemBase {
 
   /**
    * Gets the beam break value to see if there is a power cell present at the
-   * bottom of the cellesvator
+   * bottom of the cellevator
    */
   public boolean isBottomBallPresent() {
     return m_beamBreakBottom.get();
