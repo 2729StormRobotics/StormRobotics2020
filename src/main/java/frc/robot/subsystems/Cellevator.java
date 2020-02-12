@@ -23,6 +23,8 @@ public class Cellevator extends SubsystemBase {
   private final DigitalInput m_beamBreakMiddle;
   private int powerCellCount;
   private boolean previousBBMiddle;
+  private boolean previousBBBottom;
+  private boolean previousBBTop;
 
   /**
    * Creates a new Cellevator subsystem
@@ -35,6 +37,9 @@ public class Cellevator extends SubsystemBase {
     m_beamBreakMiddle = new DigitalInput(kBeamBreakMiddlePort);
     powerCellCount = 0;
     previousBBMiddle = false;
+    previousBBBottom = false;
+    previousBBTop = false;
+
 
     // intializes the motors
     motorInit(m_holderMotor, kHolderMotorInverted);
@@ -59,7 +64,7 @@ public class Cellevator extends SubsystemBase {
 
   /**
    * Gets the beam break value to see if there is a power cell present at the top
-   * of the cellavator
+   * of the cellevator
    */
   public boolean isTopBallPresent() {
     return m_beamBreakTop.get();
@@ -67,30 +72,65 @@ public class Cellevator extends SubsystemBase {
 
   /**
    * Gets the beam break value to see if there is a power cell present at the
-   * middle of the cellavator
-   * sets the previous boolean to the value so that it is stroed for the next time that this method is called
+   * middle of the cellevator
    */
   public boolean isMiddleBallPresent() {
-    previousBBMiddle = m_beamBreakMiddle.get();
     return m_beamBreakMiddle.get();
     }
 
   /**
    * Gets the beam break value to see if there is a power cell present at the
-   * bottom of the cellavator
+   * bottom of the cellevator
    */
   public boolean isBottomBallPresent() {
     return m_beamBreakBottom.get();
   }
 
   /**
-   * returns the value of the beam break value before the current value
+   * returns the value of the beam break middle value before the current value
    * @return
    */
   public boolean getBeamBreakMiddlePrevious() {
     return previousBBMiddle;
   }
   
+  /**
+   * returns the value of the beam break bottom value before the current value
+   * @return
+   */
+  public boolean getBeamBreakBottomPrevious() {
+    return previousBBBottom;
+  }
+
+  /**
+   * returns the value of the beam break top value before the current value
+   * @return
+   */
+  public boolean getBeamBreakTopPrevious() {
+    return previousBBTop;
+  }
+
+  /**
+   * sets the boolean value of the previous middle beam break
+   */
+  public void setBeamBreakMiddlePrevious(boolean value) {
+    previousBBMiddle = value;
+  }
+
+  /** 
+   * sets the boolean value of the previous bottom beam break
+  */
+  public void setBeamBreakBottomPrevious(boolean value) {
+    previousBBBottom = value;
+  }
+
+  /** 
+   * sets the boolean value of the previous top beam break
+  */
+  public void setBeamBreakTopPrevious(boolean value) {
+    previousBBTop = value;
+  }
+
   /**
    * Stops the holder motor
    */
@@ -112,6 +152,13 @@ public class Cellevator extends SubsystemBase {
    */
   public int subtractPowerCellCount() {
     powerCellCount -= 1;
+    return powerCellCount;
+  }
+
+  /** 
+   * returns the amount of power cells in the cellevator
+  */
+  public int getPowerCellCount() {
     return powerCellCount;
   }
 
