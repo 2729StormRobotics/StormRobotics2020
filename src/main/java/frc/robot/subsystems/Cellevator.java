@@ -139,27 +139,27 @@ public class Cellevator extends SubsystemBase {
   }
 
   /**
-   * adds to the count
+   * adds to the count and puts it to the Smart Dashboard
    * @return
    */
-  public int addPowerCellCount() {
+  public void addPowerCellCount() {
     powerCellCount += 1;
-    return powerCellCount;
+    SmartDashboard.putNumber("Power Cell Count", powerCellCount);
   }
   /**
-   * subtracts from the count 
+   * subtracts from the count and puts it to the Smart Dashboard
    * @return
    */
-  public int subtractPowerCellCount() {
+  public void subtractPowerCellCount() {
     powerCellCount -= 1;
-    return powerCellCount;
+    SmartDashboard.putNumber("Power Cell Count", powerCellCount);
   }
 
   /** 
-   * returns the amount of power cells in the cellevator
+   * updates the amount of power cells in the cellevator on the Smart Dashboard
   */
-  public int getPowerCellCount() {
-    return powerCellCount;
+  public void updatePowerCellCount() {
+    SmartDashboard.getNumber("Power Cell Count", powerCellCount);
   }
 
   /**
@@ -176,5 +176,6 @@ public class Cellevator extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     log();
+    updatePowerCellCount();
   }
 }
