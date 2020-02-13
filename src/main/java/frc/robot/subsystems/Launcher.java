@@ -200,6 +200,17 @@ public class Launcher extends SubsystemBase {
   }
 
   /**
+   * Calculate the desired speed of the launch motors.
+   * 
+   * @param distance The horizontal distance from the vision target
+   * @return The desired speed of the launch motors in RPM.
+   */
+  public double calculateLaunchSpeed(double distance) {
+    // TODO: figure out this function through testing.
+    return 0;
+  }
+
+  /**
    * Add information to the dashboard repeatedly.
    */
   public void log() {
