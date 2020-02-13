@@ -27,12 +27,12 @@ public class HolderMotorManual extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_holder.runHolderMotor(CellevatorConstants.kHolderMotorSpeed); // runs the holder motor at a constant speed when the command starts 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    m_holder.runHolderMotor(CellevatorConstants.kHolderMotorSpeed); // runs the holder motor at a constant speed when the command starts 
   }
 
   // Called once the command ends or is interrupted.
