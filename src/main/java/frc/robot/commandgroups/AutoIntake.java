@@ -27,6 +27,6 @@ public class AutoIntake extends ParallelCommandGroup {
     // super(new FooCommand(), new BarCommand());super();
     //running these intake and hopper commands in parallel
     super(new IntakePowerCell(IntakeConstants.kIntakeMotorSpeed, m_intake), new MoveIntakePistons(m_intake), new MoveHopperMotor(m_hopper));
-    // to toggle pistons so intake goes back up will be done in RobotContainer
+    // button to toggle pistons so intake goes back up will be created in RobotContainer
   }
 }
