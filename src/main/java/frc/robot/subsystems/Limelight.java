@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import static frc.robot.Constants.LimelightConstants.*; 
+import static frc.robot.Constants.LimelightConstants.*;
 
 public class Limelight extends SubsystemBase {
   /**
@@ -20,12 +20,12 @@ public class Limelight extends SubsystemBase {
    */
 
   // Create variables for the different values given from the limelight
-  private double xOffset; // Positive values mean that target is to the right of the camera; negative values mean target is to the left. Measured in degrees
-  private double yOffset; // Positive values mean that target is above the camera; negative values mean target is below. Measured in degrees
+  private double xOffset; // Positive values mean that target is to the right of the camera; negative
+                          // values mean target is to the left. Measured in degrees
+  private double yOffset; // Positive values mean that target is above the camera; negative values mean
+                          // target is below. Measured in degrees
   private double targetArea; // Returns a value of the percentage of the image the target takes
   private double targetValue; // Sends 1 if a target is detected, 0 if none are present
-
-  private int pipeline; // Used to identify which pipline the limelight uses (0-9)
 
   // Create a network table for the limelight
   private final NetworkTable m_limelightTable;
@@ -33,13 +33,14 @@ public class Limelight extends SubsystemBase {
   public Limelight() {
     // Gets the network table for the limelight
     m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
-  
-    // Reset the default settings and pipleines to the Limelight
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(1);
+
+    // Reset the default settings and pipelines to the Limelight
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
   }
 
   /**
-   * Returns a value of the offset on the x-axis of the camera to the target in degrees. Negative values mean the target is to the left of the camera
+   * Returns a value of the offset on the x-axis of the camera to the target in
+   * degrees. Negative values mean the target is to the left of the camera
    */
   public double getXOffset() {
     return xOffset;
@@ -53,28 +54,32 @@ public class Limelight extends SubsystemBase {
   }
 
   /**
-   * Returns true if the target is within a range of the center crosshair of the camera
+   * Returns true if the target is within a range of the center crosshair of the
+   * camera
    */
   public boolean isTargetCentered() {
     return ((xOffset > -1.5) && (xOffset < 1.5) && (xOffset != 0.0));
   }
 
   /**
-   *  Calculates the total angle by adding the mounting angle with the y-axis offset angle of the limelight in degrees
+   * Calculates the total angle by adding the mounting angle with the y-axis
+   * offset angle of the limelight in degrees
    */
   public double limelightAngle() {
     return (kLimelightAngle + yOffset);
   }
 
   /**
-   * Return the distance from the limelight to the target in inches (floor distance)
+   * Return the distance from the limelight to the target in inches (floor
+   * distance)
    */
   public double limelightDistance() {
     return (kPortHeight - kLimelightHeight) / Math.tan(Math.toRadians(kLimelightAngle + yOffset) + kLimelightOffset);
   }
 
   /**
-   * Chooses which pipeline to use on the limelight and prevents invalid values from being sent
+   * Chooses which pipeline to use on the limelight and prevents invalid values
+   * from being sent
    * 
    * @param pipeline Which pipeline to use on the limelight (0-9)
    */
@@ -83,7 +88,7 @@ public class Limelight extends SubsystemBase {
     m_limelightTable.getEntry("Pipeline").setValue(pipeline);
     if (pipeline < 0) {
       pipeline = 0;
-    }else if (pipeline > 9) {
+    } else if (pipeline > 9) {
       pipeline = 9;
     }
   }
