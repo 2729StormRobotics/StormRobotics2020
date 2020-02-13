@@ -36,6 +36,6 @@ public class LaunchAngle extends InstantCommand {
    */
   @Override
   public void initialize() {
-    m_launch.setLaunchPiston(m_isExtended);
+    m_launch.setLaunchPiston(!m_isExtended);
   }
 }
