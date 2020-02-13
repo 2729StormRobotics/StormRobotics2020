@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.CellevatorConstants;
 import frc.robot.subsystems.Cellevator;
@@ -30,7 +31,7 @@ public class CellevatorHolder extends CommandBase {
   public void initialize() {
     if (m_cellevator.isBottomBallPresent() && !m_cellevator.getBeamBreakMiddlePrevious()
         && !m_cellevator.isMiddleBallPresent() && !m_cellevator.isTopBallPresent()
-        && (m_cellevator.getPowerCellCount() == 1 || m_cellevator.getPowerCellCount() == 2)) {
+        && SmartDashboard.getNumber("Power Cell Count", 3) == 1 || SmartDashboard.getNumber("Power Cell Count", 3) == 2) {
       // if the bottom beam break detects a powercell, the top doesn't, and there are 1 or 2 power cells in the cellevator, 
       // run the holder motor until a power cell breaks the middle beam breaker and then leaves, preserving the gap
       // run the motor - there is one at the bottom
