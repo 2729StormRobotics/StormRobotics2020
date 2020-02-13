@@ -8,18 +8,19 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Cellevator;
+import frc.robot.subsystems.CellevatorLoader;
 import frc.robot.Constants.CellevatorConstants;
 
-public class CellevatorLoader extends CommandBase {
-  Cellevator m_cellevator;
+public class CellevatorLoaderMotor extends CommandBase {
+  
+  private final CellevatorLoader m_cellevatorLoader;
   /**
    * Creates a new CellevatorLoader.
    */
-  public CellevatorLoader(Cellevator cellevator) {
+  public CellevatorLoaderMotor(CellevatorLoader cellevatorLoader) {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_cellevator = cellevator;
-    addRequirements(m_cellevator);
+    m_cellevatorLoader = cellevatorLoader;
+    addRequirements(m_cellevatorLoader);
   }
 
   // Called when the command is initially scheduled.
@@ -32,20 +33,24 @@ public class CellevatorLoader extends CommandBase {
   */
   @Override
   public void execute() {
-    if (!m_cellevator.isBottomBallPresent()) { 
-      m_cellevator.runLoaderMotor(CellevatorConstants.kLoaderMotorSpeed);
+    if (!m_cellevatorLoader.isBottomBallPresent()) { 
+      m_cellevatorLoader.runLoaderMotor(CellevatorConstants.kLoaderMotorSpeed);
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_cellevator.stopLoaderMotor();
+    m_cellevatorLoader.stopLoaderMotor();
+
+    if (interrupted = false) {
+      
+    }
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_cellevator.isBottomBallPresent();
+    return m_cellevatorLoader.isBottomBallPresent();
   }
 }
