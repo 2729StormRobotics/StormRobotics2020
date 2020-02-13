@@ -155,11 +155,15 @@ public class Cellevator extends SubsystemBase {
     SmartDashboard.putNumber("Power Cell Count", powerCellCount);
   }
 
+  public int getPowerCellCount() {
+    return powerCellCount;
+  }
+
   /** 
    * updates the amount of power cells in the cellevator on the Smart Dashboard
   */
   public void updatePowerCellCount() {
-    SmartDashboard.putNumber("Power Cell Count", powerCellCount);
+    powerCellCount = (int) SmartDashboard.getNumber("Power Cell Count", 0);
   }
 
   /**
