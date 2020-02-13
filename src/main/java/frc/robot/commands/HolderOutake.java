@@ -41,7 +41,7 @@ private final Cellevator m_cellevator;
   public void end(boolean interrupted) {
     m_cellevator.stopHolderMotor(); // stops the holder motor
     //subtracts from the count of the power cells if the command is not interrupted
-    if (interrupted = false) {
+    if (interrupted == false) {
       m_cellevator.subtractPowerCellCount();
     }
     
