@@ -7,12 +7,9 @@
 
 package frc.robot.commands;
 
-import com.revrobotics.ControlType;
 
-import com.revrobotics.CANPIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Launcher;
-import frc.robot.Constants.LauncherConstants;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
