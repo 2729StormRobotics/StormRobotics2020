@@ -102,6 +102,14 @@ public class Drivetrain extends SubsystemBase {
     addChild("Drivetrain", m_drive);
     addChild("Shift Gears", m_gearShift);
     addChild("Gyro", m_imu);
+
+    //assign values with PID controllers
+    m_pidControllerLeft.setP(DriveDistancePID.kP);
+    m_pidControllerRight.setP(DriveDistancePID.kP);
+    m_pidControllerLeft.setI(DriveDistancePID.kI);
+    m_pidControllerRight.setI(DriveDistancePID.kI);
+    m_pidControllerLeft.setD(DriveDistancePID.kD);
+    m_pidControllerRight.setD(DriveDistancePID.kD);
   }
 
   private void motorInit(CANSparkMax motor, boolean invert) {
