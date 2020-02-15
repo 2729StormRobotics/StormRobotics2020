@@ -136,6 +136,13 @@ public class Launcher extends SubsystemBase {
     return getLaunchPistonValue() == Value.kForward;
   }
 
+  /**
+   * Toggles the launch pistons.
+   */
+  public void toggleLaunchPiston() {
+    setLaunchPiston(!getLaunchPiston());
+  }
+
 
   /**
    * Initialize an encoder.
