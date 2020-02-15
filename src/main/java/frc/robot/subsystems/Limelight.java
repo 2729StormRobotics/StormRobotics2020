@@ -43,7 +43,7 @@ public class Limelight extends SubsystemBase {
     // Reset the default settings and pipelines to the Limelight
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
 
-
+    // Initialize the network table entries for distance and target detection to default values
     targetDistance = m_limelightTable.getEntry("Target Distance");
     targetDetection = m_limelightTable.getEntry("Target Detection");
   }
@@ -122,6 +122,7 @@ public class Limelight extends SubsystemBase {
     targetArea = m_limelightTable.getEntry("ta").getDouble(0.0);
     targetValue = m_limelightTable.getEntry("tv").getDouble(0.0);
 
+    // Updates the values of the math for target distance and value to the network table
     targetDistance.setDouble(limelightDistance());
     targetDetection.setBoolean(isTargetDetected());
   }
