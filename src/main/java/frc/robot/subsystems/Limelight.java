@@ -91,13 +91,14 @@ public class Limelight extends SubsystemBase {
    * @param pipeline Which pipeline to use on the limelight (0-9)
    */
   public void setPipeline(int pipeline) {
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(pipeline);
-    m_limelightTable.getEntry("Pipeline").setValue(pipeline);
     if (pipeline < 0) {
       pipeline = 0;
     } else if (pipeline > 9) {
       pipeline = 9;
     }
+    
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(pipeline);
+    m_limelightTable.getEntry("Pipeline").setValue(pipeline);
   }
 
   /**

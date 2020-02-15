@@ -20,10 +20,10 @@ import edu.wpi.first.wpilibj.util.Color;
  */
 public final class Constants {
     public static final class DriveConstants {
-        public static final int kLeftDriveMotor1Port = 0;
-        public static final int kLeftDriveMotor2Port = 15;
-        public static final int kRightDriveMotor1Port = 3;
-        public static final int kRightDriveMotor2Port = 12;
+        public static final int kLeftDriveMotor1Port = 3;
+        public static final int kLeftDriveMotor2Port = 12;
+        public static final int kRightDriveMotor1Port = 36;
+        public static final int kRightDriveMotor2Port = 15;
 
         // pistons that shift the gear of the drive train
         public static final int kDriveSolenoid = 7;
