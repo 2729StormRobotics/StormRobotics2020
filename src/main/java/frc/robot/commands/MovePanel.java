@@ -39,6 +39,6 @@ public class MovePanel extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return (m_MovePanel.isSpun() == true && m_MovePanel.colorCount() >= 8); //ends when both condidtions are true  
   }
 }
