@@ -71,7 +71,7 @@ public class CellevatorHolder extends CommandBase {
       return true;
     } else if (m_cellevator.getBeamBreakMiddlePrevious() != m_cellevator.isMiddleBallPresent()) {
       // if the previous middle beam break value is not equal to the current value,
-      // set the previous value eqaual to the current oolam value
+      // set the previous value eqaual to the current boolean value
       m_cellevator.setBeamBreakMiddlePrevious(m_cellevator.isMiddleBallPresent());
       return (!m_cellevator.isMiddleBallPresent() && !m_cellevator.getBeamBreakMiddlePrevious());
     } else {

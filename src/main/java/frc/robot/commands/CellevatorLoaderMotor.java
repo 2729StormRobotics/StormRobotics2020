@@ -43,14 +43,17 @@ public class CellevatorLoaderMotor extends CommandBase {
   public void end(boolean interrupted) {
     m_cellevatorLoader.stopLoaderMotor();
 
-    if (interrupted = false) {
-      
-    }
+    
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_cellevatorLoader.isBottomBallPresent();
+    if (!m_cellevatorLoader.isBottomBallPresent()) {
+      return true;
+  }
+  else {
+    return false;
+  }
   }
 }

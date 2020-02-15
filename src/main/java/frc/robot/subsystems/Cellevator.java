@@ -176,5 +176,24 @@ public class Cellevator extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     log();
+    if (previousBBBottom != isBottomBallPresent()) {
+      // if the previous bottom beam break is not equal to the current then check if the current value is true
+      //this means that there is a power cell that has been taken in so we can add one to the count
+      if(isBottomBallPresent() == true) {
+        addPowerCellCount();
+      }
+      // sets the previous value equal to the present
+      setBeamBreakBottomPrevious(isBottomBallPresent());
+    }
+
+    if (previousBBTop != isTopBallPresent()) {
+      // if the previous top beam break is not equal to the current then checki if the current value is false
+      // this means that the power cell left the cellevator and into the launcher so we can subtract one from the count
+      if(isTopBallPresent() == false) {
+        subtractPowerCellCount();
+      }
+      // sets the previous value equal to the present
+      setBeamBreakTopPrevious(isTopBallPresent());
+    }
   }
 }
