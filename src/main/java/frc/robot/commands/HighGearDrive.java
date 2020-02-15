@@ -10,38 +10,25 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Drivetrain;
 
-public class HighGear extends InstantCommand {
+
+// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
+// information, see:
+// https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
+public class HighGearDrive extends InstantCommand {
   // Declare the drivetrain.
   private final Drivetrain m_drivetrain;
   /**
    * Creates a new HighGear.
    */
-  public HighGear(Drivetrain subsystem) {
-
+  public HighGearDrive(Drivetrain subsystem) {
     m_drivetrain = subsystem;
     
     addRequirements(subsystem);
-}
+  }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     m_drivetrain.shiftHigh();
   }
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-  }
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-  }
-
-  // Returns true when the command should end.
-  // @Override
-  // public boolean isFinished() {
-  //   return false;
-  //}
 }
