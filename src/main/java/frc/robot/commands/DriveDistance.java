@@ -38,7 +38,7 @@ public class DriveDistance extends TrapezoidProfileCommand {
             new TrapezoidProfile.Constraints(kMaxSpeed, kMaxAcceleration),
             
             // End desired distance at targetTravelDistance
-            new TrapezoidProfile.State(distance, 0)), //implicitely starts at 0
+            new TrapezoidProfile.State(distance, 0)), //implicitly starts at 0
             
             // Send the profile state to the drivetrain
             state -> drive.setDriveStates(state, state), 
