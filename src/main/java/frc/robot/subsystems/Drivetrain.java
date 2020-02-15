@@ -317,7 +317,6 @@ public class Drivetrain extends SubsystemBase {
     updateDriveType();
   }
 
-public void initialize() {
-    shiftLow(true);  
-  }
 }
+}
+
