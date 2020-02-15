@@ -14,17 +14,18 @@ import frc.robot.subsystems.Drivetrain;
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class LowGearDrive extends InstantCommand {
-
+  // this command uses the drivetrain subsystem
   public final Drivetrain m_drivetrain;
 
   public LowGearDrive(final Drivetrain subsystem) {
 
     m_drivetrain = subsystem;
-    addRequirements(subsystem);
+    addRequirements(subsystem); // adds drivetrain subsystem as a requiremnt for this command
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
-  // Called when the command is initially scheduled.
+  // Called when the command is initially scheduled
+  // After initalization this command uses the low gear method
   @Override
   public void initialize() {
 	m_drivetrain.shiftLow(true);
