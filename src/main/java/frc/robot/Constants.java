@@ -107,8 +107,8 @@ public final class Constants {
         public static final boolean kInvertRightLauncher = !kInvertLeftLauncher;
 
         // The two different speeds for the set shooting locations.
-        public static final double klaunchSpeed1 = 0; // TODO: test and update this value
-        public static final double klaunchSpeed2 = 0; // TODO: test and update this value
+        public static final double kLaunchSpeed1 = 0; // TODO: test and update this value
+        public static final double kLaunchSpeed2 = 0; // TODO: test and update this value
 
         // PID constants for the launcher
         public static final class LaunchPID {
