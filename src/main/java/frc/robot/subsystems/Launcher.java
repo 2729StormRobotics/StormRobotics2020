@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -27,15 +28,17 @@ public class Launcher extends SubsystemBase {
   private final CANEncoder m_leftEncoder;
   private final CANEncoder m_rightEncoder;
 
-  private final DoubleSolenoid m_pistonAdjustment;
+  private final CANPIDController m_pidController;
+
+  private final DoubleSolenoid m_launchPiston;
 
   /**
    * Creates a new Launcher.
    */
   public Launcher() {
 
-    //solenoid port
-    m_pistonAdjustment = new DoubleSolenoid(kLeftLauncherMotorPort, kRightLauncherMotorPort);
+    // Instantiate the double solenoid for the launch pistons.
+    m_launchPiston = new DoubleSolenoid(kLeftLauncherMotorPort, kRightLauncherMotorPort);
 
     // Instantiate the motors.
     m_leftLauncher = new CANSparkMax(kLeftLauncherMotorPort, MotorType.kBrushless);
@@ -46,36 +49,84 @@ public class Launcher extends SubsystemBase {
     m_rightEncoder = m_rightLauncher.getEncoder();
 
     // Initialize the the motors.
-    motorInit(m_leftLauncher, kInvertLeftLauncher);
-    motorInit(m_rightLauncher, kInvertRightLauncher);
+    motorInit(m_leftLauncher);
+    motorInit(m_rightLauncher);
+
+    // Make right motor follow the left motor and set it to inverted.
+    m_rightLauncher.follow(m_leftLauncher, true);
+
+    // Initialize the PID controller for the motor controller.
+    m_pidController = m_leftLauncher.getPIDController();
+
+    //Initialize pid coefficients
+    pidInit();
 
     //initialize pistons
     pistonInit();
+  }
 
+  /**
+   * Set the PID coefficients for the PID Controller to use.
+   */
+  private void pidInit() {
+    // Set the proportional constant.
+    m_pidController.setP(LaunchPID.kP);
+    // Set the integral constant.
+    m_pidController.setI(LaunchPID.kI);
+    // Set the derivative constant.
+    m_pidController.setD(LaunchPID.kD);
+    // Set the integral zone. This value is the maximum |error| for the integral gain to take effect.
+    m_pidController.setIZone(LaunchPID.kIz);
+    // Set the feed-forward constant.
+    m_pidController.setFF(LaunchPID.kF);
+    // Set the output range.
+    m_pidController.setOutputRange(LaunchPID.kMinOutput, LaunchPID.kMaxOutput);
   }
 
   /**
    * Restore factory defaults, set idle mode to coast, and invert motor.
    * 
-   * @param motor  The motor to initialize
-   * @param invert Whether motor should be inverted
+   * @param motor The motor to initialize
    */
-  private void motorInit(CANSparkMax motor, boolean invert) {
+  private void motorInit(CANSparkMax motor) {
     motor.restoreFactoryDefaults(); // Just in case any settings persist between reboots.
     motor.setIdleMode(IdleMode.kCoast); // Set the motor to coast mode, so that we don't lose momentum when we stop
                                         // shooting.
-    motor.setInverted(invert); // Whether or not to invert motor.
     encoderInit(motor.getEncoder());
   }
  
-  //set pistons to default retracted position
+  /**
+   * Set the pistons to be retracted initially.
+   */
   private void pistonInit() {
-    pistonPush(false);
+    setLaunchPiston(false);
   }
 
-  //extends pistons if true
-  private void pistonPush(boolean out) {
-    m_pistonAdjustment.set(out ? Value.kForward : Value.kReverse);
+  /**
+   * Set the launch pistons to be extended or retracted.
+   * 
+   * @param out Extend pistons if true, retract if false.
+   */
+  public void setLaunchPiston(boolean out) {
+    m_launchPiston.set(out ? Value.kForward : Value.kReverse);
+  }
+
+  /**
+   * Get the value of the launch piston solenoid.
+   * 
+   * @return The {@link Value} that the {@link DoubleSolenoid#get()} method returns
+   */
+  public Value getLaunchPistonValue() {
+    return m_launchPiston.get();
+  }
+
+  /**
+   * Get whether the pistons are extended or not.
+   * 
+   * @return true if extended, false if retracted.
+   */
+  public boolean getLaunchPiston() {
+    return getLaunchPistonValue() == Value.kForward;
   }
 
 
@@ -97,37 +148,70 @@ public class Launcher extends SubsystemBase {
     encoder.setPosition(0);
   }
 
-  // sets speed of launcher motors to 0
+  /**
+   * Stop the launcher motors.
+   */
   public void stopMotors() {
     m_leftLauncher.set(0);
-    m_rightLauncher.set(0);
   }
 
-  // get left launcher speed in RPM
-  private double getLeftLauncherSpeed() {
+  /**
+   * Get the speed of the left motor.
+   * 
+   * @return The speed of the left motor in RPM.
+   */
+  public double getLeftLauncherSpeed() {
     return m_leftEncoder.getVelocity();
   }
 
-  // get right launcher speed in RPM
-  private double getRightLauncherSpeed() {
+  /**
+   * Get the speed of the right motor.
+   * 
+   * @return The speed of the right motor in RPM.
+   */
+  public double getRightLauncherSpeed() {
     return m_rightEncoder.getVelocity();
   }
 
-  // get average speed of left and right launchers
+  /**
+   * Get the average speed of the launcher motors.
+   * 
+   * @return The average speed of both launcher motors in RPM.
+   */
   public double getLauncherAvgSpeed() {
     return ((getLeftLauncherSpeed() + getRightLauncherSpeed()) / 2.0);
   }
 
-  // add info to the dashboard
+  /**
+   * Set the motor controller to start the PID controller.
+   * 
+   * @param speed The target angular speed in RPM
+   */
+  public void revToSpeed(double speed) {
+    m_pidController.setReference(speed, ControlType.kVelocity);
+  }
+
+  /**
+   * Stop the PID controller.
+   */
+  public void stopRevving() {
+    // Stopping the motors should stop the pid controller.
+    stopMotors();
+  }
+
+  /**
+   * Add information to the dashboard repeatedly.
+   */
   public void log() {
     SmartDashboard.putNumber("Left Launcher Speed(RPM)", m_leftEncoder.getVelocity());
     SmartDashboard.putNumber("Right Launcher Speed(RPM)", m_rightEncoder.getVelocity());
     SmartDashboard.putNumber("Average Launcher Speed(RPM)", getLauncherAvgSpeed());
+    SmartDashboard.putBoolean("Launch Pistons Extended", getLaunchPiston());
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    // Log information to the dashboard repeatedly.
     log();
   }
 }
