@@ -34,64 +34,10 @@ public class Party extends SubsystemBase {
 
   // Methods for each LED mode
   // Set LED blinkin to the spark motor double
-  public void turnWhite() {
-    // For when there is 1 power cell in cellevator
-    m_ledDriver1.set(kWhite);
-    m_ledDriver2.set(kWhite);
-  }
-  
-  public void turnGray() {
-    // For when when there is 2 power cells in cellevator
-    m_ledDriver1.set(kGray);
-    m_ledDriver2.set(kGray);
-  }
-
-  public void turnBlack() {
-    // For when there are 3 power cells in cellevator
-    m_ledDriver1.set(kBlack);
-    m_ledDriver2.set(kBlack);
-  }
-
   public void turnGreen() {
     // For when aligned to target
     m_ledDriver1.set(kGreen);
     m_ledDriver2.set(kGreen);
-  }
-
-  public void turnYellow() {
-    // For when aligning to target but not aligned yet
-    m_ledDriver1.set(kYellow);
-    m_ledDriver2.set(kYellow);
-  }
-
-  public void turnHeartbeatBlue() {
-    // For when launcher is at  desired speed
-    m_ledDriver1.set(kHeartbeatBlue);
-    m_ledDriver2.set(kHeartbeatBlue);
-  }
-
-  public void turnPink() {
-    // For when launcher is at higher angle
-    m_ledDriver1.set(kPink);
-    m_ledDriver2.set(kPink);
-  }
-
-  public void turnViolet() {
-    // For when launcher is at lower angle
-    m_ledDriver1.set(kViolet);
-    m_ledDriver2.set(kViolet);
-  }
-
-  public void turnStrobeGold() {
-    // For when climber is going up
-    m_ledDriver1.set(kStrobeGold);
-    m_ledDriver2.set(kStrobeGold);
-  }
-
-  public void turnStrobeWhite() {
-    // For when climber is going down
-    m_ledDriver1.set(kStrobeWhite);
-    m_ledDriver2.set(kStrobeWhite);
   }
 
   public void turnRed() {
@@ -107,12 +53,6 @@ public class Party extends SubsystemBase {
     m_ledDriver2.set(kRainbowParty);
   }
 
-  public void turnOrange() {
-    // for anything extra
-    m_ledDriver1.set(kOrange);
-    m_ledDriver2.set(kOrange);
-  }
-  
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
