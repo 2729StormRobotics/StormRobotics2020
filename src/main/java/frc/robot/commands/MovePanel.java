@@ -21,13 +21,13 @@ public class MovePanel extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-  m_MovePanel.colorCount();
+  m_MovePanel.colorCount(); //starts color count
   }
  
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-  m_MovePanel.wheelMotorPower();
+  m_MovePanel.wheelMotorPower(); //adjusts power
   }
 
   // Called once the command ends or is interrupted.
