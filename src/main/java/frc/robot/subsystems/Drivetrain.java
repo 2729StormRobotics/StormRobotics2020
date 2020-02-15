@@ -21,6 +21,9 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import static frc.robot.Constants.DriveConstants.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -58,6 +61,14 @@ public class Drivetrain extends SubsystemBase {
   SendableChooser<String> m_chooser = new SendableChooser<>();
 
   private final Solenoid m_gearShift;
+
+  // Add the Network Table for the limelight
+  private final NetworkTable m_limelightTable;
+  
+  // Create variables for the different values given from the limelight
+  private double xOffset; // Positive values mean that target is to the right of the camera; negative
+                          // values mean target is to the left. Measured in degrees
+  private double targetValue; // Sends 1 if a target is detected, 0 if none are present
 
   // Creates a new Drivetrain.
   public Drivetrain() {
@@ -102,6 +113,24 @@ public class Drivetrain extends SubsystemBase {
     addChild("Drivetrain", m_drive);
     addChild("Shift Gears", m_gearShift);
     addChild("Gyro", m_imu);
+
+    // Set a member variable for the limelight network table
+    m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+  }
+
+  /**
+   * Returns a value of the offset on the x-axis of the camera to the target in
+   * degrees. Negative values mean the target is to the left of the camera
+   */
+  public double getXOffset() {
+    return xOffset;
+  }
+
+  /**
+   * Returns true if a target is detected
+   */
+  public boolean isTargetDetected() {
+    return (targetValue > 0.0);
   }
 
   private void motorInit(CANSparkMax motor, boolean invert) {
@@ -275,6 +304,10 @@ public class Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("Right Distance", getRightEncoderAverage());
     SmartDashboard.putNumber("Robot Angle", getRobotAngle());
     SmartDashboard.putData("Drive Control Type", m_chooser);
+
+    // Updates the values of the limelight on the network table
+    xOffset = m_limelightTable.getEntry("tx").getDouble(0.0);
+    targetValue = m_limelightTable.getEntry("tv").getDouble(0.0);
   }
 
   @Override
