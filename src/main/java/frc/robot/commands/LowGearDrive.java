@@ -17,7 +17,7 @@ public class LowGearDrive extends InstantCommand {
   // this command uses the drivetrain subsystem
   public final Drivetrain m_drivetrain;
 
-  public LowGearDrive(final Drivetrain subsystem) {
+  public LowGearDrive(Drivetrain subsystem) {
 
     m_drivetrain = subsystem;
     addRequirements(subsystem); // adds drivetrain subsystem as a requiremnt for this command
