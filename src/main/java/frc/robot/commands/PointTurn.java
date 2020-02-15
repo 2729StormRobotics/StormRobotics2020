@@ -46,7 +46,7 @@ public class PointTurn extends PIDCommand {
     // Assign drivetrain member variable to drivetrain passed in constructor.
     m_drivetrain = drivetrain;
     // Add Drivetrain as a required subsystem.
-    addRequirements(drivetrain);
+    addRequirements(m_drivetrain);
     // Set the position and velocity tolerances.
     getController().setTolerance(PointTurnPID.kPositionTolerance, PointTurnPID.kVelocityTolerance);
 
@@ -69,6 +69,7 @@ public class PointTurn extends PIDCommand {
   public void initialize() {
     // Save the angle of the gyro at the beginning of PointTurn.
     m_initialAngle = m_drivetrain.getRobotAngle();
+    super.initialize();
   }
 
   // Returns true when the command should end.
