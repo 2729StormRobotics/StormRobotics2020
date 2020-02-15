@@ -64,10 +64,6 @@ public class RobotContainer {
 
     // Configure the button bindings
     configureButtonBindings();
-
-    //Get value for drive distance setpoint
-    SmartDashboard.putNumber("Target Distance", 0); //gets target distance from dashboard(0 if nothing else is found)
-    SmartDashboard.putData("Travel Distance", new DriveDistance(() -> m_drivetrain.getTargetDistance(), m_drivetrain));
   }
 
   /**

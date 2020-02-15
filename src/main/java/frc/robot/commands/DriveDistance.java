@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.TrapezoidProfileCommand;
 
 import static frc.robot.Constants.DriveConstants.*;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.function.DoubleSupplier;
 
@@ -25,11 +26,11 @@ public class DriveDistance extends TrapezoidProfileCommand {
 
   /**
    * Creates a new DriveDistance.
-   * @param DoubleSupplier distance value converted to a double
+   * @param double distance value 
    * 
    * @param drive the Drivetrain passed through to run DriveDIstance
    */
-  public DriveDistance(DoubleSupplier distance, Drivetrain drive) {
+  public DriveDistance(double distance, Drivetrain drive) {
     super(
         // The motion profile to be executed
         new TrapezoidProfile(
@@ -37,13 +38,18 @@ public class DriveDistance extends TrapezoidProfileCommand {
             new TrapezoidProfile.Constraints(kMaxSpeed, kMaxAcceleration),
             
             // End desired distance at targetTravelDistance
-            new TrapezoidProfile.State(distance.getAsDouble(), 0)), //implicitely starts at 0
+            new TrapezoidProfile.State(distance, 0)), //implicitely starts at 0
             
             // Send the profile state to the drivetrain
             state -> drive.setDriveStates(state, state), 
             drive);
         
       drive.resetAllEncoders();
+  }
+
+  //retrieves distance value from SmartDashboard
+  public DriveDistance(Drivetrain drive) {
+    this(SmartDashboard.getNumber("Target Distance", 0), drive);
   }
 
   
