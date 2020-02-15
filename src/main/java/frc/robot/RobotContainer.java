@@ -9,6 +9,7 @@ package frc.robot;
 
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -52,6 +53,12 @@ public class RobotContainer {
       return m_weaponsController.getPOV(0) == 0;
     }
   };
+  Button dpadDown = new Button() {
+    @Override
+    public boolean get() {
+      return m_weaponsController.getPOV(3) == 3;
+    }
+  };
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -90,12 +97,23 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     
-    new JoystickButton(m_driverController, kA.value).whileHeld(new LimelightAlign(m_limelight, m_drivetrain));
+    new JoystickButton(m_driverController, kA.value).whileHeld(new LimelightAlign(m_limelight, m_drivetrain));  //LimeLight align     
 
-    dpadUp.whenPressed(new MoveIntakePistons(m_intake));
+    dpadUp.whenPressed(new MoveIntakePistons(m_intake));    //moves intake pistions
 
-    new JoystickButton(m_weaponsController, kBumperLeft.value)
-    
+    dpadDown.whenPressed(new MoveIntakePistons(m_intake));
+
+    new JoystickButton(m_weaponsController, kBumperLeft.value).whileHeld(new IntakePowerCell(IntakeConstants.kIntakeMotorSpeed, m_intake));   //powercell intake
+
+    new JoystickButton(m_weaponsController, kBumperRight.value).whileHeld(new IntakePowerCell(IntakeConstants.kIntakeMotorSpeed * -1, m_intake));   //powercell intake
+
+    new JoystickButton(m_weaponsController, kA.value).whileHeld(new FrictionBrakeRelease(m_climbers));
+
+
+    new JoystickButton(m_weaponsController, kB.value).whenPressed(new InstantCommand(m_climbers::engageFrictionBrake, m_climber));
+
+
+
     
 
 }
