@@ -33,6 +33,8 @@ public class Limelight extends SubsystemBase {
 
   NetworkTableEntry targetDistance; // Creates a new network table entry for the target distance on 
                                     // the floor in inches
+  NetworkTableEntry targetDetection; //Creates a new network table entry for if a target is detected
+                
 
   public Limelight() {
     // Gets the network table for the limelight
@@ -41,8 +43,9 @@ public class Limelight extends SubsystemBase {
     // Reset the default settings and pipelines to the Limelight
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
 
-    // Create a new entry for the target distance
+
     targetDistance = m_limelightTable.getEntry("Target Distance");
+    targetDetection = m_limelightTable.getEntry("Target Detection");
   }
 
   /**
@@ -120,6 +123,7 @@ public class Limelight extends SubsystemBase {
     targetValue = m_limelightTable.getEntry("tv").getDouble(0.0);
 
     targetDistance.setDouble(limelightDistance());
+    targetDetection.setBoolean(isTargetDetected());
   }
 
   public void log() {
