@@ -17,10 +17,12 @@ import frc.robot.subsystems.Drivetrain;
 public class HighGearDrive extends InstantCommand {
   // Declare the drivetrain.
   private final Drivetrain m_drivetrain;
+
   /**
    * Creates a new HighGear.
    */
   public HighGearDrive(Drivetrain subsystem) {
+    // This is the local instance of the parameter variable, the drivetrain.
     m_drivetrain = subsystem;
     
     addRequirements(subsystem);
@@ -29,6 +31,7 @@ public class HighGearDrive extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    // Shift to the high gear (high speed, low torque).
     m_drivetrain.shiftHigh();
   }
 }
