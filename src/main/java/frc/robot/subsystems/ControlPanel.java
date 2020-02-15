@@ -134,7 +134,7 @@ public void findTargetColor(){
   // Controls motor speed
   public void wheelMotorPower() {
     if (!isSpun()) {
-      spinMotor(.4); // TODO Determine ideal speeds, then add to constants
+      spinMotor(kMotorSpeed); 
     } else if (isSpun()) {
       findTargetColor();
     }
