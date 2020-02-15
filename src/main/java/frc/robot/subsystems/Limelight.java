@@ -30,12 +30,22 @@ public class Limelight extends SubsystemBase {
   // Create a network table for the limelight
   private final NetworkTable m_limelightTable;
 
+
+  NetworkTableEntry targetDistance; // Creates a new network table entry for the target distance on 
+                                    // the floor in inches
+  NetworkTableEntry targetDetection; //Creates a new network table entry for if a target is detected
+                
+
   public Limelight() {
     // Gets the network table for the limelight
     m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
 
     // Reset the default settings and pipelines to the Limelight
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
+
+    // Initialize the network table entries for distance and target detection to default values
+    targetDistance = m_limelightTable.getEntry("Target Distance");
+    targetDetection = m_limelightTable.getEntry("Target Detection");
   }
 
   /**
@@ -84,13 +94,14 @@ public class Limelight extends SubsystemBase {
    * @param pipeline Which pipeline to use on the limelight (0-9)
    */
   public void setPipeline(int pipeline) {
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(pipeline);
-    m_limelightTable.getEntry("Pipeline").setValue(pipeline);
     if (pipeline < 0) {
       pipeline = 0;
     } else if (pipeline > 9) {
       pipeline = 9;
     }
+    
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(pipeline);
+    m_limelightTable.getEntry("Pipeline").setValue(pipeline);
   }
 
   /**
@@ -111,6 +122,9 @@ public class Limelight extends SubsystemBase {
     targetArea = m_limelightTable.getEntry("ta").getDouble(0.0);
     targetValue = m_limelightTable.getEntry("tv").getDouble(0.0);
 
+    // Updates the values of the math for target distance and value to the network table
+    targetDistance.setDouble(limelightDistance());
+    targetDetection.setBoolean(isTargetDetected());
   }
 
   public void log() {

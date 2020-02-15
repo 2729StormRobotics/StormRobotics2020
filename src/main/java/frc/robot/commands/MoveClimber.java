@@ -7,51 +7,41 @@
 
 package frc.robot.commands;
 
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Launcher;
+import frc.robot.subsystems.Climbers;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class FixedLaunch extends CommandBase {
+public class MoveClimber extends CommandBase {
+  private final Climbers m_climbers;  //declares climber
+  private final double m_speed;     //declares a speed variable
 
-  private final double m_launchSpeed;
-  private final Launcher m_Launcher;
-
-  /**
-   * 
-   * Creates a new FixedLaunch.
-   */
-  public FixedLaunch(double launchSpeed, Launcher subsystem) {
-    // These are the local instances of the parameter variables for FixedLaunch
-    m_launchSpeed = launchSpeed;
-    m_Launcher = subsystem;
-    addRequirements(m_Launcher);
+  public MoveClimber(double speed, Climbers climbers) {
+    m_speed = speed;            //initializing speed
+    m_climbers = climbers;     //initailizing climber
+    addRequirements(m_climbers);      //it requires the climber subsystem to run the command
   }
 
-  // Called just before this Command runs the first time.
+  // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // revs motor to input speed
-    m_Launcher.revToSpeed(m_launchSpeed);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    m_climbers.climb(m_speed);  //moves the climber using the speed
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    // stops the motor if command is interrupted
-    m_Launcher.stopRevving();
+    
+    m_climbers.stopClimb(); //when the command is finished the motors stop
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-     return false;
+    return false;   //false because it is a default command
   }
 }

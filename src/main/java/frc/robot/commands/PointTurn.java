@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.subsystems.Drivetrain;
 
@@ -15,7 +16,7 @@ import static frc.robot.Constants.DriveConstants.*;
 
 public class PointTurn extends PIDCommand {
 
-  // Declare the drivetrain member variable
+  // Declare the drivetrain member variable.
   private final Drivetrain m_drivetrain;
 
   // Declare the variable for the initial angle.
@@ -52,6 +53,15 @@ public class PointTurn extends PIDCommand {
     // Set the wrap-around point for the PIDController to move in the shortest route to the setpoint.
     // Note: this clamps the setpoint between -180 and 180, meaning that the setpoint should never be outside that range.
     getController().enableContinuousInput(-180, 180);
+  }
+
+  /**
+   * Rotates the robot by an amount of degrees specified in SmartDashboard.
+   * 
+   * @param drivetrain Pass in the drivetrain for the command to use.
+   */
+  public PointTurn(Drivetrain drivetrain) {
+    this(SmartDashboard.getNumber("Target Angle", 0), drivetrain);
   }
 
   // Runs when the command is scheduled.

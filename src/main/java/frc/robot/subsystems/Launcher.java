@@ -14,6 +14,8 @@ import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -30,15 +32,17 @@ public class Launcher extends SubsystemBase {
 
   private final CANPIDController m_pidController;
 
-  private final DoubleSolenoid m_pistonAdjustment;
+  private final DoubleSolenoid m_launchPiston;
+
+  private final NetworkTable m_limelightTable;
 
   /**
    * Creates a new Launcher.
    */
   public Launcher() {
 
-    //solenoid port
-    m_pistonAdjustment = new DoubleSolenoid(kLeftLauncherMotorPort, kRightLauncherMotorPort);
+    // Instantiate the double solenoid for the launch pistons.
+    m_launchPiston = new DoubleSolenoid(kLeftLauncherMotorPort, kRightLauncherMotorPort);
 
     // Instantiate the motors.
     m_leftLauncher = new CANSparkMax(kLeftLauncherMotorPort, MotorType.kBrushless);
@@ -58,16 +62,38 @@ public class Launcher extends SubsystemBase {
     // Initialize the PID controller for the motor controller.
     m_pidController = m_leftLauncher.getPIDController();
 
-    //initialize pistons
+    // Initialize pid coefficients
+    pidInit();
+
+    // Initialize pistons
     pistonInit();
 
+    // Instantiate the limelight NetworkTable
+    m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+  }
+
+  /**
+   * Set the PID coefficients for the PID Controller to use.
+   */
+  private void pidInit() {
+    // Set the proportional constant.
+    m_pidController.setP(LaunchPID.kP);
+    // Set the integral constant.
+    m_pidController.setI(LaunchPID.kI);
+    // Set the derivative constant.
+    m_pidController.setD(LaunchPID.kD);
+    // Set the integral zone. This value is the maximum |error| for the integral gain to take effect.
+    m_pidController.setIZone(LaunchPID.kIz);
+    // Set the feed-forward constant.
+    m_pidController.setFF(LaunchPID.kF);
+    // Set the output range.
+    m_pidController.setOutputRange(LaunchPID.kMinOutput, LaunchPID.kMaxOutput);
   }
 
   /**
    * Restore factory defaults, set idle mode to coast, and invert motor.
    * 
-   * @param motor  The motor to initialize
-   * @param invert Whether motor should be inverted
+   * @param motor The motor to initialize
    */
   private void motorInit(CANSparkMax motor) {
     motor.restoreFactoryDefaults(); // Just in case any settings persist between reboots.
@@ -76,14 +102,45 @@ public class Launcher extends SubsystemBase {
     encoderInit(motor.getEncoder());
   }
  
-  //set pistons to default retracted position
+  /**
+   * Set the pistons to be retracted initially.
+   */
   private void pistonInit() {
     setLaunchPiston(false);
   }
 
-  //extends pistons if true
+  /**
+   * Set the launch pistons to be extended or retracted.
+   * 
+   * @param out Extend pistons if true, retract if false.
+   */
   public void setLaunchPiston(boolean out) {
-    m_pistonAdjustment.set(out ? Value.kForward : Value.kReverse);
+    m_launchPiston.set(out ? Value.kForward : Value.kReverse);
+  }
+
+  /**
+   * Get the value of the launch piston solenoid.
+   * 
+   * @return The {@link Value} that the {@link DoubleSolenoid#get()} method returns
+   */
+  public Value getLaunchPistonValue() {
+    return m_launchPiston.get();
+  }
+
+  /**
+   * Get whether the pistons are extended or not.
+   * 
+   * @return true if extended, false if retracted.
+   */
+  public boolean getLaunchPiston() {
+    return getLaunchPistonValue() == Value.kForward;
+  }
+
+  /**
+   * Toggles the launch pistons.
+   */
+  public void toggleLaunchPiston() {
+    setLaunchPiston(!getLaunchPiston());
   }
 
 
@@ -105,44 +162,92 @@ public class Launcher extends SubsystemBase {
     encoder.setPosition(0);
   }
 
-  // sets speed of launcher motors to 0
+  /**
+   * Stop the launcher motors.
+   */
   public void stopMotors() {
     m_leftLauncher.set(0);
   }
 
-  // get left launcher speed in RPM
-  private double getLeftLauncherSpeed() {
+  /**
+   * Get the speed of the left motor.
+   * 
+   * @return The speed of the left motor in RPM.
+   */
+  public double getLeftLauncherSpeed() {
     return m_leftEncoder.getVelocity();
   }
 
-  // get right launcher speed in RPM
-  private double getRightLauncherSpeed() {
+  /**
+   * Get the speed of the right motor.
+   * 
+   * @return The speed of the right motor in RPM.
+   */
+  public double getRightLauncherSpeed() {
     return m_rightEncoder.getVelocity();
   }
 
-  // get average speed of left and right launchers
+  /**
+   * Get the average speed of the launcher motors.
+   * 
+   * @return The average speed of both launcher motors in RPM.
+   */
   public double getLauncherAvgSpeed() {
     return ((getLeftLauncherSpeed() + getRightLauncherSpeed()) / 2.0);
   }
 
+  /**
+   * Set the motor controller to start the PID controller.
+   * 
+   * @param speed The target angular speed in RPM
+   */
   public void revToSpeed(double speed) {
-
+    m_pidController.setReference(speed, ControlType.kVelocity);
   }
 
+  /**
+   * Stop the PID controller.
+   */
   public void stopRevving() {
+    // Stopping the motors should stop the pid controller.
     stopMotors();
   }
 
-  // add info to the dashboard
+  /**
+   * Get the horizontal distance from the vision target from network tables
+   * 
+   * @return the distance.
+   */
+  private double getDistance() {
+    return m_limelightTable.getEntry("Target Distance").getDouble(0.0);
+  }
+
+  /**
+   * Calculate the desired speed of the launch motors.
+   * 
+   * @param distance The horizontal distance from the vision target
+   * @return The desired speed of the launch motors in RPM.
+   */
+  public double calculateLaunchSpeed() {
+    double distance = getDistance();
+
+    // TODO: figure out this function through testing.
+    return 0;
+  }
+
+  /**
+   * Add information to the dashboard repeatedly.
+   */
   public void log() {
     SmartDashboard.putNumber("Left Launcher Speed(RPM)", m_leftEncoder.getVelocity());
     SmartDashboard.putNumber("Right Launcher Speed(RPM)", m_rightEncoder.getVelocity());
     SmartDashboard.putNumber("Average Launcher Speed(RPM)", getLauncherAvgSpeed());
+    SmartDashboard.putBoolean("Launch Pistons Extended", getLaunchPiston());
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    // Log information to the dashboard repeatedly.
     log();
   }
 }
