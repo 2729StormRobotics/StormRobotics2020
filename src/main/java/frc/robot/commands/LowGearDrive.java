@@ -15,7 +15,7 @@ import frc.robot.subsystems.Drivetrain;
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class LowGearDrive extends InstantCommand {
 
-  private final Drivetrain m_drivetrain;
+  public final Drivetrain m_drivetrain;
 
   public LowGearDrive(final Drivetrain subsystem) {
 
@@ -27,6 +27,6 @@ public class LowGearDrive extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_drivetrain.shiftLow(true);  
-  }
+	m_drivetrain.m_lowGear(true);
+}
 }
