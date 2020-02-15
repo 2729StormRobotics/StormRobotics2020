@@ -7,23 +7,27 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+//import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.robot.subsystems.Drivetrain;;
+//import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.subsystems.Drivetrain;
 
 public class HighGear extends InstantCommand {
+  private final Drivetrain m_drivetrain;
   /**
    * Creates a new HighGear.
    */
   public HighGear(Drivetrain subsystem) {
-  m_drivetrain = subsystem;
-  addRequirements(subsystem);
+
+    m_drivetrain = subsystem;
+    
+    addRequirements(subsystem);
 }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    m_drivetrain.shiftHigh();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
