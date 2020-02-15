@@ -16,7 +16,7 @@ import static frc.robot.Constants.DriveConstants.*;
 
 public class PointTurn extends PIDCommand {
 
-  // Declare the drivetrain member variable
+  // Declare the drivetrain member variable.
   private final Drivetrain m_drivetrain;
 
   // Declare the variable for the initial angle.
