@@ -114,6 +114,14 @@ public class Drivetrain extends SubsystemBase {
     addChild("Shift Gears", m_gearShift);
     addChild("Gyro", m_imu);
 
+    //assign values with PID controllers
+    m_pidControllerLeft.setP(DriveDistancePID.kP);
+    m_pidControllerRight.setP(DriveDistancePID.kP);
+    m_pidControllerLeft.setI(DriveDistancePID.kI);
+    m_pidControllerRight.setI(DriveDistancePID.kI);
+    m_pidControllerLeft.setD(DriveDistancePID.kD);
+    m_pidControllerRight.setD(DriveDistancePID.kD);
+    
     // Set a member variable for the limelight network table
     m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
   }
@@ -131,6 +139,7 @@ public class Drivetrain extends SubsystemBase {
    */
   public boolean isTargetDetected() {
     return (targetValue > 0.0);
+
   }
 
   private void motorInit(CANSparkMax motor, boolean invert) {
@@ -143,17 +152,7 @@ public class Drivetrain extends SubsystemBase {
     
   }
 
-  public void driveDistance(double setpoint) {
-    //assign values with PID controllers
-    m_pidControllerLeft.setP(DriveDistancePID.kP);
-    m_pidControllerRight.setP(DriveDistancePID.kP);
-    m_pidControllerLeft.setI(DriveDistancePID.kI);
-    m_pidControllerRight.setI(DriveDistancePID.kI);
-    m_pidControllerLeft.setD(DriveDistancePID.kD);
-    m_pidControllerRight.setD(DriveDistancePID.kD);
-
-    
-  }
+  
 
   public void setDriveStates(TrapezoidProfile.State left, TrapezoidProfile.State right) {
     m_pidControllerLeft.setReference(left.position, ControlType.kPosition, 0, m_feedForward.calculate(left.velocity), ArbFFUnits.kPercentOut);
@@ -294,6 +293,8 @@ public class Drivetrain extends SubsystemBase {
   public String getDriveType() {
     return m_driveType;
   }
+
+
 
   // puts data on the SmartDashboard
   public void log() {
