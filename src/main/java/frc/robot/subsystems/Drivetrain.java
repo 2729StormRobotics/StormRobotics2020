@@ -241,13 +241,13 @@ public class Drivetrain extends SubsystemBase {
   }
 
   // Activate the shifting pistons to shift into low gear
-  public void shiftLow(boolean on) {
+  public void shiftLow() {
     m_lowGear = true;
     shiftGears();
   }
 
   // Deactivate the shifting positions to shift into high gear
-  public void shiftHigh(boolean off) {
+  public void shiftHigh() {
     m_lowGear = false;
     shiftGears();
   }
