@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.util.Color;
  * wherever the constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
     public static final class DriveConstants {
         public static final int kLeftDriveMotor1Port = 3;
         public static final int kLeftDriveMotor2Port = 12;
@@ -198,11 +199,20 @@ public final class Constants {
         public static final int kLedBlinkinDriver2Port = 9;
 
         // Each possible LED mode correlates to a value for the Spark, as defined in the Rev Blinkin docs
-        public static final double kDancePartySparkValue = -0.97;   // Pattern: Rainbow, Pallete: Party
+        public static final double kRainbowParty = -0.97;           // Pattern: Rainbow, Pallete: Party
         public static final double kNormal = 0.53;                  // Color 1 and 2: Color Waves set as normal
         public static final double kRed = 0.61;                     // Solid Color: Red
         public static final double kOrange = 0.65;                  // Solid Color: Orange
         public static final double kGreen = 0.71;                   // Solid color: Green
+        public static final double kYellow = 0.69;                  // Solid color: Yellow
+        public static final double kHeartbeatBlue = -0.23;          // Fixed Pallete Pattern: Heartbeat, Blue
+        public static final double kPink = 0.57;                    // Solid Color: Hot Pink
+        public static final double kViolet = 0.91;                  // Solid Color: Violet
+        public static final double kStrobeGold = -0.07;             // Fixed Pallete Pattern: Strobe Gold
+        public static final double kStrobeWhite = -0.05;            // Fixed Pallete Pattern: Strobe White
+        public static final double kWhite = 0.93;                   // Solid Color: White
+        public static final double kBlack = 0.99;                   // Solid Color: Black
+        public static final double kGray = 0.95;                    // Solid Color: Gray
     }
 
     public static final class ControlPanelConstants {
@@ -287,6 +297,7 @@ public final class Constants {
         public static final double kLimelightDistance = 50.0;
         public static final double kLimelightDistanceTolerance = 5.0;
     }
+    
     public static final class ControllerConstants {
         public static final int kDriverControlPort = 0;
         public static final int kWeaponsControlPort = 1;
