@@ -23,7 +23,9 @@ public class ToggleLaunchAngle extends InstantCommand {
     addRequirements(m_launcher);
   }
 
-  // Called when the command is initially scheduled.
+  /**
+   * Runs when the command is first started.
+   */
   @Override
   public void initialize() {
     m_launcher.toggleLaunchPiston();
