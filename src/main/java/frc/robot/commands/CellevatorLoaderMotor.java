@@ -23,17 +23,27 @@ public class CellevatorLoaderMotor extends CommandBase {
     addRequirements(m_cellevatorLoader);
   }
 
+  /** 
+   * sets a boolean to true if the loader motor can run 
+  */
+  private boolean isSafeToLoad() {
+    //if there is no power cell at the bottom of the cellevator and the gap is clear in the middle then the loader motor can run
+    boolean middleIsClear = !m_cellevatorLoader.isBottomBallPresent() && m_cellevatorLoader.isMiddleGapClear();
+    
+    return middleIsClear;
+  }
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
   }
 
   /** 
-   * Every time the command is called run the loader motor if there is no power cell at the bottom of the cellevator
+   * Every time the command is called run the loader motor if it is safe to load the power cell into the cellevator
   */
   @Override
   public void execute() {
-    if (!m_cellevatorLoader.isBottomBallPresent()) { 
+    if (isSafeToLoad()) { 
       m_cellevatorLoader.runLoaderMotor(CellevatorConstants.kLoaderMotorSpeed);
     }
   }
@@ -46,14 +56,9 @@ public class CellevatorLoaderMotor extends CommandBase {
     
   }
 
-  // Returns true when the command should end.
+  // Returns true when it is not safe to load so that the motor stops
   @Override
   public boolean isFinished() {
-    if (m_cellevatorLoader.isBottomBallPresent()) {
-      return true;
-  }
-  else {
-    return false;
-  }
-  }
+    return !isSafeToLoad();
+    }
 }
