@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import frc.robot.commandgroups.LaunchMode;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.Joystick;
@@ -85,14 +86,14 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     
-    new JoystickButton(m_driverController, kA.value).whileHeld(new LimelightAlign(m_limelight, m_drivetrain));  //LimeLight align     
+    new JoystickButton(m_driverController, kA.value).whileHeld(new LimelightAlign(m_drivetrain)); // LimeLight align
     
     new JoystickButton(m_driverController, kB.value).whenPressed(new HighGearDrive(m_drivetrain));
 
     //TODO new JoystickButton(m_driverController, KY.value).whenPressed(new LowGearDrive(m_drivetrain));
 
     
-    // new POVButton(m_weaponsController, 0).whenPressed(new LaunchAngle(m_launcher));
+    new POVButton(m_weaponsController, 0).whenPressed(new ToggleLaunchAngle(m_launcher));
 
     new JoystickButton(m_weaponsController, kBumperLeft.value).whileHeld(new IntakePowerCell(IntakeConstants.kIntakeMotorSpeed, m_intake));   //powercell intake
 
@@ -100,7 +101,7 @@ public class RobotContainer {
 
     new JoystickButton(m_weaponsController, kA.value).whileHeld(new FrictionBrakeRelease(m_climbers)); //friction break
 
-    new JoystickButton(m_weaponsController, kB.value).whileHeld(new FixedLaunch(0, m_launcher)); //TODO need speed varible
+    new JoystickButton(m_weaponsController, kB.value).whileHeld(new LaunchMode(m_limelight, m_drivetrain, m_launcher, m_cellevatorLoader, m_cellevator, m_hopper));
 
     new JoystickButton(m_weaponsController, kStart.value).whileHeld(new HolderMotorManual(m_cellevator));
 

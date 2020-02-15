@@ -28,4 +28,7 @@ public class LaunchMode extends SequentialCommandGroup {
     // runs the Align and Rev, Queueing the cellevator, and launching in that order 
     super(new AlignAndRevToSpeed(m_limelight, m_drivetrain, m_launcher), new QueueCellevator(m_loader, m_holder, m_hopper, m_launcher), new LaunchPowerCell(m_holder, m_launcher));
   }
+
+public LaunchMode(int i, Launcher m_launcher) {
+}
 }
