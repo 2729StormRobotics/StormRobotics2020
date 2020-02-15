@@ -9,17 +9,22 @@ package frc.robot.subsystems;
 
 import com.analog.adis16470.frc.ADIS16470_IMU;
 import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
+import com.revrobotics.CANPIDController.AccelStrategy;
+import com.revrobotics.CANPIDController.ArbFFUnits;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.DriveConstants.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 
 public class Drivetrain extends SubsystemBase {
 
@@ -30,9 +35,6 @@ public class Drivetrain extends SubsystemBase {
   private final CANSparkMax m_rightMotor1;
   private final CANSparkMax m_rightMotor2;
 
-  private final SpeedControllerGroup m_leftMotors;
-  private final SpeedControllerGroup m_rightMotors;
-
   private final DifferentialDrive m_drive;
 
   // Creates variables for encoders
@@ -40,6 +42,12 @@ public class Drivetrain extends SubsystemBase {
   private final CANEncoder m_leftMotorEncoder2;
   private final CANEncoder m_rightMotorEncoder1;
   private final CANEncoder m_rightMotorEncoder2;
+
+  private final SimpleMotorFeedforward m_feedForward;
+
+  //pid controller
+  private final CANPIDController m_pidControllerLeft;
+  private final CANPIDController m_pidControllerRight;
 
   // Declare the gyro.
   private final ADIS16470_IMU m_imu;
@@ -65,10 +73,14 @@ public class Drivetrain extends SubsystemBase {
     motorInit(m_leftMotor1, kLeftSideInverted);
     motorInit(m_leftMotor2, kLeftSideInverted);
 
-    m_leftMotors = new SpeedControllerGroup(m_leftMotor1, m_leftMotor2);
-    m_rightMotors = new SpeedControllerGroup(m_rightMotor1, m_rightMotor2);
+    m_rightMotor2.follow(m_rightMotor1);
+    m_leftMotor2.follow(m_leftMotor2);
 
-    m_drive = new DifferentialDrive(m_leftMotors, m_rightMotors);
+    //PID controllers for left and right side
+    m_pidControllerLeft = m_leftMotor1.getPIDController();
+    m_pidControllerRight = m_rightMotor1.getPIDController();
+
+    m_drive = new DifferentialDrive(m_leftMotor1, m_rightMotor1);
 
     // adds options to the drive type
     m_chooser.addOption("Tank Drive", "Tank");
@@ -80,13 +92,13 @@ public class Drivetrain extends SubsystemBase {
     m_rightMotorEncoder1 = m_rightMotor1.getEncoder();
     m_rightMotorEncoder2 = m_rightMotor2.getEncoder();
 
+    m_feedForward = new SimpleMotorFeedforward(kS, kV, kA);
+
     // Instantiate the gyro.
     m_imu = new ADIS16470_IMU();
 
     m_gearShift = new Solenoid(kDriveSolenoid);
 
-    addChild("Left Motors", m_leftMotors);
-    addChild("Right Motors", m_rightMotors);
     addChild("Drivetrain", m_drive);
     addChild("Shift Gears", m_gearShift);
     addChild("Gyro", m_imu);
@@ -99,7 +111,27 @@ public class Drivetrain extends SubsystemBase {
     motor.setInverted(invert);
 
     encoderInit(motor.getEncoder(), m_lowGear); // Initializes encoder within motor
+    
   }
+
+  public void driveDistance(double setpoint) {
+    //assign values with PID controllers
+    m_pidControllerLeft.setP(DriveDistancePID.kP);
+    m_pidControllerRight.setP(DriveDistancePID.kP);
+    m_pidControllerLeft.setI(DriveDistancePID.kI);
+    m_pidControllerRight.setI(DriveDistancePID.kI);
+    m_pidControllerLeft.setD(DriveDistancePID.kD);
+    m_pidControllerRight.setD(DriveDistancePID.kD);
+
+    
+  }
+
+  public void setDriveStates(TrapezoidProfile.State left, TrapezoidProfile.State right) {
+    m_pidControllerLeft.setReference(left.position, ControlType.kPosition, 0, m_feedForward.calculate(left.velocity), ArbFFUnits.kPercentOut);
+    m_pidControllerRight.setReference(right.position, ControlType.kPosition, 0, m_feedForward.calculate(right.velocity), ArbFFUnits.kPercentOut);
+  }
+
+
 
   private void encoderInit(CANEncoder encoder, boolean lowGear) {
     // Converts the input into desired value for distance and velocity

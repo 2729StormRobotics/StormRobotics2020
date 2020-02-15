@@ -9,7 +9,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.PartyConstants;
+import static frc.robot.Constants.PartyConstants.*;
 
 public class Party extends SubsystemBase {
   
@@ -22,21 +22,21 @@ public class Party extends SubsystemBase {
    */
   public Party() {    
     // Instantiate led driver and assign to its port
-    m_ledDriver1 = new Spark(PartyConstants.kLedBlinkinDriver1Port);
-    m_ledDriver2 = new Spark(PartyConstants.kLedBlinkinDriver2Port);
+    m_ledDriver1 = new Spark(kLedBlinkinDriver1Port);
+    m_ledDriver2 = new Spark(kLedBlinkinDriver2Port);
   }
 
   // Method for setting LED mode to normal: Red and Orange Color Waves
   public void setToNormal() {
-    m_ledDriver1.set(PartyConstants.kNormal);
-    m_ledDriver2.set(PartyConstants.kNormal);
+    m_ledDriver1.set(kNormal);
+    m_ledDriver2.set(kNormal);
   }
 
   // Methods for each LED mode
   public void turnGreen() {
     // Set LED blinkin to the spark motor double
-    m_ledDriver1.set(PartyConstants.kGreen);
-    m_ledDriver2.set(PartyConstants.kGreen);
+    m_ledDriver1.set(kGreen);
+    m_ledDriver2.set(kGreen);
   }
 
   

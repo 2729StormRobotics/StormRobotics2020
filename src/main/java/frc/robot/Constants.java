@@ -20,10 +20,10 @@ import edu.wpi.first.wpilibj.util.Color;
  */
 public final class Constants {
     public static final class DriveConstants {
-        public static final int kLeftDriveMotor1Port = 0;
-        public static final int kLeftDriveMotor2Port = 15;
-        public static final int kRightDriveMotor1Port = 3;
-        public static final int kRightDriveMotor2Port = 12;
+        public static final int kLeftDriveMotor1Port = 3;
+        public static final int kLeftDriveMotor2Port = 12;
+        public static final int kRightDriveMotor1Port = 36;
+        public static final int kRightDriveMotor2Port = 15;
 
         // pistons that shift the gear of the drive train
         public static final int kDriveSolenoid = 7;
@@ -31,8 +31,8 @@ public final class Constants {
         public static final double kWheelDiameter = 6; // Inches
 
         // Gearing for calculations, given in output turns per motor turn
-        private static final double kHighGear = 14/58 * 18/38 * 32/34;
-        private static final double kLowGear = 14/58 * 18/38 * 22/44;
+        private static final double kHighGear = 14.0/58.0 * 18.0/38.0 * 32.0/34.0;
+        private static final double kLowGear = 14.0/58.0 * 18.0/38.0 * 22.0/44.0;
 
         // Conversions to calculate inches per encoder pulse in high gear
         public static final double kHighGearDistancePerPulse = Math.PI * kWheelDiameter * kHighGear;
@@ -56,6 +56,10 @@ public final class Constants {
         public static final double kMaxSpeed = 0; // Meters per second
         public static final double kMaxAcceleration = 0; // Meters per (second^2)
 
+        public static final double kS = 0;  //TODO: Test for values
+        public static final double kV = 0;  //TODO: Test for values
+        public static final double kA = 0;  //TODO: Test for values
+
         // PointTurn constants
         public static final class PointTurnPID {
             // Our PID values for PointTurn
@@ -73,7 +77,7 @@ public final class Constants {
         // Drive Distance constants
         public static final class DriveDistancePID {
             // Our PID values for PointTurn
-            public static final double kP = 0.0; // TODO: Test and update this value.
+            public static final double kP = 0.0; // TODO: Test and update this value
             public static final double kI = 0.0; // TODO: Test and update this value.
             public static final double kD = 0.0; // TODO: Test and update this value.
 
@@ -82,6 +86,11 @@ public final class Constants {
 
             // Maximum angular speed in degrees per second at which PointTurn can end
             public static final double kVelocityTolerance = 1.0; // TODO: Update this value.
+
+            public static final double kMaxVelocity = 0.0; //max velocity in meters per second
+            public static final double kMaxAcc = 0.0; //max velocity in meters per second squared
+
+            public static final double setPoint = 0.0; //setpoint in meters
         }
     }
 
@@ -97,13 +106,24 @@ public final class Constants {
         public static final boolean kInvertLeftLauncher = false;
         public static final boolean kInvertRightLauncher = !kInvertLeftLauncher;
 
-        // the PID values needed to launch with PID
-        public static final double kP = 0; // TODO: test and update this value
-        public static final double kI = 0; // TODO: test and update this value
-        public static final double kD = 0; // TODO: test and update this value
-        public static final double kF = 0; // TODO: test and update this value
-        public static final double kMinOutput = 0; // TODO: test and update this value
-        public static final double kMaxOutput = 0; // TODO: test and update this value
+        // PID constants for the launcher
+        public static final class LaunchPID {
+            //Our PID values for the Launcher
+            public static final double kP = 0; // TODO: test and update this value
+            public static final double kI = 0; // TODO: test and update this value
+            public static final double kD = 0; // TODO: test and update this value
+
+            // Integral zone, which is the maximum |error| for the integral gain to take effect
+            public static final double kIz = 0; // TODO: test and update this value
+
+            // Feed-forward constant
+            public static final double kF = 0; // TODO: test and update this value
+
+            // Min and max output values
+            public static final double kMinOutput = -1;
+            public static final double kMaxOutput = 1;
+        }
+
 
     }
 
@@ -139,6 +159,11 @@ public final class Constants {
         // Define the current limit for the celevator motors
         public static final int kCellevatorCurrentLimit = 45;
 
+        // the constant speed for the holder motor
+        public static final double kHolderMotorSpeed = 0.5; // TODO: test and update value
+        
+        //speed for the loader Motor
+        public static final double kLoaderMotorSpeed = 0.5; //TODO: test and update value
         // piston that applies the friction brake on the hanging elevator
         public static final int kFrictionSolenoidPort = 6;
     }
@@ -217,7 +242,7 @@ public final class Constants {
 
     public static final class ClimberConstants {
         // Gearing for calculations, given in output turns per motor turn
-        private static final double kGearing = 10/58 * 16/60;
+        private static final double kGearing = 10.0/58.0 * 16.0/60.0;
 
         // Conversion for distance and speed per encoder pulse, given in inches
         public static final double kEncoderDistancePerPulse = 0; // ADD CONVERSION
@@ -263,4 +288,12 @@ public final class Constants {
         public static final double kLimelightDistance = 50.0;
         public static final double kLimelightDistanceTolerance = 5.0;
     }
-}
+    public static final class ControllerConstants {
+        public static final int kDriverControlPort = 0;
+        public static final int kWeaponsControlPort = 1;
+
+    }
+
+    }
+
+
