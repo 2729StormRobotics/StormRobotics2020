@@ -19,7 +19,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import static edu.wpi.first.wpilibj.GenericHID.Hand;
 import static edu.wpi.first.wpilibj.XboxController.Button.*;
 import static frc.robot.Constants.*;
-import frc.robot.commands.DriveDistance;;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a

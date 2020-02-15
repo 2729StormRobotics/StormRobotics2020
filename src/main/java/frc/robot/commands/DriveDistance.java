@@ -25,6 +25,9 @@ public class DriveDistance extends TrapezoidProfileCommand {
 
   /**
    * Creates a new DriveDistance.
+   * @param DoubleSupplier distance value converted to a double
+   * 
+   * @param drive the Drivetrain passed through to run DriveDIstance
    */
   public DriveDistance(DoubleSupplier distance, Drivetrain drive) {
     super(
