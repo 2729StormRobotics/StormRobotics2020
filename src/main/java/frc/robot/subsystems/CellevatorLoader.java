@@ -20,6 +20,9 @@ public class CellevatorLoader extends SubsystemBase {
 
   private final DigitalInput m_beamBreakBottom;
   private final CANSparkMax m_loaderMotor;
+  private final DigitalInput m_beamBreakMiddle;
+  private boolean previousBBMiddle;
+
   /**
    * Creates a new CellevatorLoader.
    */
@@ -27,7 +30,8 @@ public class CellevatorLoader extends SubsystemBase {
 
     m_loaderMotor = new CANSparkMax(kLoaderMotorPort, MotorType.kBrushed);
     m_beamBreakBottom = new DigitalInput(kBeamBreakLoaderPort);
-
+    m_beamBreakMiddle = new DigitalInput(kBeamBreakMiddlePort);
+    previousBBMiddle = false;
 
     // intializes the motor
     motorInit(m_loaderMotor, kLoaderMotorInverted);
@@ -54,7 +58,7 @@ public class CellevatorLoader extends SubsystemBase {
    * bottom of the cellevator
    */
   public boolean isBottomBallPresent() {
-    return m_beamBreakBottom.get();
+    return !m_beamBreakBottom.get();
   }
 
   /**
@@ -64,12 +68,27 @@ public class CellevatorLoader extends SubsystemBase {
     runLoaderMotor(0);
   }
 
+ /**
+   * Gets the beam break value to see if there is a power cell present at the
+   * middle of the cellevator
+   */
+  public boolean isMiddleGapClear() {
+    return m_beamBreakMiddle.get();
+    }
+
+  /**
+   * returns the value of the beam break middle value before the current value
+   * @return
+   */
+  public boolean getBeamBreakMiddlePrevious() {
+    return previousBBMiddle;
+  }
+
   /**
    * displays data onto SmartDashboard
    */
   public void log() {
     SmartDashboard.putNumber("Loader Motor Speed", m_loaderMotor.get());
-    SmartDashboard.putBoolean("Loader Beam Value", m_beamBreakBottom.get());
 
   }
 
