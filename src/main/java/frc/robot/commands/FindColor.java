@@ -24,13 +24,13 @@ public class FindColor extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {    
-    m_findColor.setTargetColor();
+    m_findColor.setTargetColor(); //gets color value from driversation
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_findColor.findTargetColor();
+    m_findColor.findTargetColor(); //calls method to start spinning target
     
   }
 
