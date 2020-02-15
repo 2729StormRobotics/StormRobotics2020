@@ -15,17 +15,20 @@ import frc.robot.subsystems.Launcher;
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class LaunchAngle extends InstantCommand {
   private final Launcher m_launch;
-  private final boolean m_isExtended;
+  private final boolean m_extend;
   
   /**
-   * Creates a new ToggleLaunchAngle.
+   * Set the launch pistons to extended or retracted.
+   * 
+   * @param extend Whether or not to extend launch pistons.
+   * @param launcher The launcher subsystem to pass in.
    */
-  public LaunchAngle(Boolean extended, Launcher launcher) {
+  public LaunchAngle(Boolean extend, Launcher launcher) {
     // Set launcher subsystem equal to command parameter
     m_launch = launcher;
 
-    // Set m_isExtended to the boolean parameter
-    m_isExtended = extended;
+    // Set m_extend to the boolean parameter
+    m_extend = extend;
     
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_launch);
@@ -36,6 +39,6 @@ public class LaunchAngle extends InstantCommand {
    */
   @Override
   public void initialize() {
-    m_launch.setLaunchPiston(!m_isExtended);
+    m_launch.setLaunchPiston(m_extend);
   }
 }
