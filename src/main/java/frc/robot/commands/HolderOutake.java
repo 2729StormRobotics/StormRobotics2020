@@ -7,51 +7,54 @@
 
 package frc.robot.commands;
 
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Launcher;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class FixedLaunch extends CommandBase {
+import frc.robot.subsystems.Cellevator;
+import frc.robot.Constants.CellevatorConstants;
 
-  private final double m_launchSpeed;
-  private final Launcher m_Launcher;
-
+public class HolderOutake extends CommandBase {
+  
+private final Cellevator m_cellevator;
   /**
-   * 
-   * Creates a new FixedLaunch.
+   * Creates a new HolderOutake.
    */
-  public FixedLaunch(double launchSpeed, Launcher subsystem) {
-    // These are the local instances of the parameter variables for FixedLaunch
-    m_launchSpeed = launchSpeed;
-    m_Launcher = subsystem;
-    addRequirements(m_Launcher);
+  public HolderOutake(Cellevator subsystem) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    m_cellevator = subsystem;
+    addRequirements(m_cellevator);
   }
 
-  // Called just before this Command runs the first time.
+  // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // revs motor to input speed
-    m_Launcher.revToSpeed(m_launchSpeed);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+     // runs the holder motor at a constant speed when the command starts
+    m_cellevator.runHolderMotor(CellevatorConstants.kHolderMotorSpeed); 
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    // stops the motor if command is interrupted
-    m_Launcher.stopRevving();
+    m_cellevator.stopHolderMotor(); // stops the holder motor
+    //subtracts from the count of the power cells if the command is not interrupted
+    if (interrupted == false) {
+      m_cellevator.subtractPowerCellCount();
+    }
+    
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-     return false;
+    if (!m_cellevator.isTopBallPresent()) {
+        return true;
+    }
+    else {
+      return false;
+    }
   }
 }

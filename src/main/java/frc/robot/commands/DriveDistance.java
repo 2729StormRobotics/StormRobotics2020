@@ -10,8 +10,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.TrapezoidProfileCommand;
 
-import frc.robot.Constants.*;
-import frc.robot.subsystems.*;
+import static frc.robot.Constants.DriveConstants.*;
 import frc.robot.subsystems.Drivetrain;
 
 
@@ -29,7 +28,7 @@ public class DriveDistance extends TrapezoidProfileCommand {
         // The motion profile to be executed
         new TrapezoidProfile(
             // Limit the max speed and acceleration
-            new TrapezoidProfile.Constraints(DriveConstants.kMaxSpeed, DriveConstants.kMaxAcceleration),
+            new TrapezoidProfile.Constraints(kMaxSpeed, kMaxAcceleration),
             
             // End desired distance at targetTravelDistance
             new TrapezoidProfile.State(targetTravelDistance, 0)), //implicitely starts at 0
