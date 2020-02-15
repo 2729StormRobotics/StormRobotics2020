@@ -17,7 +17,7 @@ public class CellevatorHolder extends CommandBase {
   private boolean runHolderMotor;
 
   /**
-   * This command requres the cellevator subsystem. By default, don't run the
+   * This command requires the cellevator subsystem. By default, don't run the
    * motor.
    */
   public CellevatorHolder(Cellevator cellevator) {
