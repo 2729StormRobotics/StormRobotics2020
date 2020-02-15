@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import static edu.wpi.first.wpilibj.GenericHID.Hand;
 import static edu.wpi.first.wpilibj.XboxController.Button.*;
 import static frc.robot.Constants.*;
+import frc.robot.commands.DriveDistance;;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -64,6 +65,10 @@ public class RobotContainer {
 
     // Configure the button bindings
     configureButtonBindings();
+
+    //Get value for drive distance setpoint
+    SmartDashboard.getNumber("Target Distance", 0); //gets target distance from dashboard(0 if nothing else is found)
+    SmartDashboard.putData("Travel Distance", new DriveDistance(() -> m_drivetrain.getTargetDistance(), m_drivetrain));
   }
 
   /**

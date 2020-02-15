@@ -11,6 +11,9 @@ import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.TrapezoidProfileCommand;
 
 import static frc.robot.Constants.DriveConstants.*;
+
+import java.util.function.DoubleSupplier;
+
 import frc.robot.subsystems.Drivetrain;
 
 
@@ -23,7 +26,7 @@ public class DriveDistance extends TrapezoidProfileCommand {
   /**
    * Creates a new DriveDistance.
    */
-  public DriveDistance(double targetTravelDistance, Drivetrain drive) {
+  public DriveDistance(DoubleSupplier distance, Drivetrain drive) {
     super(
         // The motion profile to be executed
         new TrapezoidProfile(
@@ -31,7 +34,7 @@ public class DriveDistance extends TrapezoidProfileCommand {
             new TrapezoidProfile.Constraints(kMaxSpeed, kMaxAcceleration),
             
             // End desired distance at targetTravelDistance
-            new TrapezoidProfile.State(targetTravelDistance, 0)), //implicitely starts at 0
+            new TrapezoidProfile.State(distance.getAsDouble(), 0)), //implicitely starts at 0
             
             // Send the profile state to the drivetrain
             state -> drive.setDriveStates(state, state), 

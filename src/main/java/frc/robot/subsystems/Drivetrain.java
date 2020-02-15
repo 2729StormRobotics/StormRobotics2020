@@ -266,6 +266,11 @@ public class Drivetrain extends SubsystemBase {
     return m_driveType;
   }
 
+  //retrieves the target distance for DriveDistance using Dashboard
+  public double getTargetDistance() {
+    return SmartDashboard.getNumber("Target Distance", 0.0);
+  }
+
   // puts data on the SmartDashboard
   public void log() {
     SmartDashboard.putBoolean("Low Gear", m_lowGear);

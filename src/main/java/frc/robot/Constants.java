@@ -90,7 +90,7 @@ public final class Constants {
             public static final double kMaxVelocity = 0.0; //max velocity in meters per second
             public static final double kMaxAcc = 0.0; //max velocity in meters per second squared
 
-            public static final double setPoint = 0.0; //setpoint in meters
+            //public static final double setPoint = 0.0; //setpoint in meters
         }
     }
 
