@@ -114,17 +114,7 @@ public class Drivetrain extends SubsystemBase {
     
   }
 
-  public void driveDistance(double setpoint) {
-    //assign values with PID controllers
-    m_pidControllerLeft.setP(DriveDistancePID.kP);
-    m_pidControllerRight.setP(DriveDistancePID.kP);
-    m_pidControllerLeft.setI(DriveDistancePID.kI);
-    m_pidControllerRight.setI(DriveDistancePID.kI);
-    m_pidControllerLeft.setD(DriveDistancePID.kD);
-    m_pidControllerRight.setD(DriveDistancePID.kD);
-
-    
-  }
+  
 
   public void setDriveStates(TrapezoidProfile.State left, TrapezoidProfile.State right) {
     m_pidControllerLeft.setReference(left.position, ControlType.kPosition, 0, m_feedForward.calculate(left.velocity), ArbFFUnits.kPercentOut);
