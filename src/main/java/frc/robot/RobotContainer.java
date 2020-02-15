@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 
 import static edu.wpi.first.wpilibj.GenericHID.Hand;
 import static edu.wpi.first.wpilibj.XboxController.Button.*;
@@ -46,20 +47,7 @@ public class RobotContainer {
   private final XboxController m_driverController = new XboxController(ControllerConstants.kDriverControlPort);
   private final XboxController m_weaponsController = new XboxController(ControllerConstants.kWeaponsControlPort);
 
-  //Look into a conventional way to read dpad values from the controller.
-  Button dpadUp = new Button() {
-    @Override
-    public boolean get() {
-      return m_weaponsController.getPOV(0) == 0;
-    }
-  };
-  Button dpadDown = new Button() {
-    @Override
-    public boolean get() {
-      return m_weaponsController.getPOV(3) == 3;
-    }
-  };
-
+  
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -98,24 +86,29 @@ public class RobotContainer {
   private void configureButtonBindings() {
     
     new JoystickButton(m_driverController, kA.value).whileHeld(new LimelightAlign(m_limelight, m_drivetrain));  //LimeLight align     
+    
+    new JoystickButton(m_driverController, kB.value).whenPressed(new HighGearDrive(m_drivetrain));
 
-    dpadUp.whenPressed(new MoveIntakePistons(m_intake));    //moves intake pistions
+    //TODO new JoystickButton(m_driverController, KY.value).whenPressed(new LowGearDrive(m_drivetrain));
 
-    dpadDown.whenPressed(new MoveIntakePistons(m_intake));
+    
+    // new POVButton(m_weaponsController, 0).whenPressed(new LaunchAngle(m_launcher));
 
     new JoystickButton(m_weaponsController, kBumperLeft.value).whileHeld(new IntakePowerCell(IntakeConstants.kIntakeMotorSpeed, m_intake));   //powercell intake
 
     new JoystickButton(m_weaponsController, kBumperRight.value).whileHeld(new IntakePowerCell(IntakeConstants.kIntakeMotorSpeed * -1, m_intake));   //powercell intake
 
-    new JoystickButton(m_weaponsController, kA.value).whileHeld(new FrictionBrakeRelease(m_climbers));
+    new JoystickButton(m_weaponsController, kA.value).whileHeld(new FrictionBrakeRelease(m_climbers)); //friction break
 
+    new JoystickButton(m_weaponsController, kB.value).whileHeld(new FixedLaunch(0, m_launcher)); //TODO need speed varible
 
-    new JoystickButton(m_weaponsController, kB.value).whenPressed(new InstantCommand(m_climbers::engageFrictionBrake, m_climber));
+    new JoystickButton(m_weaponsController, kStart.value).whileHeld(new HolderMotorManual(m_cellevator));
 
+    new JoystickButton(m_weaponsController, kBack.value).whileHeld(new MoveHopperMotor(m_hopper));
 
+    new JoystickButton(m_weaponsController, kStickRight.value).whenPressed(new MoveIntakePistons(m_intake));
 
-    
-
+   
 }
 
   //commented out because no auto yet
