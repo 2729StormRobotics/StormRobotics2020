@@ -17,7 +17,7 @@ public class LowGearDrive extends InstantCommand {
 
   private final Drivetrain m_drivetrain;
 
-  public LowGearDrive(Drivetrain subsystem) {
+  public LowGearDrive(final Drivetrain subsystem) {
 
     m_drivetrain = subsystem;
     addRequirements(subsystem);
@@ -27,6 +27,6 @@ public class LowGearDrive extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_drivetrain.shiftLow();
+    m_drivetrain.shiftLow(true);  
   }
 }
