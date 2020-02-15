@@ -28,6 +28,6 @@ public class LowGearDrive extends InstantCommand {
   // After initalization this command uses the low gear method
   @Override
   public void initialize() {
-	m_drivetrain.shiftLow(true);
+	m_drivetrain.shiftLow();
 }
 }
