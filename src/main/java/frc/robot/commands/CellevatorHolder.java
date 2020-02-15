@@ -26,6 +26,10 @@ public class CellevatorHolder extends CommandBase {
     addRequirements(m_cellevator);
   }
 
+  /** 
+   * creates a boolean with a value that represents which condition is happening 
+  * if either of the two conditions are true, then the holder motor will run
+  */
   private boolean isSafeToLoad() {
     boolean topClearAndMiddleOccupied = !m_cellevator.isTopBallPresent() && !m_cellevator.isMiddleGapClear();
     boolean onlyBottomOccupied = m_cellevator.isBottomBallPresent() && !m_cellevator.isTopBallPresent() && m_cellevator.isMiddleGapClear() && m_cellevator.getBeamBreakMiddlePrevious();
