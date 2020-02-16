@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.commands.LimelightAlign;
 import frc.robot.commands.VariableLaunch;
 import frc.robot.subsystems.Launcher;
-import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Drivetrain;
 
 
@@ -22,10 +21,10 @@ public class AlignAndRevToSpeed extends ParallelCommandGroup {
   /**
    * Creates a new AlignAndRevToSpeed.
    */
-  public AlignAndRevToSpeed(Limelight m_limelight, Drivetrain m_drivetrain, Launcher m_launcher) {
+  public AlignAndRevToSpeed(Drivetrain m_drivetrain, Launcher m_launcher) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());super();
     // running the align and rev to speed commands in parallel
-    super(new LimelightAlign(m_limelight, m_drivetrain), new VariableLaunch(m_launcher));
+    super(new LimelightAlign(m_drivetrain), new VariableLaunch(m_launcher));
   }
 }
