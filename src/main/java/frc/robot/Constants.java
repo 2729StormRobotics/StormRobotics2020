@@ -187,10 +187,7 @@ public final class Constants {
         public static final double kLimeLightDistanceI = 0.0;
         public static final double kLimeLightDistanceD = 0.0;
         public static final double kLimeLightDistance = 50.0;
-        public static final double kLimeLightDistanceTolernce = 5.0;
-        
-        
-    
+        public static final double kLimeLightDistanceTolernce = 5.0;    
     }
 
     public static final class PartyConstants {
@@ -204,7 +201,7 @@ public final class Constants {
         public static final double kNormal = 0.53;                  // Color 1 and 2: Color Waves set as normal
         public static final double kRed = 0.61;                     // Solid Color: Red
         public static final double kOrange = 0.65;                  // Solid Color: Orange
-        public static final double kGreen = 0.71;                   // Solid color: Green
+        public static final double kDarkGreen = 0.75;               // Solid color: Dark Green
         public static final double kYellow = 0.69;                  // Solid color: Yellow
         public static final double kHeartbeatBlue = -0.23;          // Fixed Pallete Pattern: Heartbeat, Blue
         public static final double kPink = 0.57;                    // Solid Color: Hot Pink
@@ -305,6 +302,6 @@ public final class Constants {
 
     }
 
-    }
+}
 
 
