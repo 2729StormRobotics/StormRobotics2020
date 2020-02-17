@@ -24,6 +24,10 @@ public class InvertHolderMotor extends InstantCommand {
   }
 
   // Called when the command is initially scheduled.
+  /** 
+   * inverts the holder motor from its current state
+   * allows us to unload power cells in case there is a jam and power cells need to leave the cellevator
+  */
   @Override
   public void initialize() {
     m_holder.invertHolder();
