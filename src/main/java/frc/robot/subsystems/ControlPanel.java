@@ -123,7 +123,7 @@ public void findTargetColor(){
 
   // checks to see if wheel has passed 8 times
   public boolean isSpun() {
-    Boolean spun = false;
+    boolean spun = false;
     if (colorCount() >= 8) {
       spun = true;
     }
