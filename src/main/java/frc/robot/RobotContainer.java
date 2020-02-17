@@ -85,7 +85,7 @@ public class RobotContainer {
 
     // Add FixedLaunch button and input speed.
     SmartDashboard.putNumber("Target Launch Speed", 0.0);
-    //SmartDashboard.putData("FixedLaunch", new FixedLaunch(m_launcher));
+    SmartDashboard.putData("FixedLaunch", new FixedLaunch(m_launcher));
 
     // Add LimelightAlign button.
     SmartDashboard.putData("Limelight Align", new LimelightAlign(m_drivetrain));
