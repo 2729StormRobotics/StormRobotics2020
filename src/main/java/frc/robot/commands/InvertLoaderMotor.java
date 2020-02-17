@@ -18,7 +18,7 @@ public class InvertLoaderMotor extends InstantCommand {
   private final CellevatorLoader m_loader;
   public InvertLoaderMotor(CellevatorLoader loader) {
     m_loader = loader;
-    addRequirements(loader);;
+    addRequirements(loader);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -26,6 +26,7 @@ public class InvertLoaderMotor extends InstantCommand {
   @Override
   /** 
    * inverts the loader motor so that we can unload the power cells out in case of any jams
+   * when you run the command again, it will invert the motors again so they will be moving forwards again
   */
   public void initialize() {
     m_loader.invertLoader();
