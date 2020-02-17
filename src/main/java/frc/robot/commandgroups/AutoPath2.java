@@ -16,9 +16,11 @@ public class AutoPath2 extends SequentialCommandGroup {
   /**
    * Creates a new AutoPath2.
    */
-  public AutoPath2() {
-    // Add your commands in the super() call, e.g.
-    // super(new FooCommand(), new BarCommand());
-    
+  public AutoPath2(Drivetrain drivetrain, Launcher launcher, Intake intake, Hopper hopper) {
+    super(
+      
+
+
+    );
   }
 }
