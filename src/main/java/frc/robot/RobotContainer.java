@@ -83,7 +83,12 @@ public class RobotContainer {
     // Add CellevatorLoaderMotor button.
     SmartDashboard.putData("Cellevator Loader Command", new CellevatorLoaderMotor(m_cellevatorLoader));
 
-    // 
+    // Add FixedLaunch button and input speed.
+    SmartDashboard.putNumber("Target Launch Speed", 0.0);
+    //SmartDashboard.putData("FixedLaunch", new FixedLaunch(m_launcher));
+
+    // Add LimelightAlign button.
+    SmartDashboard.putData("Limelight Align", new LimelightAlign(m_drivetrain));
 
     // Configure the button bindings
     configureButtonBindings();
