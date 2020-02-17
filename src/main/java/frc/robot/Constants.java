@@ -52,15 +52,6 @@ public final class Constants {
         // Current limit for the drivetrain motors in amps
         public static final int kDrivetrainCurrentLimit = 60;
 
-        // Constants for DriveDistance.
-        // TODO: Update these constants with the correct values.
-        public static final double kMaxSpeed = 0; // Meters per second
-        public static final double kMaxAcceleration = 0; // Meters per (second^2)
-
-        public static final double kS = 0;  //TODO: Test for values
-        public static final double kV = 0;  //TODO: Test for values
-        public static final double kA = 0;  //TODO: Test for values
-
         // PointTurn constants
         public static final class PointTurnPID {
             // Our PID values for PointTurn
@@ -69,7 +60,7 @@ public final class Constants {
             public static final double kD = 0.0; // TODO: Test and update this value.
 
             // Degrees away from setpoint at which PointTurn can end
-            public static final double kPositionTolerance = 1.0; // TODO: Update this value.
+            public static final double kPositionTolerance = 0.5; //Degrees
 
             // Maximum angular speed in degrees per second at which PointTurn can end
             public static final double kVelocityTolerance = 1.0; // TODO: Update this value.
@@ -88,8 +79,11 @@ public final class Constants {
             // Maximum angular speed in degrees per second at which PointTurn can end
             public static final double kVelocityTolerance = 1.0; // TODO: Update this value.
 
-            public static final double kMaxVelocity = 0.0; //max velocity in meters per second
-            public static final double kMaxAcc = 0.0; //max velocity in meters per second squared
+            //max velocity in meters per second
+            public static final double kMaxVelocity = 0.0; //TODO: update
+    
+            //max velocity in meters per second squared
+            public static final double kMaxAcc = 0.0; //TODO: update
 
         }
     }
