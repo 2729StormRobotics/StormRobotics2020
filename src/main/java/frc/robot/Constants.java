@@ -52,7 +52,7 @@ public final class Constants {
         // Current limit for the drivetrain motors in amps
         public static final int kDrivetrainCurrentLimit = 60;
 
-        // Constants for DriveDistance.
+            // Constants for DriveDistance.
         // TODO: Update these constants with the correct values.
         public static final double kMaxSpeed = 0; // Inches per second
         public static final double kMaxAcceleration = 0; // Inches per (second^2)
@@ -60,6 +60,7 @@ public final class Constants {
         public static final double kS = 0;  //TODO: Test for values
         public static final double kV = 0;  //TODO: Test for values
         public static final double kA = 0;  //TODO: Test for values
+
 
         // PointTurn constants
         public static final class PointTurnPID {
@@ -69,7 +70,7 @@ public final class Constants {
             public static final double kD = 0.0; // TODO: Test and update this value.
 
             // Degrees away from setpoint at which PointTurn can end
-            public static final double kPositionTolerance = 1.0; // TODO: Update this value.
+            public static final double kPositionTolerance = 0.5; //Degrees
 
             // Maximum angular speed in degrees per second at which PointTurn can end
             public static final double kVelocityTolerance = 1.0; // TODO: Update this value.
@@ -88,9 +89,11 @@ public final class Constants {
             // Maximum angular speed in degrees per second at which PointTurn can end
             public static final double kVelocityTolerance = 1.0; // TODO: Update this value.
 
-            public static final double kMaxVelocity = 0.0; // Max velocity in inches per second
-            public static final double kMaxAcc = 0.0; // Max velocity in inches per second squared
-
+            //max velocity in meters per second
+            public static final double kMaxVelocity = 0.0; //TODO: update
+    
+            //max velocity in meters per second squared
+            public static final double kMaxAcc = 0.0; //TODO: update
         }
     }
 
@@ -138,17 +141,17 @@ public final class Constants {
         public static final int kIntakeRaiseSolenoidPort = 5;
         public static final int kIntakeLowerSolenoidPort = 2;
 
-        public static final double kIntakeMotorSpeed = 1.0; // TODO: Test and update this value.
+        public static final double kIntakeMotorSpeed = 1.0; // TODO: Change if needed
     }
 
     public static final class HopperConstants {
         public static final int kHopperMotorPort = 6;
-        public static final double kHopperMotorSpeed = 1.0; // TODO: Change the speed after testing.
+        public static final double kHopperMotorSpeed = 1.0; // TODO: Change if needed.
     }
 
     public static final class CellevatorConstants {
         // beam breakers detect the number of powercells in the cellevator
-        public static final int kBeamBreakLoaderPort = 1; // TODO: Port Numbers still need to be updated
+        public static final int kBeamBreakLoaderPort = 1; // TODO: Port Numbers possibly need to be updated
         public static final int kBeamBreakMiddlePort = 3;
         public static final int kBeamBreakHolderPort = 5;
 
@@ -164,35 +167,24 @@ public final class Constants {
         public static final int kCellevatorCurrentLimit = 45;
 
         // the constant speed for the holder motor
-        public static final double kHolderMotorSpeed = 0.5; // TODO: test and update value
+        public static final double kHolderMotorSpeed = 0.5; // TODO: Update if needed
         
         //speed for the loader Motor
-        public static final double kLoaderMotorSpeed = 0.5; //TODO: test and update value
-        // piston that applies the friction brake on the hanging elevator
-        public static final int kFrictionSolenoidPort = 6;
+        public static final double kLoaderMotorSpeed = 0.5; //TODO: Update if needed
+       
     }
     
     public static final class LimeLightConstants {
-        public static final double kLimeLightOffest = 13.67;
-        public static final double kLimeLightHeight = 43; 
-        public static final double kLimeLightAngle = 0; //NEED CORRECT ANGLE 
-        public static final double kPortHeight = 98.25;
+        public static final double kLimeLightOffset = 13.67; //Inches
+        public static final double kLimeLightHeight = 43; //Inches
+        public static final double kLimeLightAngle = 16; //Degrees
+        public static final double kPortHeight = 98.25; //Inches
 
         //Alignment constants for LimeLight
-        public static final double kLimeLightAlignP = 1.0; 
-        public static final double kLimeLightAlignI = 0.0;
-        public static final double kLimeLightAlignD = 0.0;
-        public static final double kLimeLightTolernce = 5.0;
-        public static final double kLimeLightAlignTolerance = 1.5;
-    
-        //Distance constants for LimeLight
-        public static final double kLimeLightDistanceP = 1.0; 
-        public static final double kLimeLightDistanceI = 0.0;
-        public static final double kLimeLightDistanceD = 0.0;
-        public static final double kLimeLightDistance = 50.0;
-        public static final double kLimeLightDistanceTolernce = 5.0;
-        
-        
+        public static final double kLimeLightAlignP = 1.0; //TODO: Test and add
+        public static final double kLimeLightAlignI = 0.0; //TODO: Test and add
+        public static final double kLimeLightAlignD = 0.0; //TODO: Test and add
+        public static final double kLimeLightAlignTolerance = 1.5; //Max Alignment Tolerance in degrees.
     
     }
 
