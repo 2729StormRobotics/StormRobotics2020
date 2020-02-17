@@ -111,7 +111,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     
-    new JoystickButton(m_driverController, kA.value).whileHeld(new LimelightAlign(m_drivetrain)); // LimeLight align
+    new JoystickButton(m_driverController, kA.value).whileHeld(new LimelightAlign(m_drivetrain)); // Limelight align
     
     new JoystickButton(m_driverController, kB.value).whenPressed(new HighGearDrive(m_drivetrain));
 

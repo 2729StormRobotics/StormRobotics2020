@@ -30,8 +30,8 @@ public class CellevatorLoader extends SubsystemBase {
   public CellevatorLoader() {
 
     m_loaderMotor = new CANSparkMax(kLoaderMotorPort, MotorType.kBrushed);
-    m_beamBreakBottom = new DigitalInput(kBeamBreakLoaderPort);
-    m_beamBreakMiddle = new DigitalInput(kBeamBreakMiddlePort);
+    m_beamBreakBottom = new DigitalInput(2);
+    m_beamBreakMiddle = new DigitalInput(4);
     previousBBMiddle = false;
 
     // intializes the motor
