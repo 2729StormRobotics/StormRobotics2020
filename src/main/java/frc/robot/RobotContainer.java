@@ -53,10 +53,10 @@ public class RobotContainer {
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    m_drivetrain.setDefaultCommand(new DriveManually(m_driverController.getY(Hand.kLeft),m_driverController.getY(Hand.kRight), m_drivetrain));
+    m_drivetrain.setDefaultCommand(new DriveManually(() -> m_driverController.getY(Hand.kLeft), () -> m_driverController.getY(Hand.kRight), m_drivetrain));
     // Set default commands once button bindings are finalized
 
-    m_climbers.setDefaultCommand(new MoveClimber(m_weaponsController.getY(Hand.kLeft), m_climbers));
+    m_climbers.setDefaultCommand(new MoveClimber(() -> m_weaponsController.getY(Hand.kLeft), m_climbers));
 
     m_cellevator.setDefaultCommand(new CellevatorHolder(m_cellevator));
 

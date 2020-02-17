@@ -7,14 +7,16 @@
 
 package frc.robot.commands;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climbers;
 
 public class MoveClimber extends CommandBase {
   private final Climbers m_climbers;  //declares climber
-  private final double m_speed;     //declares a speed variable
+  private final DoubleSupplier m_speed;     //declares a speed variable
 
-  public MoveClimber(double speed, Climbers climbers) {
+  public MoveClimber(DoubleSupplier speed, Climbers climbers) {
     m_speed = speed;            //initializing speed
     m_climbers = climbers;     //initailizing climber
     addRequirements(m_climbers);      //it requires the climber subsystem to run the command
@@ -28,7 +30,7 @@ public class MoveClimber extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_climbers.climb(m_speed);  //moves the climber using the speed
+    m_climbers.climb(m_speed.getAsDouble());  //moves the climber using the speed
 
   }
 
