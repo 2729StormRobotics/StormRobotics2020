@@ -7,20 +7,22 @@
 
 package frc.robot.commands;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
 public class DriveManually extends CommandBase {
   private final Drivetrain m_drivetrain;
-  private final double m_leftSpeed;
-  private final double m_rightSpeed;
+  private final DoubleSupplier m_leftSpeed;
+  private final DoubleSupplier m_rightSpeed;
 
 /**
  * @param leftSpeed   speed of left motors
  * @param rightSpeed  speed of right motors
  * @param subsystem   the subsystem being used--in this case, the drivetrain
  */
-  public DriveManually(double leftSpeed, double rightSpeed, Drivetrain subsystem) {
+  public DriveManually(DoubleSupplier leftSpeed, DoubleSupplier rightSpeed, Drivetrain subsystem) {
     // These are the local instances of the parameter variables for ManualDrive.
     m_drivetrain = subsystem;
     m_leftSpeed = leftSpeed;
@@ -41,7 +43,7 @@ public class DriveManually extends CommandBase {
   public void execute() {
     // Repeatedly passes the parameters--left speed, right speed, and if inputs are
     //squared, which increases fine control at lower speeds--to the tankDrive
-    m_drivetrain.tankDrive(m_leftSpeed, m_rightSpeed, true);
+    m_drivetrain.tankDrive(m_leftSpeed.getAsDouble(), m_rightSpeed.getAsDouble(), true);
   }
 
   // Called once the command ends or is interrupted.

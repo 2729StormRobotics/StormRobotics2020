@@ -8,25 +8,23 @@
 package frc.robot.commandgroups;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import frc.robot.commands.IntakePowerCell;
-import frc.robot.commands.MoveIntakePistons;
-import frc.robot.commands.MoveHopperMotor;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Hopper;
-import frc.robot.Constants.IntakeConstants;
+import frc.robot.commands.HolderOutake;
+import frc.robot.commands.VariableLaunch;
+import frc.robot.subsystems.Cellevator;
+import frc.robot.subsystems.Launcher;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class AutoIntake extends ParallelCommandGroup {
+public class LaunchPowerCell extends ParallelCommandGroup {
   /**
-   * Creates a new AutoIntake.
+   * Creates a new LaunchPowerCell.
    */
-  public AutoIntake(Intake m_intake, Hopper m_hopper) {
+  public LaunchPowerCell(Cellevator m_holder, Launcher m_launcher) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());super();
-    //running these intake and hopper commands in parallel
-    super(new IntakePowerCell(true, m_intake), new MoveIntakePistons(m_intake), new MoveHopperMotor(m_hopper));
-    // button to toggle pistons so intake goes back up will be created in RobotContainer
+    // run the holder outake to push the power cells into the launcher to launch running parallel
+    // runs the rev to speed command to maintain the right speed when launching
+    super(new HolderOutake(m_holder), new VariableLaunch(m_launcher));
   }
 }

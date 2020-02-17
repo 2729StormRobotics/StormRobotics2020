@@ -8,25 +8,27 @@
 package frc.robot.commandgroups;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import frc.robot.commands.IntakePowerCell;
-import frc.robot.commands.MoveIntakePistons;
+import frc.robot.commands.CellevatorLoaderMotor;
 import frc.robot.commands.MoveHopperMotor;
-import frc.robot.subsystems.Intake;
+import frc.robot.commands.CellevatorHolder;
+import frc.robot.commands.VariableLaunch;
+import frc.robot.subsystems.CellevatorLoader;
+import frc.robot.subsystems.Cellevator;
 import frc.robot.subsystems.Hopper;
-import frc.robot.Constants.IntakeConstants;
+import frc.robot.subsystems.Launcher;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class AutoIntake extends ParallelCommandGroup {
+public class QueueCellevator extends ParallelCommandGroup {
   /**
-   * Creates a new AutoIntake.
+   * Creates a new QueueCellevator.
    */
-  public AutoIntake(Intake m_intake, Hopper m_hopper) {
+  public QueueCellevator(CellevatorLoader m_loader, Cellevator m_holder, Hopper m_hopper, Launcher m_launcher) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());super();
-    //running these intake and hopper commands in parallel
-    super(new IntakePowerCell(true, m_intake), new MoveIntakePistons(m_intake), new MoveHopperMotor(m_hopper));
-    // button to toggle pistons so intake goes back up will be created in RobotContainer
+    // run loader, hopper, cellevator, and rev to speed parallel
+    // rev to speed is to maintain the speed of the launcher while the power cells are queueing
+    super(new CellevatorLoaderMotor(m_loader), new MoveHopperMotor(m_hopper), new CellevatorHolder(m_holder), new VariableLaunch(m_launcher));
   }
 }

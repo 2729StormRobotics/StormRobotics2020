@@ -19,11 +19,12 @@ import edu.wpi.first.wpilibj.util.Color;
  * wherever the constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
     public static final class DriveConstants {
-        public static final int kLeftDriveMotor1Port = 3;
-        public static final int kLeftDriveMotor2Port = 12;
+        public static final int kLeftDriveMotor1Port = 2;
+        public static final int kLeftDriveMotor2Port = 3;
         public static final int kRightDriveMotor1Port = 36;
-        public static final int kRightDriveMotor2Port = 15;
+        public static final int kRightDriveMotor2Port = 1;
 
         // pistons that shift the gear of the drive train
         public static final int kDriveSolenoid = 7;
@@ -51,14 +52,15 @@ public final class Constants {
         // Current limit for the drivetrain motors in amps
         public static final int kDrivetrainCurrentLimit = 60;
 
-        // Constants for DriveDistance.
+            // Constants for DriveDistance.
         // TODO: Update these constants with the correct values.
-        public static final double kMaxSpeed = 0; // Meters per second
-        public static final double kMaxAcceleration = 0; // Meters per (second^2)
+        public static final double kMaxSpeed = 0; // Inches per second
+        public static final double kMaxAcceleration = 0; // Inches per (second^2)
 
         public static final double kS = 0;  //TODO: Test for values
         public static final double kV = 0;  //TODO: Test for values
         public static final double kA = 0;  //TODO: Test for values
+
 
         // PointTurn constants
         public static final class PointTurnPID {
@@ -68,7 +70,7 @@ public final class Constants {
             public static final double kD = 0.0; // TODO: Test and update this value.
 
             // Degrees away from setpoint at which PointTurn can end
-            public static final double kPositionTolerance = 1.0; // TODO: Update this value.
+            public static final double kPositionTolerance = 0.5; //Degrees
 
             // Maximum angular speed in degrees per second at which PointTurn can end
             public static final double kVelocityTolerance = 1.0; // TODO: Update this value.
@@ -87,16 +89,17 @@ public final class Constants {
             // Maximum angular speed in degrees per second at which PointTurn can end
             public static final double kVelocityTolerance = 1.0; // TODO: Update this value.
 
-            public static final double kMaxVelocity = 0.0; //max velocity in meters per second
-            public static final double kMaxAcc = 0.0; //max velocity in meters per second squared
-
-            public static final double setPoint = 0.0; //setpoint in meters
+            //max velocity in meters per second
+            public static final double kMaxVelocity = 0.0; //TODO: update
+    
+            //max velocity in meters per second squared
+            public static final double kMaxAcc = 0.0; //TODO: update
         }
     }
 
     public static final class LauncherConstants {
-        public static final int kRightLauncherMotorPort = 13;
-        public static final int kLeftLauncherMotorPort = 14;
+        public static final int kRightLauncherMotorPort = 9;
+        public static final int kLeftLauncherMotorPort = 8;
 
         // piston (double solenoid) that adjusts the angle of the launcher
         public static final int kLongLaunchSolenoidPort = 3;
@@ -105,6 +108,10 @@ public final class Constants {
         // used in inverting launcher motor
         public static final boolean kInvertLeftLauncher = false;
         public static final boolean kInvertRightLauncher = !kInvertLeftLauncher;
+
+        // The two different speeds for the set shooting locations.
+        public static final double kLaunchSpeed1 = 0; // TODO: test and update this value
+        public static final double kLaunchSpeed2 = 0; // TODO: test and update this value
 
         // PID constants for the launcher
         public static final class LaunchPID {
@@ -128,29 +135,29 @@ public final class Constants {
     }
 
     public static final class IntakeConstants {
-        public static final int kIntakeMotorPort = 7;
+        public static final int kIntakeMotorPort = 4;
 
         // piston (double solenoid) that raises and lowers the intake
         public static final int kIntakeRaiseSolenoidPort = 5;
         public static final int kIntakeLowerSolenoidPort = 2;
 
-        public static final double kIntakeMotorSpeed = 1.0; // TODO: Test and update this value.
+        public static final double kIntakeMotorSpeed = 1.0; // TODO: Change if needed
     }
 
     public static final class HopperConstants {
-        public static final int kHopperMotorPort = 6;
-        public static final double kHopperMotorSpeed = 1.0; // TODO: Change the speed after testing.
+        public static final int kHopperMotorPort = 5;
+        public static final double kHopperMotorSpeed = 1.0; // TODO: Change if needed.
     }
 
     public static final class CellevatorConstants {
         // beam breakers detect the number of powercells in the cellevator
-        public static final int kBeamBreakLoaderPort = 1; // TODO: Port Numbers still need to be updated
+        public static final int kBeamBreakLoaderPort = 1; // TODO: Port Numbers possibly need to be updated
         public static final int kBeamBreakMiddlePort = 3;
         public static final int kBeamBreakHolderPort = 5;
 
         // motors in cellevator that transport powercells to launcher
-        public static final int kHolderMotorPort = 5;
-        public static final int kLoaderMotorPort = 8;
+        public static final int kHolderMotorPort = 13;
+        public static final int kLoaderMotorPort = 14;
 
         // Define if a motor is inverted or not
         public static final boolean kHolderMotorInverted = false;
@@ -160,36 +167,11 @@ public final class Constants {
         public static final int kCellevatorCurrentLimit = 45;
 
         // the constant speed for the holder motor
-        public static final double kHolderMotorSpeed = 0.5; // TODO: test and update value
+        public static final double kHolderMotorSpeed = 0.5; // TODO: Update if needed
         
         //speed for the loader Motor
-        public static final double kLoaderMotorSpeed = 0.5; //TODO: test and update value
-        // piston that applies the friction brake on the hanging elevator
-        public static final int kFrictionSolenoidPort = 6;
-    }
-    
-    public static final class LimeLightConstants {
-        public static final double kLimeLightOffest = 13.67;
-        public static final double kLimeLightHeight = 43; 
-        public static final double kLimeLightAngle = 0; //NEED CORRECT ANGLE 
-        public static final double kPortHeight = 98.25;
-
-        //Alignment constants for LimeLight
-        public static final double kLimeLightAlignP = 1.0; 
-        public static final double kLimeLightAlignI = 0.0;
-        public static final double kLimeLightAlignD = 0.0;
-        public static final double kLimeLightTolernce = 5.0;
-        public static final double kLimeLightAlignTolerance = 1.5;
-    
-        //Distance constants for LimeLight
-        public static final double kLimeLightDistanceP = 1.0; 
-        public static final double kLimeLightDistanceI = 0.0;
-        public static final double kLimeLightDistanceD = 0.0;
-        public static final double kLimeLightDistance = 50.0;
-        public static final double kLimeLightDistanceTolernce = 5.0;
-        
-        
-    
+        public static final double kLoaderMotorSpeed = 0.5; //TODO: Update if needed
+       
     }
 
     public static final class PartyConstants {
@@ -199,19 +181,30 @@ public final class Constants {
         public static final int kLedBlinkinDriver2Port = 9;
 
         // Each possible LED mode correlates to a value for the Spark, as defined in the Rev Blinkin docs
-        public static final double kDancePartySparkValue = -0.97;   // Pattern: Rainbow, Pallete: Party
+        public static final double kRainbowParty = -0.97;           // Pattern: Rainbow, Pallete: Party
         public static final double kNormal = 0.53;                  // Color 1 and 2: Color Waves set as normal
         public static final double kRed = 0.61;                     // Solid Color: Red
         public static final double kOrange = 0.65;                  // Solid Color: Orange
         public static final double kGreen = 0.71;                   // Solid color: Green
+        public static final double kYellow = 0.69;                  // Solid color: Yellow
+        public static final double kHeartbeatBlue = -0.23;          // Fixed Pallete Pattern: Heartbeat, Blue
+        public static final double kPink = 0.57;                    // Solid Color: Hot Pink
+        public static final double kViolet = 0.91;                  // Solid Color: Violet
+        public static final double kStrobeGold = -0.07;             // Fixed Pallete Pattern: Strobe Gold
+        public static final double kStrobeWhite = -0.05;            // Fixed Pallete Pattern: Strobe White
+        public static final double kWhite = 0.93;                   // Solid Color: White
+        public static final double kBlack = 0.99;                   // Solid Color: Black
+        public static final double kGray = 0.95;                    // Solid Color: Gray
     }
 
     public static final class ControlPanelConstants {
         // Motor for the wheel that spins the control panal
-        public static final int kSpinnerMotorPort = 9;
+        public static final int kSpinnerMotorPort = 6;
 
         // Color sensor that senses the colors on the control panel
         public static final int kColorSensorPort = 0;
+        // The main speed of the control panel motor.
+        public static final double kMotorSpeed = 0.4;
 
         /** Values the color sensor uses to detect the colors on control panel */
         // Red
@@ -248,8 +241,8 @@ public final class Constants {
         public static final double kEncoderDistancePerPulse = 0; // ADD CONVERSION
         public static final double kEncoderSpeedPerPulse = kEncoderDistancePerPulse / 60;
 
-        public static final int kRightClimberMotorPort = 2;
-        public static final int kLeftClimberMotorPort = 1;
+        public static final int kRightClimberMotorPort = 15;
+        public static final int kLeftClimberMotorPort = 12;
 
         // piston that applies the friction brake on the climbing motors
         public static final int kFrictionSolenoidPort = 6;
@@ -273,7 +266,7 @@ public final class Constants {
         public static final double kLimelightAngle = 48; // In degrees
         public static final double kPortHeight = 98.25; // In inches
 
-        // Alignment PID constants for LimeLight
+        // Alignment PID constants for Limelight
         public static final double kLimelightAlignP = 1.0;
         public static final double kLimelightAlignI = 0.0;
         public static final double kLimelightAlignD = 0.0;
@@ -281,13 +274,14 @@ public final class Constants {
         public static final double kLimelightAlignTolerance = 1.5;
         public static final double kSteeringAdjust = 0.25;
 
-        // Distance PID constants for LimeLight
+        // Distance PID constants for Limelight
         public static final double kLimelightDistanceP = 1.0;
         public static final double kLimelightDistanceI = 0.0;
         public static final double kLimelightDistanceD = 0.0;
         public static final double kLimelightDistance = 50.0;
         public static final double kLimelightDistanceTolerance = 5.0;
     }
+    
     public static final class ControllerConstants {
         public static final int kDriverControlPort = 0;
         public static final int kWeaponsControlPort = 1;

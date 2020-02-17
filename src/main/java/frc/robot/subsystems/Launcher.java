@@ -14,6 +14,8 @@ import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -32,13 +34,15 @@ public class Launcher extends SubsystemBase {
 
   private final DoubleSolenoid m_launchPiston;
 
+  private final NetworkTable m_limelightTable;
+
   /**
    * Creates a new Launcher.
    */
   public Launcher() {
 
     // Instantiate the double solenoid for the launch pistons.
-    m_launchPiston = new DoubleSolenoid(kLeftLauncherMotorPort, kRightLauncherMotorPort);
+    m_launchPiston = new DoubleSolenoid(kLongLaunchSolenoidPort, kShortLaunchSolenoidPort);
 
     // Instantiate the motors.
     m_leftLauncher = new CANSparkMax(kLeftLauncherMotorPort, MotorType.kBrushless);
@@ -58,11 +62,14 @@ public class Launcher extends SubsystemBase {
     // Initialize the PID controller for the motor controller.
     m_pidController = m_leftLauncher.getPIDController();
 
-    //Initialize pid coefficients
+    // Initialize pid coefficients
     pidInit();
 
-    //initialize pistons
+    // Initialize pistons
     pistonInit();
+
+    // Instantiate the limelight NetworkTable
+    m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
   }
 
   /**
@@ -127,6 +134,13 @@ public class Launcher extends SubsystemBase {
    */
   public boolean getLaunchPiston() {
     return getLaunchPistonValue() == Value.kForward;
+  }
+
+  /**
+   * Toggles the launch pistons.
+   */
+  public void toggleLaunchPiston() {
+    setLaunchPiston(!getLaunchPiston());
   }
 
 
@@ -197,6 +211,27 @@ public class Launcher extends SubsystemBase {
   public void stopRevving() {
     // Stopping the motors should stop the pid controller.
     stopMotors();
+  }
+
+  /**
+   * Get the horizontal distance from the vision target from network tables
+   * 
+   * @return the distance.
+   */
+  private double getDistance() {
+    return m_limelightTable.getEntry("Target Distance").getDouble(0.0);
+  }
+
+  /**
+   * Calculate the desired speed of the launch motors.
+   * 
+   * @return The desired speed of the launch motors in RPM.
+   */
+  public double calculateLaunchSpeed() {
+    double distance = getDistance();
+
+    // TODO: figure out this function through testing.
+    return 0;
   }
 
   /**

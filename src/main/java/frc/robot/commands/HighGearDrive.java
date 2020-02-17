@@ -8,37 +8,30 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.subsystems.Launcher;
+import frc.robot.subsystems.Drivetrain;
+
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class LaunchAngle extends InstantCommand {
-  private final Launcher m_launch;
-  private final boolean m_extend;
-  
-  /**
-   * Set the launch pistons to extended or retracted.
-   * 
-   * @param extend Whether or not to extend launch pistons.
-   * @param launcher The launcher subsystem to pass in.
-   */
-  public LaunchAngle(Boolean extend, Launcher launcher) {
-    // Set launcher subsystem equal to command parameter
-    m_launch = launcher;
+public class HighGearDrive extends InstantCommand {
+  // Declare the drivetrain.
+  private final Drivetrain m_drivetrain;
 
-    // Set m_extend to the boolean parameter
-    m_extend = extend;
+  /**
+   * Creates a new HighGear.
+   */
+  public HighGearDrive(Drivetrain subsystem) {
+    // This is the local instance of the parameter variable, the drivetrain.
+    m_drivetrain = subsystem;
     
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_launch);
+    addRequirements(subsystem);
   }
 
-  /**
-   * This command changes the angle of the power cell launcher
-   */
+  // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_launch.setLaunchPiston(m_extend);
+    // Shift to the high gear (high speed, low torque).
+    m_drivetrain.shiftHigh();
   }
 }

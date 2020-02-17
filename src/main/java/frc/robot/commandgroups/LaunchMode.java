@@ -7,26 +7,27 @@
 
 package frc.robot.commandgroups;
 
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import frc.robot.commands.IntakePowerCell;
-import frc.robot.commands.MoveIntakePistons;
-import frc.robot.commands.MoveHopperMotor;
-import frc.robot.subsystems.Intake;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.subsystems.Cellevator;
+import frc.robot.subsystems.CellevatorLoader;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Hopper;
-import frc.robot.Constants.IntakeConstants;
+import frc.robot.subsystems.Launcher;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class AutoIntake extends ParallelCommandGroup {
+public class LaunchMode extends SequentialCommandGroup {
   /**
-   * Creates a new AutoIntake.
+   * Creates a new LaunchMode.
    */
-  public AutoIntake(Intake m_intake, Hopper m_hopper) {
+  public LaunchMode(Drivetrain m_drivetrain, Launcher m_launcher, CellevatorLoader m_loader, Cellevator m_holder, Hopper m_hopper) {
     // Add your commands in the super() call, e.g.
-    // super(new FooCommand(), new BarCommand());super();
-    //running these intake and hopper commands in parallel
-    super(new IntakePowerCell(true, m_intake), new MoveIntakePistons(m_intake), new MoveHopperMotor(m_hopper));
-    // button to toggle pistons so intake goes back up will be created in RobotContainer
+    // super(new FooCommand(), new BarCommand());
+    // runs the Align and Rev, Queueing the cellevator, and launching in that order 
+    super(new AlignAndRevToSpeed(m_drivetrain, m_launcher), new QueueCellevator(m_loader, m_holder, m_hopper, m_launcher), new LaunchPowerCell(m_holder, m_launcher));
   }
+
+public LaunchMode(int i, Launcher m_launcher) {
+}
 }
