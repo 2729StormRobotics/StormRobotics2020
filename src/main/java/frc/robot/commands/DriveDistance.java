@@ -26,11 +26,11 @@ public class DriveDistance extends TrapezoidProfileCommand {
 
   /**
    * Creates a new DriveDistance.
-   * @param double distance value 
+   * @param distance distance value 
    * 
-   * @param drive the Drivetrain passed through to run DriveDIstance
+   * @param drivetrain the Drivetrain passed through to run DriveDIstance
    */
-  public DriveDistance(double distance, Drivetrain drive) {
+  public DriveDistance(double distance, Drivetrain drivetrain) {
     super(
         // The motion profile to be executed
         new TrapezoidProfile(
@@ -41,15 +41,15 @@ public class DriveDistance extends TrapezoidProfileCommand {
             new TrapezoidProfile.State(distance, 0)), //implicitly starts at 0
             
             // Send the profile state to the drivetrain
-            state -> drive.setDriveStates(state, state), 
-            drive);
+            state -> drivetrain.setDriveStates(state, state), 
+            drivetrain);
         
-      drive.resetAllEncoders();
+      drivetrain.resetAllEncoders();
   }
 
   //retrieves distance value from SmartDashboard
-  public DriveDistance(Drivetrain drive) {
-    this(SmartDashboard.getNumber("Target Distance", 0), drive);
+  public DriveDistance(Drivetrain drivetrain) {
+    this(SmartDashboard.getNumber("Target Distance", 0), drivetrain);
   }
 
   
