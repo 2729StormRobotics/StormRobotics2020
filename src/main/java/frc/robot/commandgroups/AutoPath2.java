@@ -27,7 +27,9 @@ public class AutoPath2 extends SequentialCommandGroup {
       new PointTurn(-21.43, drivetrain), //turns 21.43 degrees clockwise
       new AutoIntake(intake, hopper), //intake first power cell
       new DriveDistance(75.789 , drivetrain), //moves 75.789 inches forward
-      new AutoIntake(intake, hopper)
+      new AutoIntake(intake, hopper),
+      new PointTurn(167.472, drivetrain), //turn around 167.472 degrees
+      new VariableLaunch(launcher);
     );
   }
 }
