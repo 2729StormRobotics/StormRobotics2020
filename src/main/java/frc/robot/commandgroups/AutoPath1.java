@@ -19,19 +19,19 @@ public class AutoPath1 extends SequentialCommandGroup {
   /**
    * Creates a new AutoPath1.
    */
-  public AutoPath1(Drivetrain drivetrain, Launcher launcher, Intake intake, Hopper hopper, Limelight limelight) {
+  public AutoPath1(Drivetrain drivetrain, Launcher launcher, Intake intake, Hopper hopper) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
     addCommands(
-      new DriveDistance(3.2084, drivetrain), //moves specified distance in meters
-      new PointTurn(-90, drivetrain), //turns -90 degrees counterclockwise
+      new DriveDistance(3.2084, drivetrain), //moves forward 3.208 meters.
+      new PointTurn(-90, drivetrain),        //turns -90 degrees counterclockwise
+      new DriveDistance(.8021, drivetrain), //moves toward power cells
+      new AutoIntake(intake, hopper),       //intakes power cells
+      new PointTurn(180, drivetrain),      //turns 180 degrees around
       new DriveDistance(.8021, drivetrain), 
-      new AutoIntake(intake, hopper),
-      new PointTurn(180, drivetrain),
-      new DriveDistance(.8021, drivetrain),
-      new PointTurn(90, drivetrain),
-      new DriveDistance(3.2084, drivetrain),
-      new VariableLaunch(launcher)
+      new PointTurn(90, drivetrain),      //turns 90 degrees counterclockwise
+      new DriveDistance(3.2084, drivetrain), //drives back to the line
+      new VariableLaunch(launcher)         //launces the power cells
     );
   }
 }
