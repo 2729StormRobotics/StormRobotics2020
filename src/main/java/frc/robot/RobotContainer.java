@@ -72,7 +72,18 @@ public class RobotContainer {
     SmartDashboard.putData("Limelight Subsystem", m_limelight);
     SmartDashboard.putData("Party Subsystem", m_party);
 
-    // Show what command each subsystem is running on the SmartDashboard
+    // Add Point Turn button and input angle.
+    SmartDashboard.putNumber("Target Angle", 0.0);
+    SmartDashboard.putData("Point Turn", new PointTurn(m_drivetrain));
+
+    // Add DriveDistance button and input distance.
+    SmartDashboard.putNumber("Target Distance", 0.0);
+    SmartDashboard.putData("Drive Distance", new DriveDistance(m_drivetrain));
+
+    // Add CellevatorLoaderMotor button.
+    SmartDashboard.putData("Cellevator Loader Command", new CellevatorLoaderMotor(m_cellevatorLoader));
+
+    // 
 
     // Configure the button bindings
     configureButtonBindings();
