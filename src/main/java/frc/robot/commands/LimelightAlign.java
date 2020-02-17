@@ -23,12 +23,12 @@ public class LimelightAlign extends PIDCommand {
   /**
    * Creates a new LimelightAlign.
    */
-  public LimelightAlign(Limelight limesub, Drivetrain drivesub) {
+  public LimelightAlign(Drivetrain drivetrain) {
     super(
         // The controller that the command will use
         new PIDController(kLimelightAlignP, kLimelightAlignI, kLimelightAlignD),
         // This should return the measurement (Angle offset on the X-axis of the camera)
-        () -> limesub.getXOffset(),
+        () -> drivetrain.getXOffset(),
         // This should return the setpoint (can also be a constant)
         () -> 0,
         // This uses the output
@@ -38,17 +38,17 @@ public class LimelightAlign extends PIDCommand {
            * itself to the target using arcade drive. If no target is found it will spin
            * at a fixed speed until one comes into range
            */
-          if (limesub.isTargetDetected()) {
-            drivesub.arcadeDrive(0, output, true);
+          if (drivetrain.isTargetDetected()) {
+            drivetrain.arcadeDrive(0, output, true);
           } else {
-            drivesub.arcadeDrive(0, kSteeringAdjust, true);
+            drivetrain.arcadeDrive(0, kSteeringAdjust, true);
           }
         });
 
     // Sends a PID table to the SmartDashboard
         SmartDashboard.putData("AlignmentPID", getController());
     // Use addRequirements() here to declare subsystem dependencies.
-        addRequirements(limesub, drivesub);
+        addRequirements(drivetrain);
     // Configure additional PID options by calling `getController` here.
         getController().setTolerance(kLimelightAlignTolerance);
   }
