@@ -65,9 +65,8 @@ public class Cellevator extends SubsystemBase {
   /** 
    * inverts the holder to unload power cells from the cellevator
   */
-  public boolean invertHolder() {
+  public void invertHolder() {
     m_holderMotor.setInverted(!m_holderMotor.getInverted());
-    return m_holderMotor.getInverted();
   }
 
   /**
@@ -179,7 +178,7 @@ public class Cellevator extends SubsystemBase {
     SmartDashboard.putBoolean("Middle Beam Value", m_beamBreakMiddle.get());
     SmartDashboard.putNumber("Holder Motor Speed", m_holderMotor.get());
     SmartDashboard.putNumber("Power Cell Count", getPowerCellCount());
-    SmartDashboard.putBoolean("Holder Motor Inverted", invertHolder());
+    SmartDashboard.putBoolean("Holder Motor Inverted", m_holderMotor.getInverted());
   }
 
   @Override
