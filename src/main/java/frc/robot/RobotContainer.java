@@ -85,14 +85,15 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     
-    new JoystickButton(m_driverController, kA.value).whileHeld(new LimelightAlign(m_limelight, m_drivetrain));  //LimeLight align     
+    new JoystickButton(m_driverController, kA.value).whileHeld(new LimelightAlign(m_drivetrain)); // LimeLight align
     
     new JoystickButton(m_driverController, kB.value).whenPressed(new HighGearDrive(m_drivetrain));
 
-    //TODO new JoystickButton(m_driverController, KY.value).whenPressed(new LowGearDrive(m_drivetrain));
-
+    new JoystickButton(m_driverController, kY.value).whenPressed(new LowGearDrive(m_drivetrain));
     
-    // new POVButton(m_weaponsController, 0).whenPressed(new LaunchAngle(m_launcher));
+    //new JoystickButton(m_party, kX.value).whenPressed(new )
+
+    new POVButton(m_weaponsController, 0).whenPressed(new ToggleLaunchAngle(m_launcher));
 
     new JoystickButton(m_weaponsController, kBumperLeft.value).whileHeld(new IntakePowerCell(IntakeConstants.kIntakeMotorSpeed, m_intake));   //powercell intake
 
