@@ -14,6 +14,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import static frc.robot.Constants.CellevatorConstants.*;
 
 public class CellevatorLoader extends SubsystemBase {
@@ -53,6 +54,13 @@ public class CellevatorLoader extends SubsystemBase {
     m_loaderMotor.set(speed);
   }
 
+  /** 
+   * inverts the motor by setting it to the opposite of te state in constants
+  */
+  public void invertLoader() {
+    m_loaderMotor.setInverted(!m_loaderMotor.getInverted());
+  }
+
     /**
    * Gets the beam break value to see if there is a power cell present at the
    * bottom of the cellevator
@@ -89,7 +97,7 @@ public class CellevatorLoader extends SubsystemBase {
    */
   public void log() {
     SmartDashboard.putNumber("Loader Motor Speed", m_loaderMotor.get());
-
+    SmartDashboard.putBoolean("Loader Motor Inverted", m_loaderMotor.getInverted());
   }
 
   @Override

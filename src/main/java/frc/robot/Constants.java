@@ -54,8 +54,8 @@ public final class Constants {
 
             // Constants for DriveDistance.
         // TODO: Update these constants with the correct values.
-        public static final double kMaxSpeed = 0; // Meters per second
-        public static final double kMaxAcceleration = 0; // Meters per (second^2)
+        public static final double kMaxSpeed = 0; // Inches per second
+        public static final double kMaxAcceleration = 0; // Inches per (second^2)
 
         public static final double kS = 0;  //TODO: Test for values
         public static final double kV = 0;  //TODO: Test for values
@@ -94,7 +94,6 @@ public final class Constants {
     
             //max velocity in meters per second squared
             public static final double kMaxAcc = 0.0; //TODO: update
-
         }
     }
 

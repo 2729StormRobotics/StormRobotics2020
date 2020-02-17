@@ -42,7 +42,7 @@ public class Launcher extends SubsystemBase {
   public Launcher() {
 
     // Instantiate the double solenoid for the launch pistons.
-    m_launchPiston = new DoubleSolenoid(kLeftLauncherMotorPort, kRightLauncherMotorPort);
+    m_launchPiston = new DoubleSolenoid(kLongLaunchSolenoidPort, kShortLaunchSolenoidPort);
 
     // Instantiate the motors.
     m_leftLauncher = new CANSparkMax(kLeftLauncherMotorPort, MotorType.kBrushless);
@@ -225,7 +225,6 @@ public class Launcher extends SubsystemBase {
   /**
    * Calculate the desired speed of the launch motors.
    * 
-   * @param distance The horizontal distance from the vision target
    * @return The desired speed of the launch motors in RPM.
    */
   public double calculateLaunchSpeed() {
