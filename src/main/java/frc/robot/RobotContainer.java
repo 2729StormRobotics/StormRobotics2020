@@ -7,24 +7,50 @@
 
 package frc.robot;
 
-import frc.robot.commandgroups.LaunchMode;
-import frc.robot.commands.*;
-import frc.robot.subsystems.*;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
+import static edu.wpi.first.wpilibj.XboxController.Button.kA;
+import static edu.wpi.first.wpilibj.XboxController.Button.kB;
+import static edu.wpi.first.wpilibj.XboxController.Button.kBack;
+import static edu.wpi.first.wpilibj.XboxController.Button.kBumperLeft;
+import static edu.wpi.first.wpilibj.XboxController.Button.kBumperRight;
+import static edu.wpi.first.wpilibj.XboxController.Button.kStart;
+import static edu.wpi.first.wpilibj.XboxController.Button.kStickRight;
+import static edu.wpi.first.wpilibj.XboxController.Button.kY;
+
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
-
-import static edu.wpi.first.wpilibj.GenericHID.Hand;
-import static edu.wpi.first.wpilibj.XboxController.Button.*;
-import static frc.robot.Constants.*;
+import frc.robot.Constants.ControllerConstants;
+import frc.robot.commands.CellevatorHolder;
+import frc.robot.commands.DriveDistance;
+import frc.robot.commands.DriveManually;
+import frc.robot.commands.FixedLaunch;
+import frc.robot.commands.FrictionBrakeRelease;
+import frc.robot.commands.HolderMotorManual;
+import frc.robot.commands.HighGearDrive;
+import frc.robot.commands.IntakePowerCell;
+import frc.robot.commands.InvertHolderMotor;
+import frc.robot.commands.InvertLoaderMotor;
+import frc.robot.commands.LimelightAlign;
+import frc.robot.commands.LowGearDrive;
+import frc.robot.commands.MoveClimber;
+import frc.robot.commands.MoveHopperMotor;
+import frc.robot.commands.MoveIntakePistons;
+import frc.robot.commands.PointTurn;
+import frc.robot.commands.ToggleLaunchAngle;
+import frc.robot.commandgroups.*;
+import frc.robot.subsystems.Cellevator;
+import frc.robot.subsystems.CellevatorLoader;
+import frc.robot.subsystems.Climbers;
+import frc.robot.subsystems.ControlPanel;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Hopper;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Launcher;
+import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.Party;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -61,6 +87,7 @@ public class RobotContainer {
     m_cellevator.setDefaultCommand(new CellevatorHolder(m_cellevator));
 
 
+    // Add data of each subsystem to the SmartDashboard
     SmartDashboard.putData("Cellevator Subsystem", m_cellevator);
     SmartDashboard.putData("Cellevator Loader Subsystem", m_cellevatorLoader);
     SmartDashboard.putData("Climbers Subsystem", m_climbers);
@@ -81,7 +108,7 @@ public class RobotContainer {
     SmartDashboard.putData("Drive Distance", new DriveDistance(m_drivetrain));
 
     // Add CellevatorLoaderMotor button.
-    SmartDashboard.putData("Cellevator Loader Command", new CellevatorLoaderMotor(m_cellevatorLoader));
+    SmartDashboard.putData("Cellevator Loader Command", new CellevatorLoader());
 
     // Add FixedLaunch button and input speed.
     SmartDashboard.putNumber("Target Launch Speed", 0.0);
