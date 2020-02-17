@@ -25,7 +25,8 @@ public class PointTurn extends PIDCommand {
   /**
    * Rotates the robot a certain amount of degrees using PID.
    * 
-   * @param angle The angle in degrees by which the robot will rotate. Must be between -180 and 180 degrees.
+   * @param angle The angle in degrees by which the robot will rotate. Must be between -180 and 180 degrees,
+   * in which positive angles are counter-clockwise rotations.
    * @param drivetrain Pass in the drivetrain for the command to use.
    * 
    */
