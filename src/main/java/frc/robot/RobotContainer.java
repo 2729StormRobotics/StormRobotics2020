@@ -91,7 +91,7 @@ public class RobotContainer {
     SmartDashboard.putData("Limelight Align", new LimelightAlign(m_drivetrain));
 
     // Reverse the loader motors.
-    //SmartDashboard.putData("Reverse Loader Motor", new InvertLoaderMotor(m_cellevatorLoader));
+    SmartDashboard.putData("Reverse Loader Motor", new InvertLoaderMotor(m_cellevatorLoader));
 
     // Reverse the holder motors.
     SmartDashboard.putData("Reverse Holder Motor", new InvertHolderMotor(m_cellevator));
