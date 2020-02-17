@@ -132,7 +132,7 @@ public final class Constants {
         public static final int kIntakeRaiseSolenoidPort = 5;
         public static final int kIntakeLowerSolenoidPort = 2;
 
-        public static final double kIntakeMotorSpeed = 1.0; // TODO: Test and update this value.
+        public static final double kIntakeMotorSpeed = 1.0; // TODO: Change if needed
     }
 
     public static final class HopperConstants {
