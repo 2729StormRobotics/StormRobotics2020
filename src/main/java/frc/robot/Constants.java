@@ -54,8 +54,8 @@ public final class Constants {
 
         // Constants for DriveDistance.
         // TODO: Update these constants with the correct values.
-        public static final double kMaxSpeed = 0; // Meters per second
-        public static final double kMaxAcceleration = 0; // Meters per (second^2)
+        public static final double kMaxSpeed = 0; // inches per second
+        public static final double kMaxAcceleration = 0; // inches per (second^2)
 
         public static final double kS = 0;  //TODO: Test for values
         public static final double kV = 0;  //TODO: Test for values
@@ -88,8 +88,8 @@ public final class Constants {
             // Maximum angular speed in degrees per second at which PointTurn can end
             public static final double kVelocityTolerance = 1.0; // TODO: Update this value.
 
-            public static final double kMaxVelocity = 0.0; //max velocity in meters per second
-            public static final double kMaxAcc = 0.0; //max velocity in meters per second squared
+            public static final double kMaxVelocity = 0.0; //max velocity in inches per second
+            public static final double kMaxAcc = 0.0; //max velocity in inches per second squared
 
         }
     }
