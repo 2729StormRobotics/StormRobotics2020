@@ -18,7 +18,7 @@ public class AutoPath2 extends SequentialCommandGroup {
    */
   public AutoPath2() {
     // Add your commands in the super() call, e.g.
-    addCommands(
+    super(
       
 
 

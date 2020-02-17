@@ -23,7 +23,7 @@ public class AutoPath1 extends SequentialCommandGroup {
   public AutoPath1(Drivetrain drivetrain, Launcher launcher, Intake intake, Hopper hopper) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
-    addCommands(
+    super(
       new DriveDistance(3.2084, drivetrain), //moves forward 3.208 meters.
       new PointTurn(-90, drivetrain),        //turns -90 degrees counterclockwise
       new DriveDistance(.8021, drivetrain), //moves toward power cells
