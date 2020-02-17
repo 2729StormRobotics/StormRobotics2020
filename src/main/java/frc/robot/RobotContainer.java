@@ -121,9 +121,9 @@ public class RobotContainer {
 
     new POVButton(m_weaponsController, 0).whenPressed(new ToggleLaunchAngle(m_launcher));
 
-    new JoystickButton(m_weaponsController, kBumperLeft.value).whileHeld(new IntakePowerCell(IntakeConstants.kIntakeMotorSpeed, m_intake));   //powercell intake
+    new JoystickButton(m_weaponsController, kBumperLeft.value).whileHeld(new IntakePowerCell(true, m_intake));   //powercell intake
 
-    new JoystickButton(m_weaponsController, kBumperRight.value).whileHeld(new IntakePowerCell(IntakeConstants.kIntakeMotorSpeed * -1, m_intake));   //powercell intake
+    new JoystickButton(m_weaponsController, kBumperRight.value).whileHeld(new IntakePowerCell(false, m_intake));   //powercell outtake
 
     new JoystickButton(m_weaponsController, kA.value).whileHeld(new FrictionBrakeRelease(m_climbers)); //friction break
 
