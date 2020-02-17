@@ -57,9 +57,8 @@ public class CellevatorLoader extends SubsystemBase {
   /** 
    * inverts the motor by setting it to the opposite of te state in constants
   */
-  public boolean invertLoader() {
+  public void invertLoader() {
     m_loaderMotor.setInverted(!m_loaderMotor.getInverted());
-    return m_loaderMotor.getInverted();
   }
 
     /**
@@ -98,7 +97,7 @@ public class CellevatorLoader extends SubsystemBase {
    */
   public void log() {
     SmartDashboard.putNumber("Loader Motor Speed", m_loaderMotor.get());
-    SmartDashboard.putBoolean("Loader Motor Inverted", invertLoader());
+    SmartDashboard.putBoolean("Loader Motor Inverted", m_loaderMotor.getInverted());
   }
 
   @Override
