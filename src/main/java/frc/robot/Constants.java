@@ -173,26 +173,16 @@ public final class Constants {
     }
     
     public static final class LimeLightConstants {
-        public static final double kLimeLightOffest = 13.67;
-        public static final double kLimeLightHeight = 43; 
-        public static final double kLimeLightAngle = 0; //NEED CORRECT ANGLE 
-        public static final double kPortHeight = 98.25;
+        public static final double kLimeLightOffset = 13.67; //Inches
+        public static final double kLimeLightHeight = 43; //Inches
+        public static final double kLimeLightAngle = 16; //Degrees
+        public static final double kPortHeight = 98.25; //Inches
 
         //Alignment constants for LimeLight
-        public static final double kLimeLightAlignP = 1.0; 
-        public static final double kLimeLightAlignI = 0.0;
-        public static final double kLimeLightAlignD = 0.0;
-        public static final double kLimeLightTolernce = 5.0;
-        public static final double kLimeLightAlignTolerance = 1.5;
-    
-        //Distance constants for LimeLight
-        public static final double kLimeLightDistanceP = 1.0; 
-        public static final double kLimeLightDistanceI = 0.0;
-        public static final double kLimeLightDistanceD = 0.0;
-        public static final double kLimeLightDistance = 50.0;
-        public static final double kLimeLightDistanceTolernce = 5.0;
-        
-        
+        public static final double kLimeLightAlignP = 1.0; //TODO: Test and add
+        public static final double kLimeLightAlignI = 0.0; //TODO: Test and add
+        public static final double kLimeLightAlignD = 0.0; //TODO: Test and add
+        public static final double kLimeLightAlignTolerance = 1.5; //Max Alignment Tolerance in degrees.
     
     }
 
