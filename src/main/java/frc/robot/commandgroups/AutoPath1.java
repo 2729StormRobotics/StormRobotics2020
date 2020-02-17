@@ -15,8 +15,9 @@ import frc.robot.Constants.*;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
+
 public class AutoPath1 extends SequentialCommandGroup {
-  /**
+  /** 
    * Creates a new AutoPath1.
    */
   public AutoPath1(Drivetrain drivetrain, Launcher launcher, Intake intake, Hopper hopper) {
@@ -29,7 +30,7 @@ public class AutoPath1 extends SequentialCommandGroup {
       new AutoIntake(intake, hopper),       //intakes power cells
       new PointTurn(180, drivetrain),      //turns 180 degrees around
       new DriveDistance(.8021, drivetrain), 
-      new PointTurn(90, drivetrain),      //turns 90 degrees counterclockwise
+      new PointTurn(90, drivetrain),      //turns 90 degrees counterclockwise 
       new DriveDistance(3.2084, drivetrain), //drives back to the line
       new VariableLaunch(launcher)         //launces the power cells
     );
