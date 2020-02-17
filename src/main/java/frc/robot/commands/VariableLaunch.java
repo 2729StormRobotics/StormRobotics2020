@@ -8,43 +8,36 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Launcher;
 
-import frc.robot.subsystems.Cellevator;
-import frc.robot.Constants.CellevatorConstants;
+public class VariableLaunch extends CommandBase {
+  private final Launcher m_launcher;
 
-public class HolderOutake extends CommandBase {
-  
-private final Cellevator m_cellevator;
   /**
-   * Creates a new HolderOutake.
+   * Variable launch with calculated speed based on distance from vision target.
+   * 
+   * @param launcher The Launcher subsystem to pass in.
    */
-  public HolderOutake(Cellevator subsystem) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    m_cellevator = subsystem;
-    addRequirements(m_cellevator);
+  public VariableLaunch(Launcher launcher) {
+    m_launcher = launcher;
+    addRequirements(m_launcher);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    double speed = m_launcher.calculateLaunchSpeed();
+    m_launcher.revToSpeed(speed);
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-     // runs the holder motor at a constant speed when the command starts
-    m_cellevator.runHolderMotor(CellevatorConstants.kHolderMotorSpeed); 
-  }
-
-  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_cellevator.stopHolderMotor(); // stops the holder motor
+    m_launcher.stopRevving();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+     return false;
   }
 }

@@ -67,14 +67,14 @@ public class Cellevator extends SubsystemBase {
    * of the cellevator
    */
   public boolean isTopBallPresent() {
-    return m_beamBreakTop.get();
+    return !m_beamBreakTop.get();
     }
 
   /**
    * Gets the beam break value to see if there is a power cell present at the
    * middle of the cellevator
    */
-  public boolean isMiddleBallPresent() {
+  public boolean isMiddleGapClear() {
     return m_beamBreakMiddle.get();
     }
 
@@ -83,7 +83,7 @@ public class Cellevator extends SubsystemBase {
    * bottom of the cellevator
    */
   public boolean isBottomBallPresent() {
-    return m_beamBreakBottom.get();
+    return !m_beamBreakBottom.get();
   }
 
   /**
@@ -170,11 +170,38 @@ public class Cellevator extends SubsystemBase {
     SmartDashboard.putBoolean("Bottom Beam Value", m_beamBreakBottom.get());
     SmartDashboard.putBoolean("Middle Beam Value", m_beamBreakMiddle.get());
     SmartDashboard.putNumber("Holder Motor Speed", m_holderMotor.get());
+    SmartDashboard.putNumber("Power Cell Count", getPowerCellCount());
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    
+    if (previousBBBottom != isBottomBallPresent()) {
+      // if the previous bottom beam break is not equal to the current then check if the current value is true
+      //this means that there is a power cell that has been taken in so we can add one to the count
+      if(isBottomBallPresent() == true) {
+        addPowerCellCount();
+      }
+      // sets the previous value equal to the present
+      setBeamBreakBottomPrevious(isBottomBallPresent());
+    }
+
+    if (previousBBMiddle != isMiddleGapClear()) {
+      // sets the previous value equal to the present
+      setBeamBreakMiddlePrevious(isMiddleGapClear());
+    }
+
+    if (previousBBTop != isTopBallPresent()) {
+      // if the previous top beam break is not equal to the current then checki if the current value is false
+      // this means that the power cell left the cellevator and into the launcher so we can subtract one from the count
+      if(isTopBallPresent() == false) {
+        subtractPowerCellCount();
+      }
+      // sets the previous value equal to the present
+      setBeamBreakTopPrevious(isTopBallPresent());
+    }
     log();
   }
+  
 }

@@ -91,7 +91,6 @@ public final class Constants {
             public static final double kMaxVelocity = 0.0; //max velocity in meters per second
             public static final double kMaxAcc = 0.0; //max velocity in meters per second squared
 
-            public static final double setPoint = 0.0; //setpoint in meters
         }
     }
 
@@ -106,6 +105,10 @@ public final class Constants {
         // used in inverting launcher motor
         public static final boolean kInvertLeftLauncher = false;
         public static final boolean kInvertRightLauncher = !kInvertLeftLauncher;
+
+        // The two different speeds for the set shooting locations.
+        public static final double kLaunchSpeed1 = 0; // TODO: test and update this value
+        public static final double kLaunchSpeed2 = 0; // TODO: test and update this value
 
         // PID constants for the launcher
         public static final class LaunchPID {
@@ -219,6 +222,8 @@ public final class Constants {
 
         // Color sensor that senses the colors on the control panel
         public static final int kColorSensorPort = 0;
+        // The main speed of the control panel motor.
+        public static final double kMotorSpeed = 0.4;
 
         /** Values the color sensor uses to detect the colors on control panel */
         // Red
