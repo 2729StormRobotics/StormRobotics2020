@@ -7,7 +7,7 @@
 
 package frc.robot.commands;
 
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Launcher;
 
@@ -28,6 +28,11 @@ public class FixedLaunch extends CommandBase {
     m_launchSpeed = launchSpeed;
     m_Launcher = subsystem;
     addRequirements(m_Launcher);
+  }
+
+  // Uses SmartDashboard speed for testing.
+  public FixedLaunch(Launcher subsystem) {
+    this(SmartDashboard.getNumber("Target Launch Speed", 0.), subsystem);
   }
 
   // Called just before this Command runs the first time.
