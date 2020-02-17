@@ -94,7 +94,7 @@ public class RobotContainer {
     //SmartDashboard.putData("Reverse Loader Motor", new InvertLoaderMotor(m_cellevatorLoader));
 
     // Reverse the holder motors.
-    //SmartDashboard.putData("Reverse Holder Motor", new InvertHolderMotor(m_cellevator));
+    SmartDashboard.putData("Reverse Holder Motor", new InvertHolderMotor(m_cellevator));
 
     // Auto path 1
     //SmartDashboard.putData("Auto Path 1", new AutoPath1(m_drivetrain, m_launcher, m_intake, m_hopper));
