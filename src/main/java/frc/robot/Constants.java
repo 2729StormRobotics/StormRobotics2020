@@ -137,7 +137,7 @@ public final class Constants {
 
     public static final class HopperConstants {
         public static final int kHopperMotorPort = 6;
-        public static final double kHopperMotorSpeed = 1.0; // TODO: Change the speed after testing.
+        public static final double kHopperMotorSpeed = 1.0; // TODO: Change if needed.
     }
 
     public static final class CellevatorConstants {
