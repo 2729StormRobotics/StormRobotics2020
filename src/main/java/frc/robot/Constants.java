@@ -203,8 +203,11 @@ public final class Constants {
 
         // Color sensor that senses the colors on the control panel
         public static final int kColorSensorPort = 0;
+
         // The main speed of the control panel motor.
-        public static final double kMotorSpeed = 0.4;
+        public static final double kCountRevSpeed = 0.4; // TODO Update with testing
+        // The speed to run when seeking color
+        public static final double kFindColorSpeed = 0.18; // TODO Update with testing
 
         /** Values the color sensor uses to detect the colors on control panel */
         // Red
