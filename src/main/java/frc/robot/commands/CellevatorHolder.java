@@ -21,7 +21,6 @@ public class CellevatorHolder extends CommandBase {
    */
   public CellevatorHolder(Cellevator cellevator) {
     m_cellevator = cellevator;
-    runHolderMotor = false;
     addRequirements(m_cellevator);
   }
 
