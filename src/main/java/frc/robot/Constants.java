@@ -240,7 +240,8 @@ public final class Constants {
         private static final double kGearing = 10.0/58.0 * 16.0/60.0;
 
         // Conversion for distance and speed per encoder pulse, given in inches
-        public static final double kEncoderDistancePerPulse = 0; // ADD CONVERSION
+        public static final double kSprocketDiameter = 1.662;
+        public static final double kEncoderDistancePerPulse = Math.PI * kSprocketDiameter / kGearing; // ADD CONVERSION
         public static final double kEncoderSpeedPerPulse = kEncoderDistancePerPulse / 60;
 
         public static final int kRightClimberMotorPort = 15;
