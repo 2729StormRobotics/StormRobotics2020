@@ -8,45 +8,38 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.ControlPanel;
 
-import frc.robot.subsystems.Cellevator;
-import frc.robot.Constants.CellevatorConstants;
+public class MovePanelForColor extends CommandBase {
+  private final ControlPanel m_controlPanel;
 
-public class HolderOutake extends CommandBase {
+  public MovePanelForColor(ControlPanel subsystem) {
+    m_controlPanel = subsystem;
 
-  private final Cellevator m_cellevator;
-
-  /**
-   * Creates a new HolderOutake.
-   */
-  public HolderOutake(Cellevator subsystem) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    m_cellevator = subsystem;
-    addRequirements(m_cellevator);
+    addRequirements(m_controlPanel);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // runs the holder motor at a constant speed when the command starts
-    m_cellevator.runHolderMotor(CellevatorConstants.kHolderMotorSpeed);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    m_controlPanel.spinWheelForColor(); // sets power
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_cellevator.stopHolderMotor(); // stops the holder motor
+    m_controlPanel.stopSpinning();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return (m_controlPanel.onTargetColor() && m_controlPanel.isSpun()); // ends when both condidtions are true
   }
 }

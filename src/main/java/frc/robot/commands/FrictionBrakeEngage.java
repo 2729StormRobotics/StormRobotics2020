@@ -13,10 +13,10 @@ import frc.robot.subsystems.Climbers;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class FrictionBrakeRelease extends InstantCommand {
+public class FrictionBrakeEngage extends InstantCommand {
   private final Climbers m_climbers;
 
-  public FrictionBrakeRelease(Climbers subsystem) {
+  public FrictionBrakeEngage(Climbers subsystem) {
     m_climbers = subsystem;
 
     addRequirements(m_climbers);
@@ -25,6 +25,6 @@ public class FrictionBrakeRelease extends InstantCommand {
 
   @Override
   public void initialize() {
-    m_climbers.engageFrictionBrake(false);
+    m_climbers.engageFrictionBrake(true);
   }
 }

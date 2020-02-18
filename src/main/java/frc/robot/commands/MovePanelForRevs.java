@@ -8,52 +8,38 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Intake;
-// import sun.jvm.hotspot.code.ConstantDoubleValue;
-import static frc.robot.Constants.IntakeConstants.*;
+import frc.robot.subsystems.ControlPanel;
 
-public class IntakePowerCell extends CommandBase {
-  private final Intake m_intake;
-  private final boolean m_in;
-  
-  /**
-   * Creates a new IntakePowerCell.
-   * 
-   * @param in Move the intake motor inward if true; otherwise move it outward.
-   * @param subsystem Intake subsystem to pass in.
-   */
-  public IntakePowerCell(boolean in, Intake subsystem) {
-    // Create our local instance of each variable from the parameters.
-    m_in = in;
-    m_intake = subsystem;
-    
-    // Attach our local instance of the subsystem to this command.
-    addRequirements(m_intake);
+public class MovePanelForRevs extends CommandBase {
+  private final ControlPanel m_controlPanel;
 
+  public MovePanelForRevs(ControlPanel subsystem) {
+    m_controlPanel = subsystem;
+    addRequirements(m_controlPanel);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // Once command is initialized, set the intake arm motors to run for intaking the power cells
-    m_intake.startIntakeMotor(m_in ? kIntakeMotorSpeed : -kIntakeMotorSpeed); // TODO: Test whether positive is actually inward.
+    m_controlPanel.resetColorCount();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
+    m_controlPanel.spinWheelForRevolutions(); // Sets power
+    m_controlPanel.countByColor(); // updates color count
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_intake.stopIntakeMotor();
+    m_controlPanel.stopSpinning();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return (m_controlPanel.isSpun()); // Ends when we've detected that it's been spun at least 8 times
   }
 }

@@ -25,11 +25,14 @@ public class ControlPanel extends SubsystemBase {
   private final ColorMatch m_colorMatch;
   private final ColorSensorV3 m_colorSensor;
 
-  private String gameData;
-  private String targetColor;
-  private String color;
-  private int count = 0;
-  private String colorString;
+  private String m_gameData;
+  private String m_targetColor;
+  private String m_currentColor;
+  private int m_revColorCount = 0;
+  private String m_lastColorCheck;
+  private boolean m_firstColorDetected = false;
+  private boolean m_readyToCount = false;
+  private boolean m_readyToFindColor = false;
 
   /**
    * Creates a new ControlPanel.
@@ -51,115 +54,115 @@ public class ControlPanel extends SubsystemBase {
     m_controlPanelMotor.set(speed);
   }
 
-  // displays the color based on RBG values
-  private void detectColor() {
+  // Detects the current color from the color sensor
+  // Will also update a special current color check for counting purposes
+  private void detectCurrentColor() {
     Color detectedColor = m_colorSensor.getColor();
     ColorMatchResult match = m_colorMatch.matchColor(detectedColor);
 
     if (match.color == kRedTarget) {
-      color = "Red";
-      colorString = "Red";
+      m_currentColor = "Red";
+      m_firstColorDetected = true;
+      m_lastColorCheck = m_currentColor;
     } else if (match.color == kYellowTarget) {
-      color = "Yellow";
+      m_currentColor = "Yellow";
     } else if (match.color == kGreenTarget) {
-      color = "Green";
+      m_currentColor = "Green";
     } else if (match.color == kBlueTarget) {
-      color = "Blue";
-      colorString = "Blue";
+      m_currentColor = "Blue";
+      m_firstColorDetected = true;
+      m_lastColorCheck = m_currentColor;
     } else {
-      color = "Unknown";
+      m_currentColor = "Unknown";
     }
   }
 
-  public int colorCount() {
-    String lastColor = color;    
-    //Counts how many times red and blue have passed 
-    if (lastColor.equals("Red") && colorString.equals("Blue") || lastColor.equals("Blue") && colorString.equals("Red")){
-      count++;
-      lastColor = colorString;
+  public void resetColorCount() {
+    m_revColorCount = 0;
+    m_firstColorDetected = false;
+    m_readyToCount = true;
+  }
+
+  public void countByColor() {
+    // Counts how many times red and blue have passed
+    if (m_firstColorDetected) {
+      if ((m_currentColor.equals("Red") && m_lastColorCheck.equals("Blue"))
+          || (m_currentColor.equals("Blue") && m_lastColorCheck.equals("Red"))) {
+        m_revColorCount++;
       }
-      else if (lastColor.equals("") && (colorString.equals("Blue") || colorString.equals("Red"))){
-        lastColor = colorString; 
+    }
+  }
+
+  // Detect the target color from FMS
+  public void getTargetColor() {
+    // Gets data sent from the drivers station
+    m_gameData = DriverStation.getInstance().getGameSpecificMessage();
+
+    if (m_gameData.length() > 0) {
+      switch (m_gameData.charAt(0)) {
+      case 'B': // Blue
+        m_targetColor = "Red";
+        break;
+      case 'G': // Green
+        m_targetColor = "Yellow";
+        break;
+      case 'R': // Red
+        m_targetColor = "Blue";
+        break;
+      case 'Y': // Yellow
+        m_targetColor = "Green";
+        break;
+      default:
+        break;
       }
-      return count;
+    } else {
+      // Code for no data received yet
     }
 
-//checks to see if wheel has passed 8 times    
-public void setTargetColor(){
-  //Gets data sent from the drivers station
- 
-  gameData = DriverStation.getInstance().getGameSpecificMessage();
-
-  if(gameData.length() > 0)
-{
-  switch (gameData.charAt(0))
-  {
-    case 'B' :  //Blue
-        targetColor = "Red";
-      break;
-    case 'G' :  //Green
-        targetColor = "Yellow";
-      break;
-    case 'R' :  //Red
-        targetColor = "Blue";
-      break;
-    case 'Y' :  //Yellow
-        targetColor = "Green";
-      break;
-    default :
-      break;
   }
-} else {
-  //Code for no data received yet
-}
 
-}
-  
-public void findTargetColor(){
-  spinMotor(.18);
-  if (color.equals(targetColor))
-    spinMotor(0);
-}
+  public boolean onTargetColor() {
+    return m_currentColor.equals(m_targetColor);
+  }
 
   // checks to see if wheel has passed 8 times
   public boolean isSpun() {
-    Boolean spun = false;
-    if (colorCount() >= 8) {
-      spun = true;
-    }
-    return spun;
+    return (m_revColorCount >= 8);
   }
 
-  // Controls motor speed
-  public void wheelMotorPower() {
-    if (!isSpun()) {
-      spinMotor(.4); // TODO Determine ideal speeds, then add to constants
-    } else if (isSpun()) {
-      findTargetColor();
-    }
+  // Spins control panel for revolution counting
+  public void spinWheelForRevolutions() {
+    spinMotor(kCountRevSpeed);
+    m_readyToCount = true;
   }
 
-  // stops motor after Red & Blue is passed 8 times
-  public void wheelStop() {
-    if (isSpun() == true && colorCount() >= 8) {
-      stopSpinning();
-    }
+  // Spins control panel for targting color
+  public void spinWheelForColor() {
+    spinMotor(kFindColorSpeed);
+    m_readyToFindColor = true;
   }
 
   // stops the color panel motor
   public void stopSpinning() {
     spinMotor(0.0);
+    m_readyToCount = false;
+    m_readyToFindColor = false;
   }
 
   // displays data onto SmartDashboard
-  public void updateColor() {
-    detectColor();
-    SmartDashboard.putString("Current Color", color);
+  private void log() {
+    SmartDashboard.putString("Current Color", m_currentColor);
+    SmartDashboard.putString("Target Color", m_targetColor);
+    SmartDashboard.putNumber("Spin Count", m_revColorCount);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    updateColor();
+    if (m_readyToCount || m_readyToFindColor) {
+      detectCurrentColor();
+    }
+    getTargetColor();
+    log();
   }
 }

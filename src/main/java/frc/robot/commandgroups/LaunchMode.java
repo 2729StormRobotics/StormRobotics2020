@@ -13,7 +13,6 @@ import frc.robot.subsystems.CellevatorLoader;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Launcher;
-import frc.robot.subsystems.Limelight;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -22,10 +21,13 @@ public class LaunchMode extends SequentialCommandGroup {
   /**
    * Creates a new LaunchMode.
    */
-  public LaunchMode(Limelight m_limelight, Drivetrain m_drivetrain, Launcher m_launcher, CellevatorLoader m_loader, Cellevator m_holder, Hopper m_hopper) {
+  public LaunchMode(Drivetrain m_drivetrain, Launcher m_launcher, CellevatorLoader m_loader, Cellevator m_holder, Hopper m_hopper) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
     // runs the Align and Rev, Queueing the cellevator, and launching in that order 
-    super(new AlignAndRevToSpeed(m_limelight, m_drivetrain, m_launcher), new QueueCellevator(m_loader, m_holder, m_hopper, m_launcher), new LaunchPowerCell(m_holder, m_launcher));
+    super(new AlignAndRevToSpeed(m_drivetrain, m_launcher), new QueueCellevator(m_loader, m_holder, m_hopper, m_launcher), new LaunchPowerCell(m_holder, m_launcher));
   }
+
+public LaunchMode(int i, Launcher m_launcher) {
+}
 }
