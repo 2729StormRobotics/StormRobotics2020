@@ -46,7 +46,7 @@ public final class Constants {
         public static final double kLowGearSpeedPerPulse = kLowGearDistancePerPulse / 60;
 
         // Constants to define which side of the drivetrain is "inverted"
-        public static final boolean kLeftSideInverted = false;
+        public static final boolean kLeftSideInverted = true;
         public static final boolean kRightSideInverted = !kLeftSideInverted;
 
         // Current limit for the drivetrain motors in amps
