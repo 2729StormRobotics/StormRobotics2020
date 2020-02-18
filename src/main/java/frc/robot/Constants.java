@@ -46,7 +46,7 @@ public final class Constants {
         public static final double kLowGearSpeedPerPulse = kLowGearDistancePerPulse / 60;
 
         // Constants to define which side of the drivetrain is "inverted"
-        public static final boolean kLeftSideInverted = false;
+        public static final boolean kLeftSideInverted = true;
         public static final boolean kRightSideInverted = !kLeftSideInverted;
 
         // Current limit for the drivetrain motors in amps
@@ -177,8 +177,7 @@ public final class Constants {
     public static final class PartyConstants {
 
         // DIO port number constants for the two LED Blinkin Drivers
-        public static final int kLedBlinkinDriver1Port = 8;
-        public static final int kLedBlinkinDriver2Port = 9;
+        public static final int kLedBlinkinDriverPort = 0;
 
         // Each possible LED mode correlates to a value for the Spark, as defined in the Rev Blinkin docs
         public static final double kRainbowParty = -0.97;           // Pattern: Rainbow, Pallete: Party
@@ -203,8 +202,11 @@ public final class Constants {
 
         // Color sensor that senses the colors on the control panel
         public static final int kColorSensorPort = 0;
+
         // The main speed of the control panel motor.
-        public static final double kMotorSpeed = 0.4;
+        public static final double kCountRevSpeed = 0.4; // TODO Update with testing
+        // The speed to run when seeking color
+        public static final double kFindColorSpeed = 0.18; // TODO Update with testing
 
         /** Values the color sensor uses to detect the colors on control panel */
         // Red
@@ -238,7 +240,8 @@ public final class Constants {
         private static final double kGearing = 10.0/58.0 * 16.0/60.0;
 
         // Conversion for distance and speed per encoder pulse, given in inches
-        public static final double kEncoderDistancePerPulse = 0; // ADD CONVERSION
+        public static final double kSprocketDiameter = 1.662;
+        public static final double kEncoderDistancePerPulse = Math.PI * kSprocketDiameter / kGearing;
         public static final double kEncoderSpeedPerPulse = kEncoderDistancePerPulse / 60;
 
         public static final int kRightClimberMotorPort = 15;
@@ -256,22 +259,22 @@ public final class Constants {
         public static final double kClimbDownSpeed = -0.5; // TODO Determine best speed
 
         // Define the maximum height of the climber
-        public static final double kMaxHeight = 0.0; // TODO Determine max height
+        public static final double kMaxHeight = 28.0; // TODO Confirm max height
     }
 
     public static final class LimelightConstants {
         // Values used to calculate target location
         public static final double kLimelightOffset = 13.67; // In inches
         public static final double kLimelightHeight = 43; // In inches
-        public static final double kLimelightAngle = 48; // In degrees
+        public static final double kLimelightAngle = 16; // In degrees
         public static final double kPortHeight = 98.25; // In inches
 
         // Alignment PID constants for Limelight
         public static final double kLimelightAlignP = 1.0;
         public static final double kLimelightAlignI = 0.0;
         public static final double kLimelightAlignD = 0.0;
-        public static final double kLimelightTolernce = 5.0;
-        public static final double kLimelightAlignTolerance = 1.5;
+        public static final double kLimelightAlignSpeedTolernce = 1.0;
+        public static final double kLimelightAlignPositionTolerance = 0.5;
         public static final double kSteeringAdjust = 0.25;
 
         // Distance PID constants for Limelight

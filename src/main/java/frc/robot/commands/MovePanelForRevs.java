@@ -8,45 +8,38 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.ControlPanel;
 
-import frc.robot.subsystems.Cellevator;
-import frc.robot.Constants.CellevatorConstants;
+public class MovePanelForRevs extends CommandBase {
+  private final ControlPanel m_controlPanel;
 
-public class HolderOutake extends CommandBase {
-
-  private final Cellevator m_cellevator;
-
-  /**
-   * Creates a new HolderOutake.
-   */
-  public HolderOutake(Cellevator subsystem) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    m_cellevator = subsystem;
-    addRequirements(m_cellevator);
+  public MovePanelForRevs(ControlPanel subsystem) {
+    m_controlPanel = subsystem;
+    addRequirements(m_controlPanel);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // runs the holder motor at a constant speed when the command starts
-    m_cellevator.runHolderMotor(CellevatorConstants.kHolderMotorSpeed);
+    m_controlPanel.resetColorCount();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
+    m_controlPanel.spinWheelForRevolutions(); // Sets power
+    m_controlPanel.countByColor(); // updates color count
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_cellevator.stopHolderMotor(); // stops the holder motor
+    m_controlPanel.stopSpinning();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return (m_controlPanel.isSpun()); // Ends when we've detected that it's been spun at least 8 times
   }
 }
