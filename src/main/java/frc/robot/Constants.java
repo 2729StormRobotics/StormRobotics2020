@@ -177,7 +177,7 @@ public final class Constants {
     public static final class PartyConstants {
 
         // DIO port number constants for the two LED Blinkin Drivers
-        public static final int kLedBlinkinDriverPort = 10;
+        public static final int kLedBlinkinDriverPort = 0;
 
         // Each possible LED mode correlates to a value for the Spark, as defined in the Rev Blinkin docs
         public static final double kRainbowParty = -0.97;           // Pattern: Rainbow, Pallete: Party
