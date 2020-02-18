@@ -193,7 +193,7 @@ public class Drivetrain extends SubsystemBase {
 
   // Gets left side distance by averaging left encoders
   private double getLeftEncoderAverage() {
-    return (m_leftMotorEncoder1.getPosition() + m_leftMotorEncoder2.getPosition()) / 2.0;
+    return (m_leftMotorEncoder1.getPosition() + m_leftMotorEncoder2.getPosition()) / 2.0 * -1.0;
   }
 
   // Gets right side distance by averaging right encoders
