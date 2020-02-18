@@ -36,7 +36,7 @@ public class IntakePowerCell extends CommandBase {
   @Override
   public void initialize() {
     // Once command is initialized, set the intake arm motors to run for intaking the power cells
-    m_intake.startIntakeMotor(m_in ? kIntakeMotorSpeed : -kIntakeMotorSpeed); // TODO: Test whether positive is actually inward.
+    m_intake.startIntakeMotor(m_in ? -kIntakeMotorSpeed : kIntakeMotorSpeed); // TODO: Test whether positive is actually inward.
   }
 
   // Called every time the scheduler runs while the command is scheduled.

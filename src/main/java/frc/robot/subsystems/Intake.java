@@ -72,7 +72,7 @@ public class Intake extends SubsystemBase {
   // displays data on the SmartDashboard
   public void log() {
     // shows if the intake is raised or lowered by the pistons
-    SmartDashboard.putData("Intake Position", m_intakePiston); // FIXME This may only display kForward etc
+    SmartDashboard.putString("Intake Position", m_intakePiston.toString()); // FIXME This may only display kForward etc
   }
 
   /*
