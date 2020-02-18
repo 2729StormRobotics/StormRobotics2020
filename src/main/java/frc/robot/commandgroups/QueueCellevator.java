@@ -12,7 +12,6 @@ import frc.robot.commands.CellevatorLoaderMotor;
 import frc.robot.commands.MoveHopperMotor;
 import frc.robot.commands.CellevatorHolder;
 import frc.robot.commands.VariableLaunch;
-import frc.robot.subsystems.CellevatorLoader;
 import frc.robot.subsystems.Cellevator;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Launcher;
@@ -24,11 +23,11 @@ public class QueueCellevator extends ParallelCommandGroup {
   /**
    * Creates a new QueueCellevator.
    */
-  public QueueCellevator(CellevatorLoader m_loader, Cellevator m_holder, Hopper m_hopper, Launcher m_launcher) {
+  public QueueCellevator( Cellevator m_holder, Hopper m_hopper, Launcher m_launcher) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());super();
     // run loader, hopper, cellevator, and rev to speed parallel
     // rev to speed is to maintain the speed of the launcher while the power cells are queueing
-    super(new CellevatorLoaderMotor(m_loader), new MoveHopperMotor(m_hopper), new CellevatorHolder(m_holder), new VariableLaunch(m_launcher));
+    super(new CellevatorLoaderMotor(m_holder), new MoveHopperMotor(m_hopper), new CellevatorHolder(m_holder), new VariableLaunch(m_launcher));
   }
 }

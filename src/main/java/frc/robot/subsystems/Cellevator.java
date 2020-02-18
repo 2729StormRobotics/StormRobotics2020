@@ -18,6 +18,7 @@ import static frc.robot.Constants.CellevatorConstants.*;
 
 public class Cellevator extends SubsystemBase {
   private final CANSparkMax m_holderMotor;
+  private final CANSparkMax m_loaderMotor;
   private final DigitalInput m_beamBreakTop;
   private final DigitalInput m_beamBreakBottom;
   private final DigitalInput m_beamBreakMiddle;
@@ -25,6 +26,7 @@ public class Cellevator extends SubsystemBase {
   private boolean previousBBMiddle;
   private boolean previousBBBottom;
   private boolean previousBBTop;
+  private boolean shouldRunLoader;
 
   /**
    * Creates a new Cellevator subsystem
@@ -35,14 +37,18 @@ public class Cellevator extends SubsystemBase {
     m_beamBreakBottom = new DigitalInput(kBeamBreakLoaderPort);
     m_beamBreakTop = new DigitalInput(kBeamBreakHolderPort);
     m_beamBreakMiddle = new DigitalInput(kBeamBreakMiddlePort);
+    m_loaderMotor = new CANSparkMax(kLoaderMotorPort, MotorType.kBrushed);
     powerCellCount = 0;
     previousBBMiddle = false;
     previousBBBottom = false;
     previousBBTop = false;
+    shouldRunLoader = false;
 
 
     // intializes the motors
     motorInit(m_holderMotor, kHolderMotorInverted);
+    motorInit(m_loaderMotor, kLoaderMotorInverted);
+
   }
 
   private void motorInit(CANSparkMax motor, boolean invert) {
@@ -52,6 +58,21 @@ public class Cellevator extends SubsystemBase {
     motor.setSmartCurrentLimit(kCellevatorCurrentLimit);
   }
 
+  /**
+   * Runs the loader motor
+   * 
+   * @param speed The speed to run the loader motor
+   */
+  public void runLoaderMotor(double speed) {
+    m_loaderMotor.set(speed);
+  }
+
+  /**
+   * inverts the motor by setting it to the opposite of te state in constants
+   */
+  public void invertLoader() {
+    m_loaderMotor.setInverted(!m_loaderMotor.getInverted());
+  }
 
   /**
    * Runs the holder motors
@@ -146,6 +167,13 @@ public class Cellevator extends SubsystemBase {
   }
 
   /**
+   * Stops the loader motor
+   */
+  public void stopLoaderMotor() {
+    runLoaderMotor(0);
+  }
+
+  /**
    * adds to the count
    * @return
    */
@@ -169,6 +197,17 @@ public class Cellevator extends SubsystemBase {
     return powerCellCount;
   }
 
+  /** 
+   * sets if the loader should run or not
+  */
+  public void setShouldRunLoader(boolean value) {
+      shouldRunLoader = value;
+  }
+
+  public boolean getShouldRunLoader() {
+    return shouldRunLoader;
+  }
+
   /**
    * displays data onto SmartDashboard
    */
@@ -179,6 +218,8 @@ public class Cellevator extends SubsystemBase {
     SmartDashboard.putNumber("Holder Motor Speed", m_holderMotor.get());
     SmartDashboard.putNumber("Power Cell Count", getPowerCellCount());
     SmartDashboard.putBoolean("Holder Motor Inverted", m_holderMotor.getInverted());
+    SmartDashboard.putNumber("Loader Motor Speed", m_loaderMotor.get());
+    SmartDashboard.putBoolean("Loader Motor Inverted", m_loaderMotor.getInverted());
   }
 
   @Override

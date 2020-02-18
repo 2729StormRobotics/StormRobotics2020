@@ -124,8 +124,8 @@ public class RobotContainer {
     // new POVButton(m_weaponsController, 0).whenPressed(new
     // ToggleLaunchAngle(m_launcher));
 
-    // new JoystickButton(m_weaponsController, kBumperLeft.value).whileHeld(new
-    // IntakePowerCell(true, m_intake)); // powercell
+     //new JoystickButton(m_weaponsController, kBumperLeft.value).whileHeld(new
+     //IntakePowerCell(true, m_intake)).whenPressed(new StartLoader(m_cellevator)).whenReleased(new StopLoader(m_cellevator)); // powercell
     // // intake
 
     // new JoystickButton(m_weaponsController, kBumperRight.value).whileHeld(new

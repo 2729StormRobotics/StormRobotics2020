@@ -8,19 +8,19 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.CellevatorLoader;
 import frc.robot.Constants.CellevatorConstants;
+import frc.robot.subsystems.Cellevator;
 
 public class CellevatorLoaderMotor extends CommandBase {
   
-  private final CellevatorLoader m_cellevatorLoader;
+  private final Cellevator m_cellevator;
   /**
    * Creates a new CellevatorLoader.
    */
-  public CellevatorLoaderMotor(CellevatorLoader cellevatorLoader) {
+  public CellevatorLoaderMotor(Cellevator cellevator) {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_cellevatorLoader = cellevatorLoader;
-    addRequirements(m_cellevatorLoader);
+    m_cellevator = cellevator;
+    addRequirements(m_cellevator);
   }
 
   /** 
@@ -28,7 +28,7 @@ public class CellevatorLoaderMotor extends CommandBase {
   */
   private boolean isSafeToLoad() {
     //if there is no power cell at the bottom of the cellevator and the gap is clear in the middle then the loader motor can run
-    boolean middleIsClear = !m_cellevatorLoader.isBottomBallPresent() && m_cellevatorLoader.isMiddleGapClear();
+    boolean middleIsClear = !m_cellevator.isBottomBallPresent() && m_cellevator.isMiddleGapClear();
     
     return middleIsClear;
   }
@@ -44,14 +44,14 @@ public class CellevatorLoaderMotor extends CommandBase {
   @Override
   public void execute() {
     if (isSafeToLoad()) { 
-      m_cellevatorLoader.runLoaderMotor(CellevatorConstants.kLoaderMotorSpeed);
+      m_cellevator.runLoaderMotor(CellevatorConstants.kLoaderMotorSpeed);
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_cellevatorLoader.stopLoaderMotor();
+    m_cellevator.stopLoaderMotor();
 
     
   }

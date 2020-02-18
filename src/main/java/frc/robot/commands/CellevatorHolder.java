@@ -30,17 +30,27 @@ public class CellevatorHolder extends CommandBase {
    * creates a boolean with a value that represents which condition is happening 
   * if either of the two conditions are true, then the holder motor will run
   */
-  private boolean isSafeToLoad() {
+  private boolean isSafeToRunHolder() {
     boolean topClearAndMiddleOccupied = !m_cellevator.isTopBallPresent() && !m_cellevator.isMiddleGapClear();
     boolean onlyBottomOccupied = m_cellevator.isBottomBallPresent() && !m_cellevator.isTopBallPresent() && m_cellevator.isMiddleGapClear() && m_cellevator.getBeamBreakMiddlePrevious();
 
     return topClearAndMiddleOccupied || onlyBottomOccupied;
   }
 
+  /** 
+   * sets a boolean to true if the loader motor can run 
+  */
+  private boolean isSafeToLoad() {
+    //if there is no power cell at the bottom of the cellevator and the gap is clear in the middle then the loader motor can run
+    boolean middleIsClear = !m_cellevator.isBottomBallPresent() && m_cellevator.isMiddleGapClear();
+    
+    return middleIsClear;
+  }
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    runHolderMotor = isSafeToLoad();
+    runHolderMotor = isSafeToRunHolder();
   }
 
   /**
@@ -51,6 +61,15 @@ public class CellevatorHolder extends CommandBase {
     // if the boolean is true run the holder motor
     if (runHolderMotor) {
       m_cellevator.runHolderMotor(CellevatorConstants.kHolderMotorSpeed);
+    }
+
+    // if the bottom of the cellevator is empty and the subsystem has been notified that intake is occuring then run the motor
+    if (isSafeToLoad() && m_cellevator.getShouldRunLoader()) {
+        m_cellevator.runLoaderMotor(CellevatorConstants.kLoaderMotorSpeed);
+    }
+    // this should be here instead of end so that the loader is independent of the holder
+    else {
+      m_cellevator.stopLoaderMotor();
     }
   }
 
@@ -67,6 +86,6 @@ public class CellevatorHolder extends CommandBase {
    */
   @Override
   public boolean isFinished() {
-    return !isSafeToLoad();
+    return !isSafeToRunHolder();
   }
 }

@@ -13,22 +13,17 @@ import frc.robot.subsystems.Cellevator;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class InvertHolderMotor extends InstantCommand {
-
-  private final Cellevator m_holder;
-  public InvertHolderMotor(Cellevator holder) {
-    m_holder = holder;
-    addRequirements(holder);
+public class StartLoader extends InstantCommand {
+  private final Cellevator m_cellevator;
+  public StartLoader(Cellevator cellevator) {
+    m_cellevator = cellevator;
+    addRequirements(m_cellevator);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
-  /** 
-   * inverts the holder motor from its current state
-   * allows us to unload power cells in case there is a jam and power cells need to leave the cellevator
-  */
   @Override
   public void initialize() {
-    m_holder.invertHolder();
+    m_cellevator.setShouldRunLoader(true);
   }
 }
