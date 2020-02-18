@@ -13,9 +13,6 @@ import edu.wpi.first.wpilibj2.command.TrapezoidProfileCommand;
 import static frc.robot.Constants.DriveConstants.*;
 
 import java.util.function.DoubleSupplier;
-
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import frc.robot.subsystems.Drivetrain;
 
 public class DriveDistance extends TrapezoidProfileCommand {
@@ -41,10 +38,5 @@ public class DriveDistance extends TrapezoidProfileCommand {
             drivetrain);
         
       drivetrain.resetAllEncoders();
-  }
-
-  // Retrieves distance value from SmartDashboard.
-  public DriveDistance(Drivetrain drivetrain) {
-    this(() -> SmartDashboard.getNumber("Target Distance", 0), drivetrain);
   }
 }
