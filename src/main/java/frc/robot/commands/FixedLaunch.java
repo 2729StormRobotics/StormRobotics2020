@@ -32,7 +32,7 @@ public class FixedLaunch extends CommandBase {
 
   // Uses SmartDashboard speed for testing.
   public FixedLaunch(Launcher subsystem) {
-    this(SmartDashboard.getNumber("Target Launch Speed", 0.), subsystem);
+    this(SmartDashboard.getNumber("Target Launch Speed", 0), subsystem);
   }
 
   // Called just before this Command runs the first time.

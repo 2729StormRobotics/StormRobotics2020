@@ -30,8 +30,8 @@ public class CellevatorLoader extends SubsystemBase {
   public CellevatorLoader() {
 
     m_loaderMotor = new CANSparkMax(kLoaderMotorPort, MotorType.kBrushed);
-    m_beamBreakBottom = new DigitalInput(kBeamBreakLoaderPort);
-    m_beamBreakMiddle = new DigitalInput(kBeamBreakMiddlePort);
+    m_beamBreakBottom = new DigitalInput(2);
+    m_beamBreakMiddle = new DigitalInput(4);
     previousBBMiddle = false;
 
     // intializes the motor
@@ -54,14 +54,14 @@ public class CellevatorLoader extends SubsystemBase {
     m_loaderMotor.set(speed);
   }
 
-  /** 
+  /**
    * inverts the motor by setting it to the opposite of te state in constants
-  */
+   */
   public void invertLoader() {
     m_loaderMotor.setInverted(!m_loaderMotor.getInverted());
   }
 
-    /**
+  /**
    * Gets the beam break value to see if there is a power cell present at the
    * bottom of the cellevator
    */
@@ -76,16 +76,17 @@ public class CellevatorLoader extends SubsystemBase {
     runLoaderMotor(0);
   }
 
- /**
+  /**
    * Gets the beam break value to see if there is a power cell present at the
    * middle of the cellevator
    */
   public boolean isMiddleGapClear() {
     return m_beamBreakMiddle.get();
-    }
+  }
 
   /**
    * returns the value of the beam break middle value before the current value
+   * 
    * @return
    */
   public boolean getBeamBreakMiddlePrevious() {

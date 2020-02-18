@@ -21,10 +21,10 @@ import edu.wpi.first.wpilibj.util.Color;
 public final class Constants {
 
     public static final class DriveConstants {
-        public static final int kLeftDriveMotor1Port = 3;
-        public static final int kLeftDriveMotor2Port = 12;
+        public static final int kLeftDriveMotor1Port = 2;
+        public static final int kLeftDriveMotor2Port = 3;
         public static final int kRightDriveMotor1Port = 36;
-        public static final int kRightDriveMotor2Port = 15;
+        public static final int kRightDriveMotor2Port = 1;
 
         // pistons that shift the gear of the drive train
         public static final int kDriveSolenoid = 7;
@@ -46,7 +46,7 @@ public final class Constants {
         public static final double kLowGearSpeedPerPulse = kLowGearDistancePerPulse / 60;
 
         // Constants to define which side of the drivetrain is "inverted"
-        public static final boolean kLeftSideInverted = false;
+        public static final boolean kLeftSideInverted = true;
         public static final boolean kRightSideInverted = !kLeftSideInverted;
 
         // Current limit for the drivetrain motors in amps
@@ -99,8 +99,8 @@ public final class Constants {
     }
 
     public static final class LauncherConstants {
-        public static final int kRightLauncherMotorPort = 13;
-        public static final int kLeftLauncherMotorPort = 14;
+        public static final int kRightLauncherMotorPort = 9;
+        public static final int kLeftLauncherMotorPort = 8;
 
         // piston (double solenoid) that adjusts the angle of the launcher
         public static final int kLongLaunchSolenoidPort = 3;
@@ -136,7 +136,7 @@ public final class Constants {
     }
 
     public static final class IntakeConstants {
-        public static final int kIntakeMotorPort = 7;
+        public static final int kIntakeMotorPort = 4;
 
         // piston (double solenoid) that raises and lowers the intake
         public static final int kIntakeRaiseSolenoidPort = 5;
@@ -146,7 +146,7 @@ public final class Constants {
     }
 
     public static final class HopperConstants {
-        public static final int kHopperMotorPort = 6;
+        public static final int kHopperMotorPort = 5;
         public static final double kHopperMotorSpeed = 1.0; // TODO: Change if needed.
     }
 
@@ -157,8 +157,8 @@ public final class Constants {
         public static final int kBeamBreakHolderPort = 5;
 
         // motors in cellevator that transport powercells to launcher
-        public static final int kHolderMotorPort = 5;
-        public static final int kLoaderMotorPort = 8;
+        public static final int kHolderMotorPort = 13;
+        public static final int kLoaderMotorPort = 14;
 
         // Define if a motor is inverted or not
         public static final boolean kHolderMotorInverted = false;
@@ -174,26 +174,11 @@ public final class Constants {
         public static final double kLoaderMotorSpeed = 0.5; //TODO: Update if needed
        
     }
-    
-    public static final class LimeLightConstants {
-        public static final double kLimeLightOffset = 13.67; //Inches
-        public static final double kLimeLightHeight = 43; //Inches
-        public static final double kLimeLightAngle = 16; //Degrees
-        public static final double kPortHeight = 98.25; //Inches
-
-        //Alignment constants for LimeLight
-        public static final double kLimeLightAlignP = 1.0; //TODO: Test and add
-        public static final double kLimeLightAlignI = 0.0; //TODO: Test and add
-        public static final double kLimeLightAlignD = 0.0; //TODO: Test and add
-        public static final double kLimeLightAlignTolerance = 1.5; //Max Alignment Tolerance in degrees.
-    
-    }
 
     public static final class PartyConstants {
 
         // DIO port number constants for the two LED Blinkin Drivers
-        public static final int kLedBlinkinDriver1Port = 8;
-        public static final int kLedBlinkinDriver2Port = 9;
+        public static final int kLedBlinkinDriverPort = 0;
 
         // Each possible LED mode correlates to a value for the Spark, as defined in the Rev Blinkin docs
         public static final double kRainbowParty = -0.97;           // Pattern: Rainbow, Pallete: Party
@@ -214,12 +199,15 @@ public final class Constants {
 
     public static final class ControlPanelConstants {
         // Motor for the wheel that spins the control panal
-        public static final int kSpinnerMotorPort = 9;
+        public static final int kSpinnerMotorPort = 6;
 
         // Color sensor that senses the colors on the control panel
         public static final int kColorSensorPort = 0;
+
         // The main speed of the control panel motor.
-        public static final double kMotorSpeed = 0.4;
+        public static final double kCountRevSpeed = 0.4; // TODO Update with testing
+        // The speed to run when seeking color
+        public static final double kFindColorSpeed = 0.18; // TODO Update with testing
 
         /** Values the color sensor uses to detect the colors on control panel */
         // Red
@@ -253,11 +241,12 @@ public final class Constants {
         private static final double kGearing = 10.0/58.0 * 16.0/60.0;
 
         // Conversion for distance and speed per encoder pulse, given in inches
-        public static final double kEncoderDistancePerPulse = 0; // ADD CONVERSION
+        public static final double kSprocketDiameter = 1.662;
+        public static final double kEncoderDistancePerPulse = Math.PI * kSprocketDiameter / kGearing;
         public static final double kEncoderSpeedPerPulse = kEncoderDistancePerPulse / 60;
 
-        public static final int kRightClimberMotorPort = 2;
-        public static final int kLeftClimberMotorPort = 1;
+        public static final int kRightClimberMotorPort = 15;
+        public static final int kLeftClimberMotorPort = 12;
 
         // piston that applies the friction brake on the climbing motors
         public static final int kFrictionSolenoidPort = 6;
@@ -271,25 +260,25 @@ public final class Constants {
         public static final double kClimbDownSpeed = -0.5; // TODO Determine best speed
 
         // Define the maximum height of the climber
-        public static final double kMaxHeight = 0.0; // TODO Determine max height
+        public static final double kMaxHeight = 28.0; // TODO Confirm max height
     }
 
     public static final class LimelightConstants {
         // Values used to calculate target location
         public static final double kLimelightOffset = 13.67; // In inches
         public static final double kLimelightHeight = 43; // In inches
-        public static final double kLimelightAngle = 48; // In degrees
+        public static final double kLimelightAngle = 16; // In degrees
         public static final double kPortHeight = 98.25; // In inches
 
-        // Alignment PID constants for LimeLight
+        // Alignment PID constants for Limelight
         public static final double kLimelightAlignP = 1.0;
         public static final double kLimelightAlignI = 0.0;
         public static final double kLimelightAlignD = 0.0;
-        public static final double kLimelightTolernce = 5.0;
-        public static final double kLimelightAlignTolerance = 1.5;
+        public static final double kLimelightAlignSpeedTolernce = 1.0;
+        public static final double kLimelightAlignPositionTolerance = 0.5;
         public static final double kSteeringAdjust = 0.25;
 
-        // Distance PID constants for LimeLight
+        // Distance PID constants for Limelight
         public static final double kLimelightDistanceP = 1.0;
         public static final double kLimelightDistanceI = 0.0;
         public static final double kLimelightDistanceD = 0.0;
