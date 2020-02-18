@@ -14,7 +14,6 @@ import frc.robot.subsystems.Cellevator;
 public class CellevatorHolder extends CommandBase {
 
   private final Cellevator m_cellevator;
-  private boolean runHolderMotor;
 
   /**
    * This command requires the cellevator subsystem. By default, don't run the
@@ -50,7 +49,7 @@ public class CellevatorHolder extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    runHolderMotor = isSafeToRunHolder();
+
   }
 
   /**
@@ -59,8 +58,10 @@ public class CellevatorHolder extends CommandBase {
   @Override
   public void execute() {
     // if the boolean is true run the holder motor
-    if (runHolderMotor) {
+    if (isSafeToRunHolder()) {
       m_cellevator.runHolderMotor(CellevatorConstants.kHolderMotorSpeed);
+    } else {
+      m_cellevator.stopHolderMotor();
     }
 
     // if the bottom of the cellevator is empty and the subsystem has been notified that intake is occuring then run the motor
@@ -78,7 +79,9 @@ public class CellevatorHolder extends CommandBase {
    */
   @Override
   public void end(boolean interrupted) {
+    // this only runs if interrupted, as this default command does not end naturally
     m_cellevator.stopHolderMotor();
+    m_cellevator.stopLoaderMotor();
   }
 
   /**
@@ -86,6 +89,6 @@ public class CellevatorHolder extends CommandBase {
    */
   @Override
   public boolean isFinished() {
-    return !isSafeToRunHolder();
+    return false;
   }
 }
