@@ -21,7 +21,7 @@ public class DriveDistance extends TrapezoidProfileCommand {
    * Drive straight a specified distance.
    * 
    * @param distance Target distance in inches.
-   * @param drive The Drivetrain passed through to run DriveDistance.
+   * @param drivetrain The Drivetrain passed through to run DriveDistance.
    */
   public DriveDistance(DoubleSupplier distance, Drivetrain drivetrain) {
     super(
