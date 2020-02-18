@@ -27,10 +27,11 @@ import static edu.wpi.first.wpilibj.XboxController.Button.*;
 import static frc.robot.Constants.*;
 
 /**
- * This class is where the bulk of the robot should be declared.  Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
- * (including subsystems, commands, and button mappings) should be declared here.
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a "declarative" paradigm, very little robot logic should
+ * actually be handled in the {@link Robot} periodic methods (other than the
+ * scheduler calls). Instead, the structure of the robot (including subsystems,
+ * commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
@@ -48,18 +49,15 @@ public class RobotContainer {
   private final XboxController m_driverController = new XboxController(ControllerConstants.kDriverControlPort);
   private final XboxController m_weaponsController = new XboxController(ControllerConstants.kWeaponsControlPort);
 
-  
   /**
-   * The container for the robot.  Contains subsystems, OI devices, and commands.
+   * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    m_drivetrain.setDefaultCommand(new DriveManually(() -> m_driverController.getY(Hand.kLeft), () -> m_driverController.getY(Hand.kRight), m_drivetrain));
-    // Set default commands once button bindings are finalized
-
+    // Set default commands
+    m_drivetrain.setDefaultCommand(new DriveManually(() -> m_driverController.getY(Hand.kLeft),
+        () -> m_driverController.getY(Hand.kRight), m_drivetrain));
     m_climbers.setDefaultCommand(new MoveClimber(() -> m_weaponsController.getY(Hand.kLeft), m_climbers));
-
     m_cellevator.setDefaultCommand(new CellevatorHolder(m_cellevator));
-
 
     SmartDashboard.putData("Cellevator Subsystem", m_cellevator);
     SmartDashboard.putData("Cellevator Loader Subsystem", m_cellevatorLoader);
@@ -97,37 +95,41 @@ public class RobotContainer {
     SmartDashboard.putData("Reverse Holder Motor", new InvertHolderMotor(m_cellevator));
 
     // Auto path 1
-    //SmartDashboard.putData("Auto Path 1", new AutoPath1(m_drivetrain, m_launcher, m_intake, m_hopper));
+    // SmartDashboard.putData("Auto Path 1", new AutoPath1(m_drivetrain, m_launcher,
+    // m_intake, m_hopper));
 
     // Configure the button bindings
     configureButtonBindings();
   }
 
   /**
-   * Use this method to define your button->command mappings.  Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
-   * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+   * Use this method to define your button->command mappings. Buttons can be
+   * created by instantiating a {@link GenericHID} or one of its subclasses
+   * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
+   * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    
+
     new JoystickButton(m_driverController, kA.value).whileHeld(new LimelightAlign(m_drivetrain)); // Limelight align
-    
+
     new JoystickButton(m_driverController, kB.value).whenPressed(new HighGearDrive(m_drivetrain));
 
     new JoystickButton(m_driverController, kY.value).whenPressed(new LowGearDrive(m_drivetrain));
-    
-    //new JoystickButton(m_party, kX.value).whenPressed(new )
+
+    // new JoystickButton(m_party, kX.value).whenPressed(new )
 
     new POVButton(m_weaponsController, 0).whenPressed(new ToggleLaunchAngle(m_launcher));
 
-    new JoystickButton(m_weaponsController, kBumperLeft.value).whileHeld(new IntakePowerCell(true, m_intake));   //powercell intake
+    new JoystickButton(m_weaponsController, kBumperLeft.value).whileHeld(new IntakePowerCell(true, m_intake)); // powercell
+                                                                                                               // intake
 
-    new JoystickButton(m_weaponsController, kBumperRight.value).whileHeld(new IntakePowerCell(false, m_intake));   //powercell outtake
+    new JoystickButton(m_weaponsController, kBumperRight.value).whileHeld(new IntakePowerCell(false, m_intake)); // powercell
+                                                                                                                 // outtake
 
-    new JoystickButton(m_weaponsController, kA.value).whileHeld(new FrictionBrakeRelease(m_climbers)); //friction break
+    new JoystickButton(m_weaponsController, kA.value).whileHeld(new FrictionBrakeRelease(m_climbers)); // friction break
 
-    new JoystickButton(m_weaponsController, kB.value).whileHeld(new LaunchMode(m_drivetrain, m_launcher, m_cellevatorLoader, m_cellevator, m_hopper));
+    new JoystickButton(m_weaponsController, kB.value)
+        .whileHeld(new LaunchMode(m_drivetrain, m_launcher, m_cellevatorLoader, m_cellevator, m_hopper));
 
     new JoystickButton(m_weaponsController, kStart.value).whileHeld(new HolderMotorManual(m_cellevator));
 
@@ -135,17 +137,16 @@ public class RobotContainer {
 
     new JoystickButton(m_weaponsController, kStickRight.value).whenPressed(new MoveIntakePistons(m_intake));
 
-   
-}
+  }
 
-  //commented out because no auto yet
+  // commented out because no auto yet
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
-  /*public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return m_autoCommand;
-  }*/
+  /*
+   * public Command getAutonomousCommand() { // An ExampleCommand will run in
+   * autonomous return m_autoCommand; }
+   */
 }
