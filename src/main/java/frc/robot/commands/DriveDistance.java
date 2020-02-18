@@ -13,22 +13,15 @@ import edu.wpi.first.wpilibj2.command.TrapezoidProfileCommand;
 import static frc.robot.Constants.DriveConstants.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import java.util.function.DoubleSupplier;
-
 import frc.robot.subsystems.Drivetrain;
 
-
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class DriveDistance extends TrapezoidProfileCommand {
 
-
   /**
-   * Creates a new DriveDistance.
-   * @param distance distance value 
+   * Drive straight a specified distance.
    * 
-   * @param drivetrain the Drivetrain passed through to run DriveDIstance
+   * @param distance Target distance in inches.
+   * @param drive The Drivetrain passed through to run DriveDistance.
    */
   public DriveDistance(double distance, Drivetrain drivetrain) {
     super(
@@ -38,7 +31,7 @@ public class DriveDistance extends TrapezoidProfileCommand {
             new TrapezoidProfile.Constraints(kMaxSpeed, kMaxAcceleration),
             
             // End desired distance at targetTravelDistance
-            new TrapezoidProfile.State(distance, 0)), //implicitly starts at 0
+            new TrapezoidProfile.State(distance, 0)), // Velocity ends at 0.
             
             // Send the profile state to the drivetrain
             state -> drivetrain.setDriveStates(state, state), 
@@ -47,11 +40,9 @@ public class DriveDistance extends TrapezoidProfileCommand {
       drivetrain.resetAllEncoders();
   }
 
-  //retrieves distance value from SmartDashboard
+  // Retrieves distance value from SmartDashboard.
   public DriveDistance(Drivetrain drivetrain) {
     this(SmartDashboard.getNumber("Target Distance", 0), drivetrain);
   }
-
-  
 
 }

@@ -14,17 +14,17 @@ import static frc.robot.Constants.IntakeConstants.*;
 
 public class IntakePowerCell extends CommandBase {
   private final Intake m_intake;
-  private final double m_speed;
+  private final boolean m_in;
   
   /**
    * Creates a new IntakePowerCell.
    * 
-   * @param speed
-   * @param subsystem
+   * @param in Move the intake motor inward if true; otherwise move it outward.
+   * @param subsystem Intake subsystem to pass in.
    */
-  public IntakePowerCell(double speed, Intake subsystem) {
+  public IntakePowerCell(boolean in, Intake subsystem) {
     // Create our local instance of each variable from the parameters.
-    m_speed = speed;
+    m_in = in;
     m_intake = subsystem;
     
     // Attach our local instance of the subsystem to this command.
@@ -36,7 +36,7 @@ public class IntakePowerCell extends CommandBase {
   @Override
   public void initialize() {
     // Once command is initialized, set the intake arm motors to run for intaking the power cells
-    m_intake.startIntakeMotor(kIntakeMotorSpeed);
+    m_intake.startIntakeMotor(m_in ? kIntakeMotorSpeed : -kIntakeMotorSpeed); // TODO: Test whether positive is actually inward.
   }
 
   // Called every time the scheduler runs while the command is scheduled.
