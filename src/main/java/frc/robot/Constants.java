@@ -241,7 +241,7 @@ public final class Constants {
 
         // Conversion for distance and speed per encoder pulse, given in inches
         public static final double kSprocketDiameter = 1.662;
-        public static final double kEncoderDistancePerPulse = Math.PI * kSprocketDiameter / kGearing; // ADD CONVERSION
+        public static final double kEncoderDistancePerPulse = Math.PI * kSprocketDiameter / kGearing;
         public static final double kEncoderSpeedPerPulse = kEncoderDistancePerPulse / 60;
 
         public static final int kRightClimberMotorPort = 15;
@@ -259,14 +259,14 @@ public final class Constants {
         public static final double kClimbDownSpeed = -0.5; // TODO Determine best speed
 
         // Define the maximum height of the climber
-        public static final double kMaxHeight = 0.0; // TODO Determine max height
+        public static final double kMaxHeight = 28.0; // TODO Confirm max height
     }
 
     public static final class LimelightConstants {
         // Values used to calculate target location
         public static final double kLimelightOffset = 13.67; // In inches
         public static final double kLimelightHeight = 43; // In inches
-        public static final double kLimelightAngle = 48; // In degrees
+        public static final double kLimelightAngle = 16; // In degrees
         public static final double kPortHeight = 98.25; // In inches
 
         // Alignment PID constants for Limelight
