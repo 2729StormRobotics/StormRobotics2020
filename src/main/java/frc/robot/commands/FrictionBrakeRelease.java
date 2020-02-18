@@ -25,6 +25,6 @@ public class FrictionBrakeRelease extends InstantCommand {
 
   @Override
   public void initialize() {
-    m_climbers.engageFrictionBrake(true);
+    m_climbers.engageFrictionBrake(false);
   }
 }
