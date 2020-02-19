@@ -45,12 +45,11 @@ public class LimelightAlign extends PIDCommand {
           }
         });
 
-    // Sends a PID table to the SmartDashboard
-        SmartDashboard.putData("AlignmentPID", getController());
     // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(drivetrain);
     // Configure additional PID options by calling `getController` here.
-        getController().setTolerance(kLimelightAlignTolerance);
+        getController().setTolerance(kLimelightAlignPositionTolerance, kLimelightAlignSpeedTolernce);
+        getController().enableContinuousInput(-180, 180);
   }
 
   // Returns true when the target is within the angle tolerance

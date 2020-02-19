@@ -8,23 +8,27 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.subsystems.Climbers;
+import frc.robot.subsystems.CellevatorLoader;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class FrictionBrakeRelease extends InstantCommand {
-  private final Climbers m_climbers;
+public class InvertLoaderMotor extends InstantCommand {
 
-  public FrictionBrakeRelease(Climbers subsystem) {
-    m_climbers = subsystem;
-
-    addRequirements(m_climbers);
+  private final CellevatorLoader m_loader;
+  public InvertLoaderMotor(CellevatorLoader loader) {
+    m_loader = loader;
+    addRequirements(loader);
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
-
+  // Called when the command is initially scheduled.
   @Override
+  /** 
+   * inverts the loader motor so that we can unload the power cells out in case of any jams
+   * when you run the command again, it will invert the motors again so they will be moving forwards again
+  */
   public void initialize() {
-    m_climbers.engageFrictionBrake(false);
+    m_loader.invertLoader();
   }
 }

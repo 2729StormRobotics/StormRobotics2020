@@ -13,8 +13,9 @@ import frc.robot.subsystems.Cellevator;
 import frc.robot.Constants.CellevatorConstants;
 
 public class HolderOutake extends CommandBase {
-  
-private final Cellevator m_cellevator;
+
+  private final Cellevator m_cellevator;
+
   /**
    * Creates a new HolderOutake.
    */
@@ -27,13 +28,14 @@ private final Cellevator m_cellevator;
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    // runs the holder motor at a constant speed when the command starts
+    m_cellevator.runHolderMotor(CellevatorConstants.kHolderMotorSpeed);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-     // runs the holder motor at a constant speed when the command starts
-    m_cellevator.runHolderMotor(CellevatorConstants.kHolderMotorSpeed); 
+
   }
 
   // Called once the command ends or is interrupted.
