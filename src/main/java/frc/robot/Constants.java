@@ -264,7 +264,6 @@ public final class Constants {
 
     public static final class LimelightConstants {
         // Values used to calculate target location
-        public static final double kLimelightOffset = 13.67; // In inches
         public static final double kLimelightHeight = 43; // In inches
         public static final double kLimelightAngle = 16; // In degrees
         public static final double kPortHeight = 98.25; // In inches

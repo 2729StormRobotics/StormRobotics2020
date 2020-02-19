@@ -84,7 +84,7 @@ public class Limelight extends SubsystemBase {
    * distance)
    */
   public double limelightDistance() {
-    return (kPortHeight - kLimelightHeight) / Math.tan(Math.toRadians(kLimelightAngle + yOffset) + kLimelightOffset);
+    return (kPortHeight - kLimelightHeight) / Math.tan(Math.toRadians(limelightAngle()));
   }
 
   /**
