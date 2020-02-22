@@ -8,22 +8,26 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.subsystems.Climbers;
+import frc.robot.subsystems.Launcher;
 
+public class ToggleLaunchAngle extends InstantCommand {
+  private final Launcher m_launcher;
 
-public class FrictionBrakeRelease extends InstantCommand {
-  //This command uses the Climbers subsystem
-  private final Climbers m_climbers;
-
-  public FrictionBrakeRelease(Climbers subsystem) {
-    m_climbers = subsystem; //the parqameter is equal to the climbers subsystem
-
-    addRequirements(m_climbers); //adds the subsystem as a requirement for the command to run
+  /**
+   * Toggle the launch pistons.
+   * 
+   * @param launcher The Launcher subsystem to pass in.
+   */
+  public ToggleLaunchAngle(Launcher launcher) {
+    m_launcher = launcher;
+    addRequirements(m_launcher);
   }
 
-
+  /**
+   * Runs when the command is first started.
+   */
   @Override
   public void initialize() {
-    m_climbers.engageFrictionBrake(true);
+    m_launcher.toggleLaunchPiston();
   }
 }

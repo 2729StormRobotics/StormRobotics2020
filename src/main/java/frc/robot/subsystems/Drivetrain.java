@@ -9,17 +9,21 @@ package frc.robot.subsystems;
 
 import com.analog.adis16470.frc.ADIS16470_IMU;
 import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import static frc.robot.Constants.DriveConstants.*;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 
 public class Drivetrain extends SubsystemBase {
 
@@ -30,9 +34,6 @@ public class Drivetrain extends SubsystemBase {
   private final CANSparkMax m_rightMotor1;
   private final CANSparkMax m_rightMotor2;
 
-  private final SpeedControllerGroup m_leftMotors;
-  private final SpeedControllerGroup m_rightMotors;
-
   private final DifferentialDrive m_drive;
 
   // Creates variables for encoders
@@ -41,15 +42,26 @@ public class Drivetrain extends SubsystemBase {
   private final CANEncoder m_rightMotorEncoder1;
   private final CANEncoder m_rightMotorEncoder2;
 
+  private final SimpleMotorFeedforward m_feedForward;
+
+  //pid controller
+  private final CANPIDController m_pidControllerLeft;
+  private final CANPIDController m_pidControllerRight;
+
   // Declare the gyro.
   private final ADIS16470_IMU m_imu;
 
-  private boolean m_lowGear = false;
-
-  private String m_driveType = "Tank"; // adds a String object to store the drive type in
-  SendableChooser<String> m_chooser = new SendableChooser<>();
+  private boolean m_highGear = false;
 
   private final Solenoid m_gearShift;
+
+  // Add the Network Table for the limelight
+  private final NetworkTable m_limelightTable;
+  
+  // Create variables for the different values given from the limelight
+  private double xOffset; // Positive values mean that target is to the right of the camera; negative
+                          // values mean target is to the left. Measured in degrees
+  private double targetValue; // Sends 1 if a target is detected, 0 if none are present
 
   // Creates a new Drivetrain.
   public Drivetrain() {
@@ -65,31 +77,58 @@ public class Drivetrain extends SubsystemBase {
     motorInit(m_leftMotor1, kLeftSideInverted);
     motorInit(m_leftMotor2, kLeftSideInverted);
 
-    m_leftMotors = new SpeedControllerGroup(m_leftMotor1, m_leftMotor2);
-    m_rightMotors = new SpeedControllerGroup(m_rightMotor1, m_rightMotor2);
+    m_rightMotor2.follow(m_rightMotor1);
+    m_leftMotor2.follow(m_leftMotor1);
 
-    m_drive = new DifferentialDrive(m_leftMotors, m_rightMotors);
+    //PID controllers for left and right side
+    m_pidControllerLeft = m_leftMotor1.getPIDController();
+    m_pidControllerRight = m_rightMotor1.getPIDController();
 
-    // adds options to the drive type
-    m_chooser.addOption("Tank Drive", "Tank");
-    m_chooser.addOption("Arcade Drive", "Arcade");
-    m_chooser.addOption("Trigger Drive", "Trigger");
+    m_drive = new DifferentialDrive(m_leftMotor1, m_rightMotor1);
+    m_drive.setRightSideInverted(false);
 
     m_leftMotorEncoder1 = m_leftMotor1.getEncoder();
     m_leftMotorEncoder2 = m_leftMotor2.getEncoder();
     m_rightMotorEncoder1 = m_rightMotor1.getEncoder();
     m_rightMotorEncoder2 = m_rightMotor2.getEncoder();
 
+    m_feedForward = new SimpleMotorFeedforward(kS, kV, kA);
+
     // Instantiate the gyro.
     m_imu = new ADIS16470_IMU();
 
     m_gearShift = new Solenoid(kDriveSolenoid);
 
-    addChild("Left Motors", m_leftMotors);
-    addChild("Right Motors", m_rightMotors);
     addChild("Drivetrain", m_drive);
     addChild("Shift Gears", m_gearShift);
     addChild("Gyro", m_imu);
+
+    //assign values with PID controllers
+    m_pidControllerLeft.setP(DriveDistancePID.kP);
+    m_pidControllerRight.setP(DriveDistancePID.kP);
+    m_pidControllerLeft.setI(DriveDistancePID.kI);
+    m_pidControllerRight.setI(DriveDistancePID.kI);
+    m_pidControllerLeft.setD(DriveDistancePID.kD);
+    m_pidControllerRight.setD(DriveDistancePID.kD);
+    
+    // Set a member variable for the limelight network table
+    m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+  }
+
+  /**
+   * Returns a value of the offset on the x-axis of the camera to the target in
+   * degrees. Negative values mean the target is to the left of the camera
+   */
+  public double getXOffset() {
+    return xOffset;
+  }
+
+  /**
+   * Returns true if a target is detected
+   */
+  public boolean isTargetDetected() {
+    return (targetValue > 0.0);
+
   }
 
   private void motorInit(CANSparkMax motor, boolean invert) {
@@ -98,18 +137,27 @@ public class Drivetrain extends SubsystemBase {
     motor.setSmartCurrentLimit(kDrivetrainCurrentLimit);
     motor.setInverted(invert);
 
-    encoderInit(motor.getEncoder(), m_lowGear); // Initializes encoder within motor
+    encoderInit(motor.getEncoder()); // Initializes encoder within motor
   }
 
-  private void encoderInit(CANEncoder encoder, boolean lowGear) {
+  
+
+  public void setDriveStates(TrapezoidProfile.State left, TrapezoidProfile.State right) {
+    m_pidControllerLeft.setReference(left.position, ControlType.kPosition, 0, m_feedForward.calculate(left.velocity));
+    m_pidControllerRight.setReference(right.position, ControlType.kPosition, 0, m_feedForward.calculate(right.velocity));
+  }
+
+
+
+  private void encoderInit(CANEncoder encoder) {
     // Converts the input into desired value for distance and velocity
-    if (lowGear) {
-      encoder.setPositionConversionFactor(kLowGearDistancePerPulse);
-      encoder.setVelocityConversionFactor(kLowGearSpeedPerPulse);
-    }
-    else {
+    if (m_highGear) {
       encoder.setPositionConversionFactor(kHighGearDistancePerPulse);
       encoder.setVelocityConversionFactor(kHighGearSpeedPerPulse);
+    }
+    else {
+      encoder.setPositionConversionFactor(kLowGearDistancePerPulse);
+      encoder.setVelocityConversionFactor(kLowGearSpeedPerPulse);
     }
     encoderReset(encoder);
   }
@@ -181,23 +229,23 @@ public class Drivetrain extends SubsystemBase {
 
   // Activate the shifting pistons to shift into low gear
   public void shiftLow() {
-    m_lowGear = true;
+    m_highGear = false;
     shiftGears();
   }
 
   // Deactivate the shifting positions to shift into high gear
   public void shiftHigh() {
-    m_lowGear = false;
+    m_highGear = true;
     shiftGears();
   }
 
   // Method to handle updating the pistons and encoder conversions
   private void shiftGears() {
-    m_gearShift.set(m_lowGear);
-    encoderInit(m_leftMotorEncoder1, m_lowGear);
-    encoderInit(m_leftMotorEncoder2, m_lowGear);
-    encoderInit(m_rightMotorEncoder1, m_lowGear);
-    encoderInit(m_rightMotorEncoder2, m_lowGear);
+    m_gearShift.set(m_highGear);
+    encoderInit(m_leftMotorEncoder1);
+    encoderInit(m_leftMotorEncoder2);
+    encoderInit(m_rightMotorEncoder1);
+    encoderInit(m_rightMotorEncoder2);
   }
 
   // gets the speed from the left motors
@@ -224,31 +272,26 @@ public class Drivetrain extends SubsystemBase {
     return m_imu.getAngle();
   }
 
-  // changes the drive type using the SmartDashboard
-  private void updateDriveType() {
-    m_driveType = m_chooser.getSelected();
-  }
-
-  // gets the drive type on the SmartDashboard
-  public String getDriveType() {
-    return m_driveType;
-  }
-
   // puts data on the SmartDashboard
   public void log() {
-    SmartDashboard.putBoolean("Low Gear", m_lowGear);
+    SmartDashboard.putBoolean("High Gear", m_highGear);
     SmartDashboard.putNumber("Left Speed", getLeftSpeed());
     SmartDashboard.putNumber("Right Speed", getRightSpeed());
     SmartDashboard.putNumber("Left Distance", getLeftEncoderAverage());
     SmartDashboard.putNumber("Right Distance", getRightEncoderAverage());
     SmartDashboard.putNumber("Robot Angle", getRobotAngle());
-    SmartDashboard.putData("Drive Control Type", m_chooser);
+
+    // Updates the values of the limelight on the network table
+    xOffset = m_limelightTable.getEntry("tx").getDouble(0.0);
+    targetValue = m_limelightTable.getEntry("tv").getDouble(0.0);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     log();
-    updateDriveType();
   }
+
 }
+
+

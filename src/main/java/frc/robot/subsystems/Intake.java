@@ -79,7 +79,6 @@ public class Intake extends SubsystemBase {
    * gets the position of the intake pistons if it is lowered, then it will raise
    * the intake and vice versa
    **/
-
   public void toggleIntakePistons() {
     Value intakeState = m_intakePiston.get();
     if (intakeState == Value.kForward) {
