@@ -65,7 +65,7 @@ public class PointTurn extends PIDCommand {
    * 
    */
   public PointTurn(double angle, Drivetrain drivetrain) {
-    this(() -> angle, distance);
+    this(() -> angle, drivetrain);
   }
 
   // Returns true when the command should end.
