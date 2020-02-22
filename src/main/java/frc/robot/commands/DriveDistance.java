@@ -39,4 +39,13 @@ public class DriveDistance extends TrapezoidProfileCommand {
         
       drivetrain.resetAllEncoders();
   }
+  /**
+   * Drive straight a specified distance.
+   * 
+   * @param distance Target distance in inches.
+   * @param drivetrain The Drivetrain passed through to run DriveDistance.
+   */
+  public DriveDistance(double distance, Drivetrain drivetrain) {
+    this(() -> distance, drivetrain);
+  }
 }

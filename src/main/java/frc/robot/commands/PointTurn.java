@@ -55,6 +55,19 @@ public class PointTurn extends PIDCommand {
     drivetrain.resetGyro();
   }
 
+  /**
+   * Rotates the robot a certain amount of degrees using PID.
+   * 
+   * @param angle      The angle in degrees by which the robot will rotate. Must
+   *                   be between -180 and 180 degrees, in which positive angles
+   *                   are counter-clockwise rotations.
+   * @param drivetrain Pass in the drivetrain for the command to use.
+   * 
+   */
+  public PointTurn(double angle, Drivetrain drivetrain) {
+    this(() -> angle, distance);
+  }
+
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
