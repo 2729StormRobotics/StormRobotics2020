@@ -232,7 +232,7 @@ public final class Constants {
         public static final Color kBlueTarget = new Color(kGreenTargetR, kGreenTargetG, kGreenTargetB);
 
         // The confidence threshold for a given color
-        public static final double kConfidence = 0.85; // TODO determine ideal confidence from testing
+        public static final double kConfidence = 0.85; // The lowest confidence it showed was around an 0.88.
     }
 
     public static final class ClimberConstants {

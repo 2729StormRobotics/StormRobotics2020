@@ -26,8 +26,8 @@ public class ControlPanel extends SubsystemBase {
   private final ColorSensorV3 m_colorSensor;
 
   private String m_gameData;
-  private String m_targetColor;
-  private String m_currentColor;
+  private String m_targetColor = "";
+  private String m_currentColor = "";
   private int m_revColorCount = 0;
   private String m_lastColorCheck;
   private boolean m_firstColorDetected = false;
@@ -60,6 +60,9 @@ public class ControlPanel extends SubsystemBase {
     Color detectedColor = m_colorSensor.getColor();
     ColorMatchResult match = m_colorMatch.matchColor(detectedColor);
 
+    if(match ==null) {
+      m_currentColor = "Unkown";
+    } else {
     if (match.color == kRedTarget) {
       m_currentColor = "Red";
       m_firstColorDetected = true;
@@ -76,6 +79,7 @@ public class ControlPanel extends SubsystemBase {
       m_currentColor = "Unknown";
     }
   }
+}
 
   public void resetColorCount() {
     m_revColorCount = 0;
