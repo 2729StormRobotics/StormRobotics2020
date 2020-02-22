@@ -31,7 +31,7 @@ public class DriveDistance extends TrapezoidProfileCommand {
             new TrapezoidProfile.Constraints(kMaxSpeed, kMaxAcceleration),
             
             // End desired distance at targetTravelDistance
-            new TrapezoidProfile.State(-distance.getAsDouble(), 0)), // Velocity ends at 0.
+            new TrapezoidProfile.State(-distance.getAsDouble(), 0)), // feeds a negative value because motor is inverted, Velocity ends at 0
             
             // Send the profile state to the drivetrain
             state -> drivetrain.setDriveStates(state, state), 
