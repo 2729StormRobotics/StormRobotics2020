@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import com.revrobotics.ColorMatch;
+
 import edu.wpi.first.wpilibj.util.Color;
 
 /**
@@ -29,7 +31,7 @@ public final class Constants {
         // pistons that shift the gear of the drive train
         public static final int kDriveSolenoid = 7;
 
-        public static final double kWheelDiameter = 6; // Inches
+        public static final double kWheelDiameter = 0.1524; // Inches
 
         // Gearing for calculations, given in output turns per motor turn
         private static final double kHighGear = 14.0/58.0 * 18.0/38.0 * 32.0/34.0;
@@ -54,23 +56,23 @@ public final class Constants {
 
             // Constants for DriveDistance.
         // TODO: Update these constants with the correct values.
-        public static final double kMaxSpeed = 0; // Inches per second
-        public static final double kMaxAcceleration = 0; // Inches per (second^2)
+        public static final double kMaxSpeed = 0.5; // Inches per second
+        public static final double kMaxAcceleration = 0.5; // Inches per (second^2)
 
-        public static final double kS = 0;  //TODO: Test for values
-        public static final double kV = 0;  //TODO: Test for values
-        public static final double kA = 0;  //TODO: Test for values
+        public static final double kS = 0.346;  //TODO: Test for values
+        public static final double kV = 6.17;  //TODO: Test for values
+        public static final double kA = 0.735;  //TODO: Test for values
 
 
         // PointTurn constants
         public static final class PointTurnPID {
             // Our PID values for PointTurn
-            public static final double kP = 0.0; // TODO: Test and update this value.
+            public static final double kP = 0.13; // TODO: Test and update this value.
             public static final double kI = 0.0; // TODO: Test and update this value.
             public static final double kD = 0.0; // TODO: Test and update this value.
 
             // Degrees away from setpoint at which PointTurn can end
-            public static final double kPositionTolerance = 0.5; //Degrees
+            public static final double kPositionTolerance = 1; //Degrees
 
             // Maximum angular speed in degrees per second at which PointTurn can end
             public static final double kVelocityTolerance = 1.0; // TODO: Update this value.
@@ -79,7 +81,7 @@ public final class Constants {
         // Drive Distance constants
         public static final class DriveDistancePID {
             // Our PID values for PointTurn
-            public static final double kP = 0.0; // TODO: Test and update this value
+            public static final double kP = 0.569; // TODO: Test and update this value
             public static final double kI = 0.0; // TODO: Test and update this value.
             public static final double kD = 0.0; // TODO: Test and update this value.
 
@@ -88,12 +90,6 @@ public final class Constants {
 
             // Maximum angular speed in degrees per second at which PointTurn can end
             public static final double kVelocityTolerance = 1.0; // TODO: Update this value.
-
-            //max velocity in meters per second
-            public static final double kMaxVelocity = 0.0; //TODO: update
-    
-            //max velocity in meters per second squared
-            public static final double kMaxAcc = 0.0; //TODO: update
         }
     }
 
@@ -151,9 +147,9 @@ public final class Constants {
 
     public static final class CellevatorConstants {
         // beam breakers detect the number of powercells in the cellevator
-        public static final int kBeamBreakLoaderPort = 1; // TODO: Port Numbers possibly need to be updated
-        public static final int kBeamBreakMiddlePort = 3;
-        public static final int kBeamBreakHolderPort = 5;
+        public static final int kBeamBreakLoaderPort = 2; // TODO: Port Numbers possibly need to be updated
+        public static final int kBeamBreakMiddlePort = 4;
+        public static final int kBeamBreakHolderPort = 6;
 
         // motors in cellevator that transport powercells to launcher
         public static final int kHolderMotorPort = 13;
@@ -226,10 +222,10 @@ public final class Constants {
         public static final double kBlueTargetG = 0.4467;
         public static final double kBlueTargetB = 0.40;
         // Colors
-        public static final Color kRedTarget = new Color(kRedTargetR, kRedTargetG, kRedTargetB);
-        public static final Color kYellowTarget = new Color(kYellowTargetR, kYellowTargetG, kYellowTargetB);
-        public static final Color kGreenTarget = new Color(kBlueTargetR, kBlueTargetG, kBlueTargetB);
-        public static final Color kBlueTarget = new Color(kGreenTargetR, kGreenTargetG, kGreenTargetB);
+        public static final Color kRedTarget = ColorMatch.makeColor(kRedTargetR, kRedTargetG, kRedTargetB);
+        public static final Color kYellowTarget = ColorMatch.makeColor(kYellowTargetR, kYellowTargetG, kYellowTargetB);
+        public static final Color kGreenTarget = ColorMatch.makeColor(kBlueTargetR, kBlueTargetG, kBlueTargetB);
+        public static final Color kBlueTarget = ColorMatch.makeColor(kGreenTargetR, kGreenTargetG, kGreenTargetB);
 
         // The confidence threshold for a given color
         public static final double kConfidence = 0.9; // TODO determine ideal confidence from testing
@@ -269,19 +265,18 @@ public final class Constants {
         public static final double kPortHeight = 98.25; // In inches
 
         // Alignment PID constants for Limelight
-        public static final double kLimelightAlignP = 1.0;
+        public static final double kLimelightAlignP = .05;
         public static final double kLimelightAlignI = 0.0;
-        public static final double kLimelightAlignD = 0.0;
+        public static final double kLimelightAlignD = 0.01;
         public static final double kLimelightAlignSpeedTolernce = 1.0;
         public static final double kLimelightAlignPositionTolerance = 0.5;
-        public static final double kSteeringAdjust = 0.25;
+        public static final double kSteeringAdjust = 0.5;
 
         // Distance PID constants for Limelight
         public static final double kLimelightDistanceP = 1.0;
         public static final double kLimelightDistanceI = 0.0;
         public static final double kLimelightDistanceD = 0.0;
         public static final double kLimelightDistance = 50.0;
-        public static final double kLimelightDistanceTolerance = 5.0;
     }
     
     public static final class ControllerConstants {

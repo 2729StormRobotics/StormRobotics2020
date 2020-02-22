@@ -13,6 +13,7 @@ import frc.robot.subsystems.*;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 
@@ -30,14 +31,14 @@ import static frc.robot.Constants.*;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   // private final Cellevator m_cellevator = new Cellevator();
-  private final CellevatorLoader m_cellevatorLoader = new CellevatorLoader();
+  // private final CellevatorLoader m_cellevatorLoader = new CellevatorLoader();
   // private final Climbers m_climbers = new Climbers();
   // private final ControlPanel m_controlPanel = new ControlPanel();
   private final Drivetrain m_drivetrain = new Drivetrain();
-  private final Hopper m_hopper = new Hopper();
-  private final Intake m_intake = new Intake();
+  // private final Hopper m_hopper = new Hopper();
+  // private final Intake m_intake = new Intake();
   // private final Launcher m_launcher = new Launcher();
-  // private final Limelight m_limelight = new Limelight();
+  private final Limelight m_limelight = new Limelight();
   // private final Party m_party = new Party();
 
   private final XboxController m_driverController = new XboxController(ControllerConstants.kDriverControlPort);
@@ -55,40 +56,40 @@ public class RobotContainer {
     // m_cellevator.setDefaultCommand(new CellevatorHolder(m_cellevator));
 
     // SmartDashboard.putData("Cellevator Subsystem", m_cellevator);
-    SmartDashboard.putData("Cellevator Loader Subsystem", m_cellevatorLoader);
+    // SmartDashboard.putData("Cellevator Loader Subsystem", m_cellevatorLoader);
     // SmartDashboard.putData("Climbers Subsystem", m_climbers);
     // SmartDashboard.putData("Control Panel Subsystem", m_controlPanel);
-    SmartDashboard.putData("Drivetrain Subsystem", m_drivetrain);
-    SmartDashboard.putData("Hopper Subsystem", m_hopper);
-    SmartDashboard.putData("Intake Subsystem", m_intake);
+    // SmartDashboard.putData("Drivetrain Subsystem", m_drivetrain);
+    // SmartDashboard.putData("Hopper Subsystem", m_hopper);
+    // SmartDashboard.putData("Intake Subsystem", m_intake);
     // SmartDashboard.putData("Launcher Subsystem", m_launcher);
     // SmartDashboard.putData("Limelight Subsystem", m_limelight);
     // SmartDashboard.putData("Party Subsystem", m_party);
 
     // Add Point Turn button and input angle.
-    SmartDashboard.putNumber("Target Angle", 0.0);
-    SmartDashboard.putData("Point Turn",
-        new PointTurn(() -> SmartDashboard.getNumber("Target Angle", 0), m_drivetrain));
+    // SmartDashboard.putNumber("Target Angle", 0.0);
+    // SmartDashboard.putData("Point Turn",
+    //     new PointTurn(() -> SmartDashboard.getNumber("Target Angle", 0), m_drivetrain));
 
     // Add DriveDistance button and input distance.
     SmartDashboard.putNumber("Target Distance", 0.0);
     SmartDashboard.putData("Drive Distance",
-        new DriveDistance(() -> SmartDashboard.getNumber("Target Distance", 0), m_drivetrain));
+        new DriveDistance(-2, m_drivetrain));
 
     // Add CellevatorLoaderMotor button.
-    SmartDashboard.putData("Cellevator Loader Command", new
-    CellevatorLoaderMotor(m_cellevatorLoader));
+    // SmartDashboard.putData("Cellevator Loader Command", new
+    // CellevatorLoaderMotor(m_cellevatorLoader));
 
     // // Add FixedLaunch button and input speed.
     // SmartDashboard.putNumber("Target Launch Speed", 0.0);
     // SmartDashboard.putData("FixedLaunch", new FixedLaunch(m_launcher));
 
-    // // Add LimelightAlign button.
-    // SmartDashboard.putData("Limelight Align", new LimelightAlign(m_drivetrain));
+    // Add LimelightAlign button.
+    SmartDashboard.putData("Limelight Align", new LimelightAlign(m_drivetrain));
 
     // Reverse the loader motors.
-    SmartDashboard.putData("Reverse Loader Motor", new
-    InvertLoaderMotor(m_cellevatorLoader));
+    // SmartDashboard.putData("Reverse Loader Motor", new
+    // InvertLoaderMotor(m_cellevatorLoader));
 
     // // Reverse the holder motors.
     // SmartDashboard.putData("Reverse Holder Motor", new
@@ -97,6 +98,12 @@ public class RobotContainer {
     // Auto path 1
     // SmartDashboard.putData("Auto Path 1", new AutoPath1(m_drivetrain, m_launcher,
     // m_intake, m_hopper));
+
+    //SmartDashboard.putData("Spin for Color", new MovePanelForColor(m_controlPanel));
+    //SmartDashboard.putData("Spin for Revs", new MovePanelForRevs(m_controlPanel));
+
+    // SmartDashboard.putData("Reset Gyro", new InstantCommand(m_drivetrain::resetGyro, m_drivetrain));
+    SmartDashboard.putData("Reset Encoders", new InstantCommand(m_drivetrain::resetAllEncoders, m_drivetrain));
 
     // Configure the button bindings
     configureButtonBindings();
@@ -124,12 +131,12 @@ public class RobotContainer {
     // new POVButton(m_weaponsController, 0).whenPressed(new
     // ToggleLaunchAngle(m_launcher));
 
-    new JoystickButton(m_weaponsController, kBumperLeft.value).whileHeld(new
-    IntakePowerCell(true, m_intake)); // powercell
+    // new JoystickButton(m_weaponsController, kBumperLeft.value).whileHeld(new
+    // IntakePowerCell(true, m_intake)); // powercell
     // intake
 
-    new JoystickButton(m_weaponsController, kBumperRight.value).whileHeld(new
-    IntakePowerCell(false, m_intake)); // powercell
+    // new JoystickButton(m_weaponsController, kBumperRight.value).whileHeld(new
+    // IntakePowerCell(false, m_intake)); // powercell
     // outtake
 
     // new JoystickButton(m_weaponsController, kA.value).whileHeld(new
@@ -142,11 +149,13 @@ public class RobotContainer {
     // new JoystickButton(m_weaponsController, kStart.value).whileHeld(new
     // HolderMotorManual(m_cellevator));
 
-    new JoystickButton(m_weaponsController, kBack.value).whileHeld(new
-    MoveHopperMotor(m_hopper));
+    // new JoystickButton(m_weaponsController, kBack.value).whileHeld(new
+    // MoveHopperMotor(m_hopper));
 
-    new JoystickButton(m_weaponsController, kStickRight.value).whenPressed(new
-    MoveIntakePistons(m_intake));
+    // new JoystickButton(m_weaponsController, kStickRight.value).whenPressed(new
+    // MoveIntakePistons(m_intake));
+
+    new JoystickButton(m_driverController, kX.value).whileHeld(new PointTurn(() -> SmartDashboard.getNumber("Target Angle", 0), m_drivetrain));
 
   }
 

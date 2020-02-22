@@ -35,6 +35,7 @@ public class Intake extends SubsystemBase {
 
     // Instantiates the double solenoid with the raise and lower piston ports
     m_intakePiston = new DoubleSolenoid(kIntakeRaiseSolenoidPort, kIntakeLowerSolenoidPort);
+    m_intakePiston.set(Value.kForward);
 
     // initializes the intake motor
     motorInit(m_intakeMotor);

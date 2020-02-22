@@ -26,10 +26,10 @@ public class ControlPanel extends SubsystemBase {
   private final ColorSensorV3 m_colorSensor;
 
   private String m_gameData;
-  private String m_targetColor;
-  private String m_currentColor;
+  private String m_targetColor = "Unknown";
+  private String m_currentColor = "Unknown";
   private int m_revColorCount = 0;
-  private String m_lastColorCheck;
+  private String m_lastColorCheck = "Unknown";
   private boolean m_firstColorDetected = false;
   private boolean m_readyToCount = false;
   private boolean m_readyToFindColor = false;
@@ -44,6 +44,10 @@ public class ControlPanel extends SubsystemBase {
     m_colorSensor = new ColorSensorV3(I2C.Port.kOnboard);
 
     m_colorMatch = new ColorMatch();
+    m_colorMatch.addColorMatch(kRedTarget);
+    m_colorMatch.addColorMatch(kBlueTarget);
+    m_colorMatch.addColorMatch(kGreenTarget);
+    m_colorMatch.addColorMatch(kYellowTarget);
     m_colorMatch.setConfidenceThreshold(kConfidence);
 
     addChild("Control Panel Motor", m_controlPanelMotor);

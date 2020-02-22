@@ -103,16 +103,22 @@ public class Drivetrain extends SubsystemBase {
     addChild("Shift Gears", m_gearShift);
     addChild("Gyro", m_imu);
 
+    SmartDashboard.putNumber("Drive P", DriveDistancePID.kP);
+    SmartDashboard.putNumber("Drive I", DriveDistancePID.kI);
+    SmartDashboard.putNumber("Drive D", DriveDistancePID.kD);
     //assign values with PID controllers
-    m_pidControllerLeft.setP(DriveDistancePID.kP);
-    m_pidControllerRight.setP(DriveDistancePID.kP);
-    m_pidControllerLeft.setI(DriveDistancePID.kI);
-    m_pidControllerRight.setI(DriveDistancePID.kI);
-    m_pidControllerLeft.setD(DriveDistancePID.kD);
-    m_pidControllerRight.setD(DriveDistancePID.kD);
+    m_pidControllerLeft.setP(SmartDashboard.getNumber("Drive P", 0));
+    m_pidControllerRight.setP(SmartDashboard.getNumber("Drive P", 0));
+    m_pidControllerLeft.setI(SmartDashboard.getNumber("Drive I", 0));
+    m_pidControllerRight.setI(SmartDashboard.getNumber("Drive I", 0));
+    m_pidControllerLeft.setD(SmartDashboard.getNumber("Drive D", 0));
+    m_pidControllerRight.setD(SmartDashboard.getNumber("Drive D", 0));
     
     // Set a member variable for the limelight network table
     m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+
+    SmartDashboard.putNumber("Left Target", 0);
+    SmartDashboard.putNumber("Right Target", 0);
   }
 
   /**
@@ -144,7 +150,9 @@ public class Drivetrain extends SubsystemBase {
 
   public void setDriveStates(TrapezoidProfile.State left, TrapezoidProfile.State right) {
     m_pidControllerLeft.setReference(left.position, ControlType.kPosition, 0, m_feedForward.calculate(left.velocity));
+    SmartDashboard.putNumber("Left Target", left.position);
     m_pidControllerRight.setReference(right.position, ControlType.kPosition, 0, m_feedForward.calculate(right.velocity));
+    SmartDashboard.putNumber("Right Target", right.position);
   }
 
 
@@ -280,9 +288,16 @@ public class Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("Left Distance", getLeftEncoderAverage());
     SmartDashboard.putNumber("Right Distance", getRightEncoderAverage());
     SmartDashboard.putNumber("Robot Angle", getRobotAngle());
+    SmartDashboard.putNumber("X offset", getXOffset());
 
     // Updates the values of the limelight on the network table
-    xOffset = m_limelightTable.getEntry("tx").getDouble(0.0);
+    if (isTargetDetected()) {
+      xOffset = m_limelightTable.getEntry("tx").getDouble(0.0);
+    }
+    else {
+      xOffset = 45;
+    }
+    
     targetValue = m_limelightTable.getEntry("tv").getDouble(0.0);
   }
 

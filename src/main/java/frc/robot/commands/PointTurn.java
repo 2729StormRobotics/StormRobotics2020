@@ -39,7 +39,7 @@ public class PointTurn extends PIDCommand {
           // Note: uses negative output because arcadeDrive considers clockwise angles to
           // be positive,
           // but the gyro considers counter-clockwise angles to be positive.
-          drivetrain.arcadeDrive(0, -output, false);
+          drivetrain.arcadeDrive(0, output, false);
         }, drivetrain);
 
     // Set the position and velocity tolerances.
@@ -52,7 +52,6 @@ public class PointTurn extends PIDCommand {
     getController().enableContinuousInput(-180, 180);
 
     // Reset the gyro to 0
-    drivetrain.resetGyro();
   }
 
   // Returns true when the command should end.

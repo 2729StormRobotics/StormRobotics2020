@@ -23,7 +23,7 @@ public class DriveDistance extends TrapezoidProfileCommand {
    * @param distance Target distance in inches.
    * @param drivetrain The Drivetrain passed through to run DriveDistance.
    */
-  public DriveDistance(DoubleSupplier distance, Drivetrain drivetrain) {
+  public DriveDistance(double distance, Drivetrain drivetrain) {
     super(
         // The motion profile to be executed
         new TrapezoidProfile(
@@ -31,7 +31,7 @@ public class DriveDistance extends TrapezoidProfileCommand {
             new TrapezoidProfile.Constraints(kMaxSpeed, kMaxAcceleration),
             
             // End desired distance at targetTravelDistance
-            new TrapezoidProfile.State(distance.getAsDouble(), 0)), // Velocity ends at 0.
+            new TrapezoidProfile.State(distance, 0)), // Velocity ends at 0.
             
             // Send the profile state to the drivetrain
             state -> drivetrain.setDriveStates(state, state), 
