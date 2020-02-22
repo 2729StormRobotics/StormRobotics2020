@@ -81,8 +81,7 @@ public final class Constants {
             // Our PID values for PointTurn
             public static final double kP = 0.0; // TODO: Test and update this value
             public static final double kI = 0.0; // TODO: Test and update this value.
-            public static final double kD = 0.0; // TODO: Test and update t
-            his value.
+            public static final double kD = 0.0; // TODO: Test and update this value.
 
             // Degrees away from setpoint at which PointTurn can end
             public static final double kPositionTolerance = 1.0; // TODO: Update this value.
