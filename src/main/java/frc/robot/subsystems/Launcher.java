@@ -229,9 +229,9 @@ public class Launcher extends SubsystemBase {
    */
   public double calculateLaunchSpeed() {
     double distance = getDistance();
-
-    // TODO: figure out this function through testing.
-    return 0;
+    
+    // TODO: confirm this function through further testing
+    return distance * 6.5772 + 2067.8;
   }
 
   /**
