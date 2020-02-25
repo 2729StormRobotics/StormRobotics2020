@@ -32,7 +32,7 @@ public class RobotContainer {
   // private final Cellevator m_cellevator = new Cellevator();
   private final CellevatorLoader m_cellevatorLoader = new CellevatorLoader();
   // private final Climbers m_climbers = new Climbers();
-  // private final ControlPanel m_controlPanel = new ControlPanel();
+  private final ControlPanel m_controlPanel = new ControlPanel();
   private final Drivetrain m_drivetrain = new Drivetrain();
   private final Hopper m_hopper = new Hopper();
   private final Intake m_intake = new Intake();
@@ -147,6 +147,12 @@ public class RobotContainer {
 
     new JoystickButton(m_weaponsController, kStickRight.value).whenPressed(new
     MoveIntakePistons(m_intake));
+
+    new JoystickButton(m_weaponsController, kX.value).whileHeld(new
+     MovePanelForRevs(m_controlPanel));
+
+     new JoystickButton(m_weaponsController, kY.value).whileHeld(new
+     MovePanelForColor(m_controlPanel));
 
   }
 
