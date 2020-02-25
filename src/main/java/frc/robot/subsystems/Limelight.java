@@ -68,7 +68,7 @@ public class Limelight extends SubsystemBase {
    * camera
    */
   public boolean isTargetCentered() {
-    return ((xOffset > -1.5) && (xOffset < 1.5) && (xOffset != 0.0));
+    return ((xOffset > -1.5) && (xOffset < 1.5));
   }
 
   /**
@@ -127,20 +127,9 @@ public class Limelight extends SubsystemBase {
     targetDetection.setBoolean(isTargetDetected());
   }
 
-  public void log() {
-    // Updates the SmartDashboard with limelight values
-    SmartDashboard.putNumber("LimelightXOffset", xOffset);
-    SmartDashboard.putNumber("LimelightYOffset", yOffset);
-    SmartDashboard.putNumber("LimelightAreaPercentage", targetArea);
-    SmartDashboard.putBoolean("Target Centered", isTargetCentered());
-    SmartDashboard.putBoolean("Target Detected", isTargetDetected());
-    SmartDashboard.putNumber("Distance (INCHES)", limelightDistance());
-  }
-
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     updateLimelight();
-    log();
   }
 }
