@@ -141,19 +141,19 @@ public final class Constants {
         public static final int kIntakeRaiseSolenoidPort = 5;
         public static final int kIntakeLowerSolenoidPort = 2;
 
-        public static final double kIntakeMotorSpeed = 1.0; // TODO: Change if needed
+        public static final double kIntakeMotorSpeed = 0.5; // TODO: Change if needed
     }
 
     public static final class HopperConstants {
         public static final int kHopperMotorPort = 5;
-        public static final double kHopperMotorSpeed = 1.0; // TODO: Change if needed.
+        public static final double kHopperMotorSpeed = 0.5; // TODO: Change if needed.
     }
 
     public static final class CellevatorConstants {
         // beam breakers detect the number of powercells in the cellevator
-        public static final int kBeamBreakLoaderPort = 1; // TODO: Port Numbers possibly need to be updated
-        public static final int kBeamBreakMiddlePort = 3;
-        public static final int kBeamBreakHolderPort = 5;
+        public static final int kBeamBreakLoaderPort = 2; // TODO: Port Numbers possibly need to be updated
+        public static final int kBeamBreakMiddlePort = 4;
+        public static final int kBeamBreakHolderPort = 6;
 
         // motors in cellevator that transport powercells to launcher
         public static final int kHolderMotorPort = 13;
@@ -161,13 +161,13 @@ public final class Constants {
 
         // Define if a motor is inverted or not
         public static final boolean kHolderMotorInverted = false;
-        public static final boolean kLoaderMotorInverted = false;
+        public static final boolean kLoaderMotorInverted = true;
 
         // Define the current limit for the celevator motors
         public static final int kCellevatorCurrentLimit = 45;
 
         // the constant speed for the holder motor
-        public static final double kHolderMotorSpeed = 0.5; // TODO: Update if needed
+        public static final double kHolderMotorSpeed = 0.35; // TODO: Update if needed
         
         //speed for the loader Motor
         public static final double kLoaderMotorSpeed = 0.5; //TODO: Update if needed
