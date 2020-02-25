@@ -153,7 +153,6 @@ public class RobotContainer {
 
      new JoystickButton(m_weaponsController, kY.value).whileHeld(new
      MovePanelForColor(m_controlPanel));
-
   }
 
   // commented out because no auto yet
