@@ -1,3 +1,4 @@
+
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
@@ -32,7 +33,7 @@ public class Limelight extends SubsystemBase {
 
 
   NetworkTableEntry targetDistance; // Creates a new network table entry for the target distance on 
-                                    // the floor in inches
+                                    // the floor in meters
   NetworkTableEntry targetDetection; //Creates a new network table entry for if a target is detected
                 
 
@@ -80,7 +81,7 @@ public class Limelight extends SubsystemBase {
   }
 
   /**
-   * Return the distance from the limelight to the target in inches (floor
+   * Return the distance from the limelight to the target in meters (floor
    * distance)
    */
   public double limelightDistance() {
