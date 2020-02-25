@@ -29,15 +29,15 @@ public final class Constants {
         // pistons that shift the gear of the drive train
         public static final int kDriveSolenoid = 7;
 
-        public static final double kWheelDiameter = 6; // Inches
+        public static final double kWheelDiameter = .1524; // Meters    6 Inches
 
         // Gearing for calculations, given in output turns per motor turn
         private static final double kHighGear = 14.0/58.0 * 18.0/38.0 * 32.0/34.0;
         private static final double kLowGear = 14.0/58.0 * 18.0/38.0 * 22.0/44.0;
 
-        // Conversions to calculate inches per encoder pulse in high gear
+        // Conversions to calculate meters per encoder pulse in high gear
         public static final double kHighGearDistancePerPulse = Math.PI * kWheelDiameter * kHighGear;
-        // Conversions to calculate inches/second per encoder pulse in high gear
+        // Conversions to calculate meter/second per encoder pulse in high gear
         public static final double kHighGearSpeedPerPulse = kHighGearDistancePerPulse / 60;
 
         // Conversions to calculate distance per encoder pulse in high gear
@@ -54,8 +54,8 @@ public final class Constants {
 
             // Constants for DriveDistance.
         // TODO: Update these constants with the correct values.
-        public static final double kMaxSpeed = 0; // Inches per second
-        public static final double kMaxAcceleration = 0; // Inches per (second^2)
+        public static final double kMaxSpeed = 0; // meters per second
+        public static final double kMaxAcceleration = 0; // meters per (second^2)
 
         public static final double kS = 0;  //TODO: Test for values
         public static final double kV = 0;  //TODO: Test for values
@@ -239,8 +239,8 @@ public final class Constants {
         // Gearing for calculations, given in output turns per motor turn
         private static final double kGearing = 10.0/58.0 * 16.0/60.0;
 
-        // Conversion for distance and speed per encoder pulse, given in inches
-        public static final double kSprocketDiameter = 1.662;
+        // Conversion for distance and speed per encoder pulse, given in meters
+        public static final double kSprocketDiameter = 0.0422148;  //1.662 inches
         public static final double kEncoderDistancePerPulse = Math.PI * kSprocketDiameter / kGearing;
         public static final double kEncoderSpeedPerPulse = kEncoderDistancePerPulse / 60;
 
@@ -264,9 +264,9 @@ public final class Constants {
 
     public static final class LimelightConstants {
         // Values used to calculate target location
-        public static final double kLimelightHeight = 43; // In inches
+        public static final double kLimelightHeight = 1.092; // In meters(43 inches)
         public static final double kLimelightAngle = 16; // In degrees
-        public static final double kPortHeight = 98.25; // In inches
+        public static final double kPortHeight = 2.496; // In meters(98.25 inches)
 
         // Alignment PID constants for Limelight
         public static final double kLimelightAlignP = 1.0;
