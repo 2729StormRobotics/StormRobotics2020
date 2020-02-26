@@ -85,7 +85,7 @@ public class RobotContainer {
     // SmartDashboard.putData("FixedLaunch", new FixedLaunch(m_launcher));
 
     // Add LimelightAlign button.
-    SmartDashboard.putData("Limelight Align", new LimelightAlign(m_drivetrain));
+    SmartDashboard.putData("Limelight Align", new LimelightAlign(m_drivetrain).withTimeout(3));
 
     // Reverse the loader motors.
     // SmartDashboard.putData("Reverse Loader Motor", new
