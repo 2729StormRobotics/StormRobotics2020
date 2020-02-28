@@ -316,6 +316,8 @@ public final class Constants {
         public static final double kLimelightAngle = 16;
         public static final double kPortHeight = 98.25;
 
+        public static final int kDefaultPipeline = 0;
+
         // Alignment constants for LimeLight
         public static final double kAutoAlignP = 0.05;
         public static final double kAutoAlignI = 0.0;

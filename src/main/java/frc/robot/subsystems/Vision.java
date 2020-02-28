@@ -8,7 +8,6 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -38,7 +37,7 @@ public class Vision extends SubsystemBase {
     m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
 
     // Reset the default settings and pipelines to the Limelight
-    m_limelightTable.getEntry("pipeline").setNumber(0);
+    m_limelightTable.getEntry("pipeline").setNumber(kDefaultPipeline);
 
     // Initialize the network table entries for distance and target detection to
     // default values
@@ -46,8 +45,16 @@ public class Vision extends SubsystemBase {
     m_targetDetection = m_limelightTable.getEntry("Target Detection");
   }
 
-  /**
+  public void disableLED() {
+    m_limelightTable.getEntry("ledMode").setNumber(1);
+  }
 
+  public void enableLED() {
+    m_limelightTable.getEntry("ledMode").setNumber(3);
+  }
+
+  /**
+   * 
    * Returns a value of the offset on the x-axis of the camera to the target in
    * degrees. Negative values mean the target is to the left of the camera
    */
@@ -100,7 +107,7 @@ public class Vision extends SubsystemBase {
     }
 
     m_limelightTable.getEntry("pipeline").setNumber(pipeline);
-    m_limelightTable.getEntry("Pipeline").setValue(pipeline);
+    m_limelightTable.getEntry("pipeline").setValue(pipeline);
   }
 
   /**
@@ -109,7 +116,7 @@ public class Vision extends SubsystemBase {
    * @return pipelineValue
    */
   public double getPipeline() {
-    NetworkTableEntry pipeline = m_limelightTable.getEntry("Pipeline");
+    NetworkTableEntry pipeline = m_limelightTable.getEntry("pipeline");
     double pipelineValue = pipeline.getDouble(0.0);
     return pipelineValue;
   }
@@ -127,20 +134,9 @@ public class Vision extends SubsystemBase {
     m_targetDetection.setBoolean(isTargetDetected());
   }
 
-  public void log() {
-    // Updates the SmartDashboard with limelight values
-    SmartDashboard.putNumber("LimelightXOffset", m_xOffset);
-    SmartDashboard.putNumber("LimelightYOffset", m_yOffset);
-    SmartDashboard.putNumber("LimelightAreaPercentage", m_targetArea);
-    SmartDashboard.putBoolean("Target Centered", isTargetCentered());
-    SmartDashboard.putBoolean("Target Detected", isTargetDetected());
-    SmartDashboard.putNumber("Distance (INCHES)", getTargetDistance());
-  }
-
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     updateLimelight();
-    log();
   }
 }
