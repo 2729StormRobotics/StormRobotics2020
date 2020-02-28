@@ -292,11 +292,12 @@ public final class Constants {
         public static final boolean kMotorInverted = true;
 
         // Define the speeds for up and down climbing
-        public static final double kClimbUpSpeed = 0.5; // TODO Determine best speed
-        public static final double kClimbDownSpeed = -0.5; // TODO Determine best speed
+        public static final double kClimbUpSpeed = 0.5;
+        public static final double kClimbDownSpeed = -0.5;
+        public static final double kHoldVoltage = 4.41;
 
         // Define the maximum height of the climber
-        public static final double kMaxHeight = 20; // TODO Determine max height
+        public static final double kMaxHeight = 20;
 
         public static final boolean kFrictionBrakeEnabled = true;
         public static final boolean kFrictionBrakeDisabled = false;
