@@ -94,6 +94,10 @@ public class Vision extends SubsystemBase {
     return (kLimelightAngle + m_yOffset);
   }
 
+  public double getTargetArea() {
+    return m_targetArea;
+  }
+
   /**
    * Return the distance from the limelight to the target in inches (floor
    * distance)
