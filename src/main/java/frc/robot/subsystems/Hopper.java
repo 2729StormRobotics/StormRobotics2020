@@ -10,22 +10,13 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.HopperConstants.*;
 
-import java.util.Map;
-
 public class Hopper extends SubsystemBase {
   private final WPI_TalonSRX m_hopperMotor;
 
-  private final ShuffleboardTab m_hopperTab;
-  private final ShuffleboardLayout m_hopperStatus;
-  
   /**
    * Creates a new Hopper.
    */
@@ -34,14 +25,6 @@ public class Hopper extends SubsystemBase {
 
     m_hopperMotor.configFactoryDefault();
     m_hopperMotor.setNeutralMode(NeutralMode.Coast);
-    
-    addChild("Hopper Motor", m_hopperMotor);
-
-    m_hopperTab = Shuffleboard.getTab(kShuffleboardTab);
-    m_hopperStatus = m_hopperTab.getLayout("Status", BuiltInLayouts.kList)
-        .withProperties(Map.of("Label position", "TOP"));
-
-    //shuffleboardInit();
   }
 
   /**
@@ -50,6 +33,10 @@ public class Hopper extends SubsystemBase {
    */
   public void runHopper(double speed) {
     m_hopperMotor.set(speed);
+  }
+
+  public void hop() {
+    m_hopperMotor.set(kHopperMotorSpeed);
   }
 
   /**
