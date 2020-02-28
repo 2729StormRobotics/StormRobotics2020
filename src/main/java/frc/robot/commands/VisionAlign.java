@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.subsystems.Drivetrain;
 
@@ -17,6 +18,8 @@ import static frc.robot.Constants.VisionConstants.*;
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class VisionAlign extends PIDCommand {
+  private final Drivetrain m_drivetrain;
+
   /**
    * Creates a new VisionAlign.
    */
@@ -27,7 +30,7 @@ public class VisionAlign extends PIDCommand {
         // This should return the measurement
         () -> drivetrain.getVisionTargetXOffset(),
         // This should return the setpoint (can also be a constant)
-        () -> 0,
+        0,
         // This uses the output
         output -> {
           /**
@@ -37,14 +40,19 @@ public class VisionAlign extends PIDCommand {
           if (drivetrain.isVisionTargetDetected()) {
             drivetrain.arcadeDrive(0, output, false);
           }
-        }, drivetrain);
+        });
+
+    m_drivetrain = drivetrain;
 
     getController().setTolerance(kAutoAlignTolerance, kAutoAlignSpeedTolerance);
+    SendableRegistry.setName(getController(), "Vision Align PID");
+
+    addRequirements(m_drivetrain);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return getController().atSetpoint();
+    return getController().atSetpoint() || !m_drivetrain.isVisionTargetDetected();
   }
 }

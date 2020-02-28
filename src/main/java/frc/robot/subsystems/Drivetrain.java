@@ -68,7 +68,7 @@ public class Drivetrain extends SubsystemBase {
   // Create variables for the different values given from the limelight
   private double m_xOffset = 0; // Positive values mean that target is to the right of the camera; negative
   // values mean target is to the left. Measured in degrees
-  private double m_targetVisible = 0; // Sends 1 if a target is detected, 0 if none are present
+  private boolean m_targetVisible = false;
 
   /**
    * Creates a new Drivetrain.
@@ -217,7 +217,7 @@ public class Drivetrain extends SubsystemBase {
    * Returns true if a target is detected
    */
   public boolean isVisionTargetDetected() {
-    return (m_targetVisible > 0.0);
+    return (m_targetVisible);
   }
 
   private void setLeftDistancePID() {
@@ -302,8 +302,8 @@ public class Drivetrain extends SubsystemBase {
 
   public void updateLimelight() {
     // Updates the values of the limelight from the network table
-    m_xOffset = m_limelight.getEntry("tx").getDouble(0.0);
-    m_targetVisible = m_limelight.getEntry("tv").getDouble(0.0);
+    m_xOffset = m_limelight.getEntry("Target Offset").getDouble(0.0);
+    m_targetVisible = m_limelight.getEntry("Target Detection").getBoolean(false);
   }
 
   @Override
