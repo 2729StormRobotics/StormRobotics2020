@@ -37,8 +37,8 @@ public class Vision extends SubsystemBase {
     m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
 
     // Reset the default settings and pipelines to the Limelight
-    m_limelightTable.getEntry("pipeline").setNumber(kDefaultPipeline);
-
+    setPipeline(kDefaultPipeline);
+    
     // Initialize the network table entries for distance and target detection to
     // default values
     m_targetDistance = m_limelightTable.getEntry("Target Distance");
@@ -74,7 +74,7 @@ public class Vision extends SubsystemBase {
    * camera
    */
   public boolean isTargetCentered() {
-    return ((m_xOffset > -1.5) && (m_xOffset < 1.5) && (m_xOffset != 0.0));
+    return (isTargetDetected() && (m_xOffset > -1.5) && (m_xOffset < 1.5));
   }
 
   /**
@@ -107,7 +107,6 @@ public class Vision extends SubsystemBase {
     }
 
     m_limelightTable.getEntry("pipeline").setNumber(pipeline);
-    m_limelightTable.getEntry("pipeline").setValue(pipeline);
   }
 
   /**
@@ -116,9 +115,8 @@ public class Vision extends SubsystemBase {
    * @return pipelineValue
    */
   public double getPipeline() {
-    NetworkTableEntry pipeline = m_limelightTable.getEntry("pipeline");
-    double pipelineValue = pipeline.getDouble(0.0);
-    return pipelineValue;
+    double pipeline = m_limelightTable.getEntry("pipeline").getDouble(0.0);
+    return pipeline;
   }
 
   public void updateLimelight() {
