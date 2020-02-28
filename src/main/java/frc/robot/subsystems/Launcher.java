@@ -1,0 +1,294 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
+package frc.robot.subsystems;
+
+import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import static frc.robot.Constants.LauncherConstants.*;
+
+import java.util.Map;
+
+public class Launcher extends SubsystemBase {
+  private final CANSparkMax m_leftLauncherMotor;
+  private final CANSparkMax m_rightLauncherMotor;
+
+  private final CANEncoder m_leftLauncherEncoder;
+  private final CANEncoder m_rightLauncherEncoder;
+
+  private final SimpleMotorFeedforward m_feedForward;
+  private final CANPIDController m_pidController;
+
+  private final DoubleSolenoid m_launcherAnglePistons;
+
+  private final NetworkTable m_limelightTable;
+
+  private final ShuffleboardTab m_launcherTab;
+  private final ShuffleboardLayout m_launcherStatus;
+  private final ShuffleboardLayout m_launcherPID;
+  private NetworkTableEntry m_testSpeed;
+  private NetworkTableEntry m_testP;
+  private NetworkTableEntry m_testI;
+  private NetworkTableEntry m_testD;
+
+  private String m_launchType = "Disabled";
+
+  /**
+   * Creates a new Launcher.
+   */
+  public Launcher() {
+    // Instantiate the double solenoid for the launch pistons.
+    m_launcherAnglePistons = new DoubleSolenoid(kLauncherLongAnglePort, kLauncherShortAnglePort);
+
+    // Instantiate the motors.
+    m_leftLauncherMotor = new CANSparkMax(kLauncherMotorLeftPort, MotorType.kBrushless);
+    m_rightLauncherMotor = new CANSparkMax(kLauncherMotorRightPort, MotorType.kBrushless);
+
+    // Instantiate the encoder.
+    m_leftLauncherEncoder = m_leftLauncherMotor.getEncoder();
+    m_rightLauncherEncoder = m_rightLauncherMotor.getEncoder();
+
+    // Initialize the the motors.
+    motorInit(m_leftLauncherMotor);
+    motorInit(m_rightLauncherMotor);
+
+    // Make right motor follow the left motor and set it to inverted.
+    m_leftLauncherMotor.follow(m_rightLauncherMotor, true);
+
+    m_feedForward = new SimpleMotorFeedforward(kS, kV, kA);
+
+    // Initialize the PID controller for the motor controller.
+    m_pidController = m_rightLauncherMotor.getPIDController();
+
+    // Initialize pid coefficients
+    pidInit();
+
+    // Initialize pistons
+    pistonInit();
+
+    // Instantiate the limelight NetworkTable
+    m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+
+    m_launcherTab = Shuffleboard.getTab(kShuffleboardTab);
+    m_launcherStatus = m_launcherTab.getLayout("Launcher Status", BuiltInLayouts.kList)
+        .withProperties(Map.of("Label position", "TOP"));
+    m_launcherPID = m_launcherTab.getLayout("Launcher PID Test", BuiltInLayouts.kList)
+        .withProperties(Map.of("Label position", "LEFT"));
+
+    shuffleboardInit();
+  }
+
+  /**
+   * Restore factory defaults, set idle mode to coast, and invert motor.
+   * 
+   * @param motor The motor to initialize
+   */
+  private void motorInit(CANSparkMax motor) {
+    motor.restoreFactoryDefaults(); // Just in case any settings persist between reboots.
+    motor.setIdleMode(IdleMode.kCoast); // Set the motor to coast mode, so that we don't lose momentum when we stop
+    encoderInit(motor.getEncoder());
+  }
+
+  /**
+   * Initialize an encoder.
+   * 
+   * @param encoder The encoder to initialize
+   */
+  private void encoderInit(CANEncoder encoder) {
+    encoder.setVelocityConversionFactor(1.0 / 60);
+    encoderReset(encoder); // Reset the encoder to 0, just in case
+  }
+
+  /**
+   * Reset an encoder's position.
+   * 
+   * @param encoder The encoder to reset
+   */
+  private void encoderReset(CANEncoder encoder) {
+    encoder.setPosition(0);
+  }
+
+  /**
+   * Set the PID coefficients for the PID Controller to use.
+   */
+  private void pidInit() {
+    // Set the proportional constant.
+    m_pidController.setP(LauncherPID.kP);
+    // Set the integral constant.
+    m_pidController.setI(LauncherPID.kI);
+    // Set the derivative constant.
+    m_pidController.setD(LauncherPID.kD);
+    // Set the integral zone. This value is the maximum |error| for the integral
+    // gain to take effect.
+    m_pidController.setIZone(LauncherPID.kIz);
+    // Set the feed-forward constant.
+    m_pidController.setFF(LauncherPID.kF);
+    // Set the output range.
+    m_pidController.setOutputRange(LauncherPID.kMinOutput, LauncherPID.kMaxOutput);
+  }
+
+  public void pidAdjust() {
+    m_pidController.setP(m_testP.getDouble(LauncherPID.kP));
+    m_pidController.setI(m_testI.getDouble(LauncherPID.kI));
+    m_pidController.setD(m_testD.getDouble(LauncherPID.kD));
+  }
+
+  /**
+   * Set the pistons to be retracted initially.
+   */
+  private void pistonInit() {
+    setLongLaunchAngle();
+  }
+
+  /**
+   * Set the launch pistons to long shot angle.
+   */
+  public void setLongLaunchAngle() {
+    m_launcherAnglePistons.set(kLongLaunchSolenoidSetting);
+    m_launchType = "Long Shot";
+  }
+
+  /**
+   * Set the launch pistons to short shot angle.
+   */
+  public void setShortLaunchAngle() {
+    m_launcherAnglePistons.set(kShortLaunchSolenoidSetting);
+    m_launchType = "Wall Shot";
+  }
+
+  /**
+   * Toggles the launch pistons.
+   */
+  public void toggleLaunchAngle() {
+    if (m_launcherAnglePistons.get() == kLongLaunchSolenoidSetting) {
+      setShortLaunchAngle();
+    } else {
+      setLongLaunchAngle();
+    }
+  }
+
+  /**
+   * Stop the launcher motors.
+   */
+  public void stopLauncher() {
+    m_rightLauncherMotor.set(0);
+  }
+
+  /**
+   * Get the speed of the left motor.
+   * 
+   * @return The speed of the left motor in RPM.
+   */
+  public double getLeftLauncherSpeed() {
+    return m_leftLauncherEncoder.getVelocity();
+  }
+
+  /**
+   * Get the speed of the right motor.
+   * 
+   * @return The speed of the right motor in RPM.
+   */
+  public double getRightLauncherSpeed() {
+    return m_rightLauncherEncoder.getVelocity();
+  }
+
+  /**
+   * Get the average speed of the launcher motors.
+   * 
+   * @return The average speed of both launcher motors in RPM.
+   */
+  public double getLauncherAvgSpeed() {
+    return ((getLeftLauncherSpeed() + getRightLauncherSpeed()) / 2.0);
+  }
+
+  /**
+   * Set the motor controller to start the PID controller.
+   * 
+   * @param speed The target angular speed in RPM
+   */
+  public void revToSpeed(double speed) {
+    double feedforward = m_feedForward.calculate(speed);
+    m_pidController.setReference(speed, ControlType.kVelocity, 0, feedforward);
+  }
+
+  /**
+   * Set the motor controller to stop the PID controller.
+   * 
+   * @param speed The target angular speed in RPM
+   */
+  public void stopRevving() {
+    // m_pidController.setReference(0, ControlType.kDutyCycle);
+    stopLauncher();
+  }
+
+  /**
+   * Get the horizontal distance from the vision target from network tables
+   * 
+   * @return the distance.
+   */
+  private double getDistance() {
+    return m_limelightTable.getEntry("Target Distance").getDouble(0.0);
+  }
+
+  /**
+   * Calculate the desired speed of the launch motors.
+   * 
+   * @param distance The horizontal distance from the vision target
+   * @return The desired speed of the launch motors in RPM.
+   */
+  public double calculateLaunchSpeed() {
+    double distance = getDistance();
+    double launchSpeed = 0.235896 * distance + 33.8493;
+
+    return launchSpeed;
+  }
+
+  public void testShot() {
+    double speed = m_testSpeed.getDouble(0);
+    revToSpeed(speed);
+  }
+
+  public void setLaunchPower(double power) {
+    m_rightLauncherMotor.set(power);
+  }
+
+  /**
+   * Initialize the shuffleboard data
+   */
+  private void shuffleboardInit() {
+    m_launcherStatus.addNumber("Rev Speed", () -> getLauncherAvgSpeed());
+    m_launcherStatus.addString("Launch Type", () -> m_launchType);
+    m_launcherStatus.addNumber("Launch Speed", () -> calculateLaunchSpeed());
+    m_launcherStatus.addNumber("Target Distance", () -> getDistance());
+
+    m_testSpeed = m_launcherPID.add("Test Speed", 0).getEntry();
+    m_testP = m_launcherPID.add("Test P", LauncherPID.kP).getEntry();
+    m_testI = m_launcherPID.add("Test I", LauncherPID.kI).getEntry();
+    m_testD = m_launcherPID.add("Test D", LauncherPID.kD).getEntry();
+  }
+
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
+  }
+}
