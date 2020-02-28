@@ -39,7 +39,7 @@ public class Cellevate extends CommandBase {
       m_cellevator.stopCellevator();
     }
 
-    if (m_cellevator.safeToLoad() && m_cellevator.readyToFeed()) {
+    if (m_cellevator.readyToLoad()) {
       m_cellevator.load();
     } else {
       m_cellevator.stopLoader();

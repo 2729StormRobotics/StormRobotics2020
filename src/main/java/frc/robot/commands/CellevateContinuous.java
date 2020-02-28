@@ -14,7 +14,7 @@ public class CellevateContinuous extends CommandBase {
   private final Cellevator m_cellevator;
 
   /**
-   * Creates a new Cellevate.
+   * Creates a new CellevateContinuous.
    */
   public CellevateContinuous(Cellevator subsystem) {
     m_cellevator = subsystem;
@@ -33,7 +33,6 @@ public class CellevateContinuous extends CommandBase {
   public void execute() {
       m_cellevator.load();
       m_cellevator.cellevate();
-  
   }
 
   // Called once the command ends or is interrupted.

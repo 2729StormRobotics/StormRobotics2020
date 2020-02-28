@@ -157,7 +157,7 @@ public class Cellevator extends SubsystemBase {
    * 
    * @return
    */
-  public boolean getBeamBreakMiddlePrevious() {
+  public boolean getMiddlePrevious() {
     return m_previousBBMiddle;
   }
 
@@ -166,7 +166,7 @@ public class Cellevator extends SubsystemBase {
    * 
    * @return
    */
-  public boolean getBeamBreakBottomPrevious() {
+  public boolean getBottomPrevious() {
     return m_previousBBBottom;
   }
 
@@ -175,7 +175,7 @@ public class Cellevator extends SubsystemBase {
    * 
    * @return
    */
-  public boolean getBeamBreakTopPrevious() {
+  public boolean getTopPrevious() {
     return m_previousBBTop;
   }
 
@@ -228,7 +228,7 @@ public class Cellevator extends SubsystemBase {
   public boolean safeToCellelevate() {
     boolean topClearAndMiddleOccupied = !isTopBallPresent() && !isMiddleGapClear();
     boolean onlyBottomOccupied = isBottomBallPresent() && !isTopBallPresent() && isMiddleGapClear()
-        && getBeamBreakMiddlePrevious();
+        && getMiddlePrevious();
 
     return topClearAndMiddleOccupied || onlyBottomOccupied;
   }
