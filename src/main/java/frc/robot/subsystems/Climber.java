@@ -30,6 +30,7 @@ public class Climber extends SubsystemBase {
   private final CANEncoder m_encoder;
 
   private final Solenoid m_frictionBrake;
+  private boolean m_retracted = true;
 
   private final ShuffleboardTab m_climberTab;
   private final ShuffleboardLayout m_climberStatus;
@@ -174,14 +175,18 @@ public class Climber extends SubsystemBase {
     m_climberStatus.addNumber("Height", () -> getHeight()).withWidget(BuiltInWidgets.kNumberBar)
         .withProperties(Map.of("Min", -1)).withProperties(Map.of("Max", 23));
     m_climberStatus.addNumber("Speed", () -> getSpeed());
-    m_climberStatus.addBoolean("At Top", () -> atMaxHeight());
-    m_climberStatus.addBoolean("At Bottom", () -> atMinHeight());
+    m_climberStatus.addBoolean("Fully Retracted", () -> m_retracted);
 
     m_climberStatus.add("Friction Brake", m_frictionBrake).withWidget(BuiltInWidgets.kToggleButton);
   }
 
   @Override
   public void periodic() {
+    if (getHeight() > 1) {
+      m_retracted = false;
+    } else {
+      m_retracted = true;
+    }
     // This method will be called once per scheduler run
   }
 }
