@@ -20,6 +20,7 @@ import java.util.Map;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -199,9 +200,11 @@ public class ControlPanel extends SubsystemBase {
   }
 
   private void shuffleboardInit() {
-    m_targetColorWidget = m_controlPanelStatus.addBoolean("Target Color", () -> m_targetColorAvailable);
+    m_targetColorWidget = m_controlPanelStatus.addBoolean("Target Color", () -> m_targetColorAvailable)
+        .withWidget(BuiltInWidgets.kBooleanBox);
     m_targetColorWidget.withProperties(Map.of("colorWhenFalse", "BLACK"));
-    m_currentColorWidget = m_controlPanelStatus.addBoolean("Current Color", () -> m_currentColorAvailable);
+    m_currentColorWidget = m_controlPanelStatus.addBoolean("Current Color", () -> m_currentColorAvailable)
+        .withWidget(BuiltInWidgets.kBooleanBox);
     m_currentColorWidget.withProperties(Map.of("colorWhenFalse", "BLACK"));
 
     m_controlPanelStatus.addBoolean("On Target", () -> onTargetColor());
@@ -216,7 +219,7 @@ public class ControlPanel extends SubsystemBase {
 
   @Override
   public void periodic() {
-    m_targetColorWidget.withProperties(Map.of("colorWhenTrue", m_targetColorString));
-    m_currentColorWidget.withProperties(Map.of("colorWhenTrue", m_currentColorString));
+    m_targetColorWidget.withWidget(BuiltInWidgets.kBooleanBox).withProperties(Map.of("colorWhenTrue", m_targetColorString));
+    m_currentColorWidget.withWidget(BuiltInWidgets.kBooleanBox).withProperties(Map.of("colorWhenTrue", m_currentColorString));
   }
 }
