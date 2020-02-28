@@ -15,19 +15,27 @@ import static frc.robot.Constants.VisionConstants.*;
 
 public class Vision extends SubsystemBase {
   // Create variables for the different values given from the limelight
-  private double m_xOffset; // Positive values mean that target is to the right of the camera; negative
-  // values mean target is to the left. Measured in degrees
-  private double m_yOffset; // Positive values mean that target is above the camera; negative values mean
-  // target is below. Measured in degrees
-  private double m_targetArea; // Returns a value of the percentage of the image the target takes
-  private double m_targetValue; // Sends 1 if a target is detected, 0 if none are present
+
+  // Offset along x axis in degrees.
+  private double m_xOffset; // Positive values mean that target is to the right of the camera
+
+  // Offset along y axis in degrees
+  private double m_yOffset; // Positive values mean that target is above the camera
+
+  // Percentage of the image the target takes
+  private double m_targetArea;
+
+  // Is target detected
+  private double m_targetValue;
 
   // Create a network table for the limelight
   private final NetworkTable m_limelightTable;
 
-  NetworkTableEntry m_targetDistance; // Creates a new network table entry for the target distance on
-  // the floor in inches
-  NetworkTableEntry m_targetDetection; // Creates a new network table entry for if a target is detected
+  // Create new network table entries for target detection
+  private final NetworkTableEntry m_targetDistance;
+  private final NetworkTableEntry m_targetDetection; 
+  private final NetworkTableEntry m_targetOffset;
+
 
   /**
    * Creates a new Vision.
@@ -38,11 +46,12 @@ public class Vision extends SubsystemBase {
 
     // Reset the default settings and pipelines to the Limelight
     setPipeline(kDefaultPipeline);
-    
+
     // Initialize the network table entries for distance and target detection to
     // default values
     m_targetDistance = m_limelightTable.getEntry("Target Distance");
     m_targetDetection = m_limelightTable.getEntry("Target Detection");
+    m_targetOffset = m_limelightTable.getEntry("Target Offset");
   }
 
   public void disableLED() {
@@ -130,6 +139,7 @@ public class Vision extends SubsystemBase {
     // table
     m_targetDistance.setDouble(getTargetDistance());
     m_targetDetection.setBoolean(isTargetDetected());
+    m_targetOffset.setDouble(getXOffset());
   }
 
   @Override
