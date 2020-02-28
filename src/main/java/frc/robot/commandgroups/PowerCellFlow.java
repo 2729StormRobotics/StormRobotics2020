@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.commands.CellevateContinuous;
 import frc.robot.commands.HopperAgitate;
 import frc.robot.commands.IntakeRun;
-import frc.robot.commands.LauncherTestPID;
+import frc.robot.commands.LauncherVariableShot;
 import frc.robot.subsystems.Cellevator;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
@@ -26,6 +26,6 @@ public class PowerCellFlow extends ParallelCommandGroup {
    */
   public PowerCellFlow(Launcher launcher, Intake intake, Hopper hopper, Cellevator cellevator) {
     // Add your commands in the super() call, e.g.
-    super(new LauncherTestPID(launcher), new IntakeRun(intake), new HopperAgitate(hopper), new CellevateContinuous(cellevator));
+    super(new LauncherVariableShot(launcher), new IntakeRun(intake), new HopperAgitate(hopper), new CellevateContinuous(cellevator));
   }
 }

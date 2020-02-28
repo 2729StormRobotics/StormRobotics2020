@@ -8,7 +8,7 @@
 package frc.robot.commandgroups;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.LauncherTestPID;
+import frc.robot.commands.LauncherVariableShot;
 import frc.robot.commands.VisionAlign;
 import frc.robot.subsystems.Cellevator;
 import frc.robot.subsystems.Drivetrain;
@@ -26,6 +26,6 @@ public class LauncherMode extends SequentialCommandGroup {
   public LauncherMode(Launcher launcher, Drivetrain drivetrain, Intake intake, Hopper hopper, Cellevator cellevator) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
-    super(new VisionAlign(drivetrain).withTimeout(1.5), new LauncherTestPID(launcher), new PowerCellFlow(launcher, intake, hopper, cellevator));
+    super(new VisionAlign(drivetrain).withTimeout(1.5), new LauncherVariableShot(launcher), new PowerCellFlow(launcher, intake, hopper, cellevator));
   }
 }
