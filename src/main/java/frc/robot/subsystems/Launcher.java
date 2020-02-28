@@ -245,11 +245,24 @@ public class Launcher extends SubsystemBase {
    * Calculate the desired speed of the launch motors.
    * 
    * @param distance The horizontal distance from the vision target
-   * @return The desired speed of the launch motors in RPM.
+   * @return The desired speed of the launch motors in RPS.
    */
   public double calculateLaunchSpeed() {
     double distance = getDistanceToTarget();
     double launchSpeed = 0.235896 * distance + 33.8493;
+
+    return launchSpeed;
+  }
+
+    /**
+   * Calculate the desired speed of the launch motors.
+   * 
+   * @param distance The horizontal distance from the vision target
+   * @return The desired speed of the launch motors in RPS.
+   */
+  public double calculateLaunchSpeedQuad() {
+    double distance = getDistanceToTarget();
+    double launchSpeed = -0.00220687 * Math.pow(distance, 2) + 0.843151 * distance -7.62407;
 
     return launchSpeed;
   }
@@ -260,8 +273,7 @@ public class Launcher extends SubsystemBase {
   private void shuffleboardInit() {
     m_launcherStatus.addNumber("Rev Speed", () -> getLauncherAvgSpeed());
     m_launcherStatus.addString("Launch Type", () -> m_launchType);
-    m_launcherStatus.addNumber("Launch Speed", () -> calculateLaunchSpeed());
-    m_launcherStatus.addNumber("Target Distance", () -> getDistanceToTarget());
+    m_launcherStatus.addNumber("Target Speed", () -> calculateLaunchSpeed());
   }
 
   @Override
