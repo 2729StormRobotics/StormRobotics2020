@@ -251,6 +251,10 @@ public class Launcher extends SubsystemBase {
     double distance = getDistanceToTarget();
     double launchSpeed = 0.235896 * distance + 33.8493;
 
+    if (launchSpeed < 0) {
+      launchSpeed = 0;
+    }
+
     return launchSpeed;
   }
 
@@ -263,6 +267,10 @@ public class Launcher extends SubsystemBase {
   public double calculateLaunchSpeedQuad() {
     double distance = getDistanceToTarget();
     double launchSpeed = -0.00220687 * Math.pow(distance, 2) + 0.843151 * distance -7.62407;
+
+    if (launchSpeed < 0) {
+      launchSpeed = 0;
+    }
 
     return launchSpeed;
   }
