@@ -138,6 +138,24 @@ public class Climber extends SubsystemBase {
   }
 
   /**
+   * Determine if the climber is above its max height
+   * 
+   * @return true if the current height is above its maximum
+   */
+  public boolean atMaxHeight() {
+    return m_encoder.getPosition() > kMaxHeight;
+  }
+
+  /**
+   * Determine if the climber is below its min height
+   * 
+   * @return true if the current height is below its minimum
+   */
+  public boolean atMinHeight() {
+    return m_encoder.getPosition() < 0;
+  }
+
+  /**
    * Engage the friction brake
    */
   public void engageFrictionBrake() {
@@ -156,6 +174,8 @@ public class Climber extends SubsystemBase {
     m_climberStatus.addNumber("Height", () -> getHeight()).withWidget(BuiltInWidgets.kNumberBar)
         .withProperties(Map.of("Min", -1)).withProperties(Map.of("Max", 23));
     m_climberStatus.addNumber("Speed", () -> getSpeed());
+    m_climberStatus.addBoolean("Max Height", () -> atMaxHeight());
+    m_climberStatus.addBoolean("Min Height", () -> atMinHeight());
 
     m_climberStatus.add("Friction Brake", m_frictionBrake).withWidget(BuiltInWidgets.kToggleButton);
   }
