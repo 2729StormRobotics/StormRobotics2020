@@ -177,7 +177,7 @@ public class Climber extends SubsystemBase {
     m_climberStatus.addNumber("Speed", () -> getSpeed());
     m_climberStatus.addBoolean("Fully Retracted", () -> m_retracted);
 
-    m_climberStatus.add("Friction Brake", m_frictionBrake).withWidget(BuiltInWidgets.kToggleButton);
+    m_climberStatus.add("Friction Brake", m_frictionBrake);
   }
 
   @Override
