@@ -11,24 +11,24 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.subsystems.Drivetrain;
 
-import static frc.robot.Constants.DriveConstants.*;
+import static frc.robot.Constants.DriveConstants.DriveDistancePID.*;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class DriveDistance extends PIDCommand {
-  private final Drivetrain m_drivetrain;
+  
   /**
    * Creates a new PointTurn.
    */
-  public DriveDistance(Drivetrain drivetrain) {
+  public DriveDistance(double distance, Drivetrain drivetrain) {
     super(
         // The controller that the command will use
-        new PIDController(drivetrain.getDistanceP(), drivetrain.getDistanceI(), drivetrain.getDistanceD()),
+        new PIDController(kLeftP, kLeftI, kLeftD),
         // This should return the measurement
         () -> drivetrain.getAverageDistance(),
         // This should return the setpoint (can also be a constant)
-        () -> drivetrain.getDistanceTarget().getDouble(0),
+        distance,
         // This uses the output
         output -> {
           // Use the output here
@@ -37,14 +37,7 @@ public class DriveDistance extends PIDCommand {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);
     // Configure additional PID options by calling `getController` here.
-    getController().setTolerance(1, 5);
-    m_drivetrain = drivetrain;
-  }
-
-  @Override
-  public void execute() {
-    getController().setPID(m_drivetrain.getDistanceD(), m_drivetrain.getDistanceI(), m_drivetrain.getDistanceD());
-    super.execute();
+    getController().setTolerance(kPositionTolerance, kVelocityTolerance);
   }
 
   // Returns true when the command should end.
