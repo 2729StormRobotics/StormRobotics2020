@@ -34,10 +34,10 @@ public class Cellevator extends SubsystemBase {
   private final ShuffleboardTab m_cellevatorTab;
   private final ShuffleboardLayout m_cellevatorConditions;
 
-  private int powerCellCount;
-  private boolean previousBBMiddle;
-  private boolean previousBBBottom;
-  private boolean previousBBTop;
+  private int m_powerCellCount;
+  private boolean m_previousBBMiddle;
+  private boolean m_previousBBBottom;
+  private boolean m_previousBBTop;
 
   /**
    * Creates a new Cellevator.
@@ -54,10 +54,10 @@ public class Cellevator extends SubsystemBase {
     m_ballDetectMiddle = new DigitalInput(kBeamBreakMiddlePort);
     m_ballDetectFeed = new DigitalInput(kBallFeedPort);
 
-    powerCellCount = 0;
-    previousBBMiddle = false;
-    previousBBBottom = false;
-    previousBBTop = false;
+    m_powerCellCount = 0;
+    m_previousBBMiddle = false;
+    m_previousBBBottom = false;
+    m_previousBBTop = false;
 
     m_cellevatorTab = Shuffleboard.getTab(kShuffleboardTab);
     m_cellevatorConditions = m_cellevatorTab.getLayout("Power Cells", BuiltInLayouts.kList)
@@ -149,7 +149,7 @@ public class Cellevator extends SubsystemBase {
    * Gets the sensor value to detect if a ball is in the hopper to be loaded
    */
   public boolean isBallInFeeder() {
-    return m_ballDetectFeed.get();
+    return !m_ballDetectFeed.get();
   }
 
   /**
@@ -158,7 +158,7 @@ public class Cellevator extends SubsystemBase {
    * @return
    */
   public boolean getBeamBreakMiddlePrevious() {
-    return previousBBMiddle;
+    return m_previousBBMiddle;
   }
 
   /**
@@ -167,7 +167,7 @@ public class Cellevator extends SubsystemBase {
    * @return
    */
   public boolean getBeamBreakBottomPrevious() {
-    return previousBBBottom;
+    return m_previousBBBottom;
   }
 
   /**
@@ -176,55 +176,49 @@ public class Cellevator extends SubsystemBase {
    * @return
    */
   public boolean getBeamBreakTopPrevious() {
-    return previousBBTop;
+    return m_previousBBTop;
   }
 
   /**
    * sets the boolean value of the previous middle beam break
    */
   public void setBeamBreakMiddlePrevious(boolean value) {
-    previousBBMiddle = value;
+    m_previousBBMiddle = value;
   }
 
   /**
    * sets the boolean value of the previous bottom beam break
    */
   public void setBeamBreakBottomPrevious(boolean value) {
-    previousBBBottom = value;
+    m_previousBBBottom = value;
   }
 
   /**
    * sets the boolean value of the previous top beam break
    */
   public void setBeamBreakTopPrevious(boolean value) {
-    previousBBTop = value;
+    m_previousBBTop = value;
   }
 
   /**
    * adds to the count
-   * 
-   * @return
    */
-  public int addPowerCellCount() {
-    powerCellCount++;
-    return powerCellCount;
+  public void addPowerCellCount() {
+    m_powerCellCount++;
   }
 
   /**
    * subtracts from the count
-   * 
-   * @return
    */
-  public int subtractPowerCellCount() {
-    powerCellCount--;
-    return powerCellCount;
+  public void subtractPowerCellCount() {
+    m_powerCellCount--;
   }
 
   /**
    * returns the amount of power cells in the cellevator
    */
   public int getPowerCellCount() {
-    return powerCellCount;
+    return m_powerCellCount;
   }
 
   /**
@@ -239,13 +233,8 @@ public class Cellevator extends SubsystemBase {
     return topClearAndMiddleOccupied || onlyBottomOccupied;
   }
 
-  public boolean safeToLoad() {
-    boolean middleClear = !isBottomBallPresent() && isMiddleGapClear();
-    return middleClear;
-  }
-
-  public boolean readyToFeed() {
-    return isBallInFeeder();
+  public boolean readyToLoad() {
+    return isBallInFeeder() && !isBottomBallPresent();
   }
 
   /**
@@ -270,7 +259,7 @@ public class Cellevator extends SubsystemBase {
      * This means that there is a power cell that has been taken in so we can add
      * one to the count
      */
-    if (previousBBBottom != isBottomBallPresent()) {
+    if (m_previousBBBottom != isBottomBallPresent()) {
       if (isBottomBallPresent()) {
         addPowerCellCount();
       }
@@ -278,12 +267,12 @@ public class Cellevator extends SubsystemBase {
       setBeamBreakBottomPrevious(isBottomBallPresent());
     }
 
-    if (previousBBMiddle != isMiddleGapClear()) {
+    if (m_previousBBMiddle != isMiddleGapClear()) {
       // sets the previous value equal to the present
       setBeamBreakMiddlePrevious(isMiddleGapClear());
     }
 
-    if (previousBBTop != isTopBallPresent()) {
+    if (m_previousBBTop != isTopBallPresent()) {
       // if the previous top beam break is not equal to the current then checki if the
       // current value is false
       // this means that the power cell left the cellevator and into the launcher so
