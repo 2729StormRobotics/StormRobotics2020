@@ -83,7 +83,7 @@ public class Vision extends SubsystemBase {
    * distance)
    */
   public double getTargetDistance() {
-    return (kPortHeight - kLimelightHeight) / Math.tan(Math.toRadians(getTargetAngle()) + kLimelightOffset);
+    return (kPortHeight - kLimelightHeight) / Math.tan(Math.toRadians(getTargetAngle()));
   }
 
   /**
