@@ -15,7 +15,6 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
@@ -30,26 +29,21 @@ import static frc.robot.Constants.LauncherConstants.*;
 import java.util.Map;
 
 public class Launcher extends SubsystemBase {
-  private final CANSparkMax m_leftLauncherMotor;
-  private final CANSparkMax m_rightLauncherMotor;
+  private final CANSparkMax m_leftMotor;
+  private final CANSparkMax m_rightMotor;
 
-  private final CANEncoder m_leftLauncherEncoder;
-  private final CANEncoder m_rightLauncherEncoder;
+  private final CANEncoder m_leftEncoder;
+  private final CANEncoder m_rightEncoder;
 
   private final SimpleMotorFeedforward m_feedForward;
   private final CANPIDController m_pidController;
 
   private final DoubleSolenoid m_launcherAnglePistons;
 
-  private final NetworkTable m_limelightTable;
+  private final NetworkTable m_limelight;
 
   private final ShuffleboardTab m_launcherTab;
   private final ShuffleboardLayout m_launcherStatus;
-  private final ShuffleboardLayout m_launcherPID;
-  private NetworkTableEntry m_testSpeed;
-  private NetworkTableEntry m_testP;
-  private NetworkTableEntry m_testI;
-  private NetworkTableEntry m_testD;
 
   private String m_launchType = "Disabled";
 
@@ -58,27 +52,27 @@ public class Launcher extends SubsystemBase {
    */
   public Launcher() {
     // Instantiate the double solenoid for the launch pistons.
-    m_launcherAnglePistons = new DoubleSolenoid(kLauncherLongAnglePort, kLauncherShortAnglePort);
+    m_launcherAnglePistons = new DoubleSolenoid(kLongAngleChannel, kShortAngleChannel);
 
     // Instantiate the motors.
-    m_leftLauncherMotor = new CANSparkMax(kLauncherMotorLeftPort, MotorType.kBrushless);
-    m_rightLauncherMotor = new CANSparkMax(kLauncherMotorRightPort, MotorType.kBrushless);
+    m_leftMotor = new CANSparkMax(kLeftMotorPort, MotorType.kBrushless);
+    m_rightMotor = new CANSparkMax(kRightMotorPort, MotorType.kBrushless);
 
     // Instantiate the encoder.
-    m_leftLauncherEncoder = m_leftLauncherMotor.getEncoder();
-    m_rightLauncherEncoder = m_rightLauncherMotor.getEncoder();
+    m_leftEncoder = m_leftMotor.getEncoder();
+    m_rightEncoder = m_rightMotor.getEncoder();
 
     // Initialize the the motors.
-    motorInit(m_leftLauncherMotor);
-    motorInit(m_rightLauncherMotor);
+    motorInit(m_leftMotor);
+    motorInit(m_rightMotor);
 
     // Make right motor follow the left motor and set it to inverted.
-    m_leftLauncherMotor.follow(m_rightLauncherMotor, true);
+    m_leftMotor.follow(m_rightMotor, true);
 
     m_feedForward = new SimpleMotorFeedforward(kS, kV, kA);
 
     // Initialize the PID controller for the motor controller.
-    m_pidController = m_rightLauncherMotor.getPIDController();
+    m_pidController = m_rightMotor.getPIDController();
 
     // Initialize pid coefficients
     pidInit();
@@ -87,13 +81,11 @@ public class Launcher extends SubsystemBase {
     pistonInit();
 
     // Instantiate the limelight NetworkTable
-    m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+    m_limelight = NetworkTableInstance.getDefault().getTable("limelight");
 
     m_launcherTab = Shuffleboard.getTab(kShuffleboardTab);
     m_launcherStatus = m_launcherTab.getLayout("Launcher Status", BuiltInLayouts.kList)
         .withProperties(Map.of("Label position", "TOP"));
-    m_launcherPID = m_launcherTab.getLayout("Launcher PID Test", BuiltInLayouts.kList)
-        .withProperties(Map.of("Label position", "LEFT"));
 
     shuffleboardInit();
   }
@@ -115,7 +107,7 @@ public class Launcher extends SubsystemBase {
    * @param encoder The encoder to initialize
    */
   private void encoderInit(CANEncoder encoder) {
-    encoder.setVelocityConversionFactor(1.0 / 60);
+    encoder.setVelocityConversionFactor(kVelocityConversion);
     encoderReset(encoder); // Reset the encoder to 0, just in case
   }
 
@@ -148,9 +140,9 @@ public class Launcher extends SubsystemBase {
   }
 
   public void pidAdjust() {
-    m_pidController.setP(m_testP.getDouble(LauncherPID.kP));
-    m_pidController.setI(m_testI.getDouble(LauncherPID.kI));
-    m_pidController.setD(m_testD.getDouble(LauncherPID.kD));
+    m_pidController.setP(LauncherPID.kP);
+    m_pidController.setI(LauncherPID.kI);
+    m_pidController.setD(LauncherPID.kD);
   }
 
   /**
@@ -164,7 +156,7 @@ public class Launcher extends SubsystemBase {
    * Set the launch pistons to long shot angle.
    */
   public void setLongLaunchAngle() {
-    m_launcherAnglePistons.set(kLongLaunchSolenoidSetting);
+    m_launcherAnglePistons.set(kLongLaunchValue);
     m_launchType = "Long Shot";
   }
 
@@ -172,7 +164,7 @@ public class Launcher extends SubsystemBase {
    * Set the launch pistons to short shot angle.
    */
   public void setShortLaunchAngle() {
-    m_launcherAnglePistons.set(kShortLaunchSolenoidSetting);
+    m_launcherAnglePistons.set(kShortLaunchValue);
     m_launchType = "Wall Shot";
   }
 
@@ -180,7 +172,7 @@ public class Launcher extends SubsystemBase {
    * Toggles the launch pistons.
    */
   public void toggleLaunchAngle() {
-    if (m_launcherAnglePistons.get() == kLongLaunchSolenoidSetting) {
+    if (m_launcherAnglePistons.get() == kLongLaunchValue) {
       setShortLaunchAngle();
     } else {
       setLongLaunchAngle();
@@ -191,7 +183,7 @@ public class Launcher extends SubsystemBase {
    * Stop the launcher motors.
    */
   public void stopLauncher() {
-    m_rightLauncherMotor.set(0);
+    m_rightMotor.set(0);
   }
 
   /**
@@ -200,7 +192,7 @@ public class Launcher extends SubsystemBase {
    * @return The speed of the left motor in RPM.
    */
   public double getLeftLauncherSpeed() {
-    return m_leftLauncherEncoder.getVelocity();
+    return m_leftEncoder.getVelocity() / kVelocityConversion;
   }
 
   /**
@@ -209,7 +201,7 @@ public class Launcher extends SubsystemBase {
    * @return The speed of the right motor in RPM.
    */
   public double getRightLauncherSpeed() {
-    return m_rightLauncherEncoder.getVelocity();
+    return m_rightEncoder.getVelocity() / kVelocityConversion;
   }
 
   /**
@@ -224,21 +216,20 @@ public class Launcher extends SubsystemBase {
   /**
    * Set the motor controller to start the PID controller.
    * 
-   * @param speed The target angular speed in RPM
+   * @param speed The target angular speed in RPS
    */
   public void revToSpeed(double speed) {
-    double feedforward = m_feedForward.calculate(speed);
-    m_pidController.setReference(speed, ControlType.kVelocity, 0, feedforward);
+    double revSpeed = speed;
+    if (revSpeed > kMaxShotSpeed) {
+      revSpeed = kMaxShotSpeed;
+    }
+
+    double feedforward = m_feedForward.calculate(revSpeed);
+    m_pidController.setReference(revSpeed, ControlType.kVelocity, 0, feedforward);
   }
 
-  /**
-   * Set the motor controller to stop the PID controller.
-   * 
-   * @param speed The target angular speed in RPM
-   */
-  public void stopRevving() {
-    // m_pidController.setReference(0, ControlType.kDutyCycle);
-    stopLauncher();
+  public void revShortShot() {
+    revToSpeed(kShortShotSpeed);
   }
 
   /**
@@ -246,8 +237,8 @@ public class Launcher extends SubsystemBase {
    * 
    * @return the distance.
    */
-  private double getDistance() {
-    return m_limelightTable.getEntry("Target Distance").getDouble(0.0);
+  private double getDistanceToTarget() {
+    return m_limelight.getEntry("Target Distance").getDouble(0.0);
   }
 
   /**
@@ -257,19 +248,10 @@ public class Launcher extends SubsystemBase {
    * @return The desired speed of the launch motors in RPM.
    */
   public double calculateLaunchSpeed() {
-    double distance = getDistance();
+    double distance = getDistanceToTarget();
     double launchSpeed = 0.235896 * distance + 33.8493;
 
     return launchSpeed;
-  }
-
-  public void testShot() {
-    double speed = m_testSpeed.getDouble(0);
-    revToSpeed(speed);
-  }
-
-  public void setLaunchPower(double power) {
-    m_rightLauncherMotor.set(power);
   }
 
   /**
@@ -279,12 +261,7 @@ public class Launcher extends SubsystemBase {
     m_launcherStatus.addNumber("Rev Speed", () -> getLauncherAvgSpeed());
     m_launcherStatus.addString("Launch Type", () -> m_launchType);
     m_launcherStatus.addNumber("Launch Speed", () -> calculateLaunchSpeed());
-    m_launcherStatus.addNumber("Target Distance", () -> getDistance());
-
-    m_testSpeed = m_launcherPID.add("Test Speed", 0).getEntry();
-    m_testP = m_launcherPID.add("Test P", LauncherPID.kP).getEntry();
-    m_testI = m_launcherPID.add("Test I", LauncherPID.kI).getEntry();
-    m_testD = m_launcherPID.add("Test D", LauncherPID.kD).getEntry();
+    m_launcherStatus.addNumber("Target Distance", () -> getDistanceToTarget());
   }
 
   @Override

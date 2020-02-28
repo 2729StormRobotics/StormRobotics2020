@@ -139,6 +139,11 @@ public final class Constants {
         public static final boolean kInvertLeftLauncher = true;
         public static final boolean kInvertRightLauncher = !kInvertLeftLauncher;
 
+        public static final double kVelocityConversion = 1.0 / 60.0;
+
+        public static final double kShortShotSpeed = 53;
+        public static final double kMaxShotSpeed = 80;
+
         public static final Value kShortLaunchValue = Value.kReverse;
         public static final Value kLongLaunchValue = Value.kForward;
 
