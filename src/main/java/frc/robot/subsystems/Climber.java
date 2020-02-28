@@ -170,12 +170,12 @@ public class Climber extends SubsystemBase {
   }
 
   private void shuffleboardInit() {
-    // Puts the climber data on the SmartDashboard.
+    // Adds the climber data to the Shuffleboard in its own tab.
     m_climberStatus.addNumber("Height", () -> getHeight()).withWidget(BuiltInWidgets.kNumberBar)
         .withProperties(Map.of("Min", -1)).withProperties(Map.of("Max", 23));
     m_climberStatus.addNumber("Speed", () -> getSpeed());
-    m_climberStatus.addBoolean("Max Height", () -> atMaxHeight());
-    m_climberStatus.addBoolean("Min Height", () -> atMinHeight());
+    m_climberStatus.addBoolean("At Top", () -> atMaxHeight());
+    m_climberStatus.addBoolean("At Bottom", () -> atMinHeight());
 
     m_climberStatus.add("Friction Brake", m_frictionBrake).withWidget(BuiltInWidgets.kToggleButton);
   }
