@@ -147,19 +147,19 @@ public class ControlPanel extends SubsystemBase {
 
       switch (m_gameData.charAt(0)) {
       case 'B': // Blue
-        m_targetColor = kRedTarget;
+        m_targetColor = kBlueTarget;
         m_targetColorString = "BLUE";
         break;
       case 'G': // Green
-        m_targetColor = kYellowTarget;
+        m_targetColor = kGreenTarget;
         m_targetColorString = "GREEN";
         break;
       case 'R': // Red
-        m_targetColor = kBlueTarget;
+        m_targetColor = kRedTarget;
         m_targetColorString = "RED";
         break;
       case 'Y': // Yellow
-        m_targetColor = kGreenTarget;
+        m_targetColor = kYellowTarget;
         m_targetColorString = "YELLOW";
         break;
       default:

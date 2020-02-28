@@ -14,7 +14,7 @@ public class ControlPanelSpinForColor extends CommandBase {
   private final ControlPanel m_controlPanel;
 
   /**
-   * Creates a new ControlPanelSpinForRevs.
+   * Creates a new ControlPanelSpinForColor.
    */
   public ControlPanelSpinForColor(ControlPanel subsystem) {
     m_controlPanel = subsystem;
@@ -27,7 +27,7 @@ public class ControlPanelSpinForColor extends CommandBase {
   @Override
   public void initialize() {
     m_controlPanel.stopSpinning();
-    m_controlPanel.spinWheelForRevolutions();
+    m_controlPanel.spinWheelForColor();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
