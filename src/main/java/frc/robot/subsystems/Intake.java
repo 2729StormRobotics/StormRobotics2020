@@ -8,15 +8,9 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.IntakeConstants.*;
-
-import java.util.Map;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -26,25 +20,16 @@ public class Intake extends SubsystemBase {
   private final CANSparkMax m_intakeMotor;
   private final DoubleSolenoid m_intakePistons;
 
-  private final ShuffleboardTab m_intakeTab;
-  private final ShuffleboardLayout m_intakeStatus;
-
   /**
    * Creates a new Intake.
    */
   public Intake() {
     m_intakeMotor = new CANSparkMax(kIntakeMotorPort, MotorType.kBrushed);
-    m_intakePistons = new DoubleSolenoid(kIntakeRaiseSolenoidPort, kIntakeLowerSolenoidPort);
+    m_intakePistons = new DoubleSolenoid(kIntakeRaiseChannel, kIntakeLowerChannel);
 
     m_intakeMotor.restoreFactoryDefaults();
     m_intakeMotor.setIdleMode(IdleMode.kCoast);
     m_intakeMotor.setInverted(true);
-
-    m_intakeTab = Shuffleboard.getTab(kShuffleboardTab);
-    m_intakeStatus = m_intakeTab.getLayout("Intake Status", BuiltInLayouts.kList)
-        .withProperties(Map.of("Label position", "TOP"));
-
-    shuffleboardInit();
   }
 
   // starts the intake motor
@@ -60,32 +45,28 @@ public class Intake extends SubsystemBase {
 
   // raises the intake mechanism using pistons
   public void raiseIntake() {
-    m_intakePistons.set(kIntakeRaiseSolenoidSetting);
+    m_intakePistons.set(kIntakeRaiseValue);
   }
 
   // lowers the intake mechanism using pistons
   public void lowerIntake() {
-    m_intakePistons.set(kIntakeLowerSolenoidSetting);
+    m_intakePistons.set(kIntakeLowerValue);
   }
 
   public void toggleIntakePistons() {
     if (isIntakeLowered()) {
-      m_intakePistons.set(kIntakeRaiseSolenoidSetting);
+      raiseIntake();
     } else {
-      m_intakePistons.set(kIntakeLowerSolenoidSetting);
+      lowerIntake();
     }
   }
 
   public boolean isIntakeLowered() {
-    if (m_intakePistons.get() == kIntakeLowerSolenoidSetting) {
+    if (m_intakePistons.get() == kIntakeLowerValue) {
       return true;
     } else {
       return false;
     }
-  }
-
-  private void shuffleboardInit() {
-    m_intakeStatus.addBoolean("Intake Ready", () -> isIntakeLowered());
   }
 
   @Override
