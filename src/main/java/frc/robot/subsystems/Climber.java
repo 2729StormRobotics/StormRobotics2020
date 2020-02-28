@@ -9,13 +9,14 @@ package frc.robot.subsystems;
 
 import static frc.robot.Constants.ClimberConstants.*;
 
+import java.util.Map;
+
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -24,119 +25,137 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Climber extends SubsystemBase {
-  private final CANSparkMax m_leftClimber;
-  private final CANSparkMax m_rightClimber;
+  private final CANSparkMax m_climberMotor;
 
-  private final CANEncoder m_leftEncoder;
-  private final CANEncoder m_rightEncoder;
+  private final CANEncoder m_encoder;
 
   private final Solenoid m_frictionBrake;
 
-  private final SpeedControllerGroup m_climberMotors;
-
   private final ShuffleboardTab m_climberTab;
-  private final ShuffleboardLayout m_climberHeights;
-  private final ShuffleboardLayout m_climberSpeeds;
   private final ShuffleboardLayout m_climberStatus;
 
   /**
-   * Creates a new Climber.
+   * Creates a new Climber subsystem.
    */
   public Climber() {
-    m_leftClimber = new CANSparkMax(kLeftClimberMotorPort, MotorType.kBrushless);
-    m_rightClimber = new CANSparkMax(kRightClimberMotorPort, MotorType.kBrushless);
+    m_climberMotor = new CANSparkMax(kClimberMotorPort, MotorType.kBrushless);
 
-    m_frictionBrake = new Solenoid(kFrictionSolenoidPort);
+    m_frictionBrake = new Solenoid(kFrictionBrakeChannel);
 
-    motorInit(m_leftClimber, kLeftClimberMotorInverted);
-    motorInit(m_rightClimber, kRightClimberMotorInverted);
+    motorInit(m_climberMotor, kMotorInverted);
 
-    m_climberMotors = new SpeedControllerGroup(m_leftClimber, m_rightClimber);
-
-    m_leftEncoder = m_leftClimber.getEncoder();
-    m_rightEncoder = m_rightClimber.getEncoder();
+    m_encoder = m_climberMotor.getEncoder();
 
     m_frictionBrake.set(kFrictionBrakeDisabled);
 
     m_climberTab = Shuffleboard.getTab(kShuffleboardTab);
-    m_climberHeights = m_climberTab.getLayout("Climber Heights", BuiltInLayouts.kList).withSize(2, 3)
-        .withPosition(2, 0);
-    m_climberSpeeds = m_climberTab.getLayout("Climber Speeds", BuiltInLayouts.kList).withSize(2, 3).withPosition(4,
-        0);
-    m_climberStatus = m_climberTab.getLayout("Climber Status", BuiltInLayouts.kList).withSize(2, 3).withPosition(0,
-        0);
+    m_climberStatus = m_climberTab.getLayout("Climber Status", BuiltInLayouts.kList);
 
     shuffleboardInit();
   }
 
+  /**
+   * Initialize our motor.
+   * 
+   * @param motor  The SparkMAX motor to initialize
+   * @param invert Whether the motor should be inverted
+   */
   private void motorInit(CANSparkMax motor, boolean invert) {
-    motor.restoreFactoryDefaults(); // Restores the default values in case something stayed from a previous reboot.
+    motor.restoreFactoryDefaults(); // Restores the default values in case something persists
     motor.setIdleMode(IdleMode.kBrake); // Set motor mode to brake mode
     motor.setInverted(invert); // Invert the motor if needed.
     encoderInit(motor.getEncoder()); // Initialize the encoder.
   }
 
+  /**
+   * Initialize our encoder.
+   * 
+   * @param encoder The SparkMAX encoder to initialize
+   */
   private void encoderInit(CANEncoder encoder) {
-    /*
-     * Sets the conversion factor for the encoder. This allows the encoder to output
-     * the specified unit.
-     */
-    encoder.setPositionConversionFactor(kEncoderDistancePerPulse);
-    encoder.setVelocityConversionFactor(kEncoderSpeedPerPulse);
-    encoderReset(encoder); // Calls the encoderReset method
+    // Sets the conversion factor for the encoder
+    encoder.setPositionConversionFactor(kDistancePerPulse);
+    encoder.setVelocityConversionFactor(kSpeedPerPulse);
+    encoderReset(encoder);
   }
 
+  /**
+   * Set encoder position to 0.
+   * 
+   * @param encoder The SparkMAX encoder to reset
+   */
   private void encoderReset(CANEncoder encoder) {
-    // Resets encoder value to 0.
     encoder.setPosition(0);
   }
 
+  /**
+   * Standard method to drive motor
+   * 
+   * @param speed The motor speed to drive the climber
+   */
   public void climb(double speed) {
-    m_leftClimber.set(speed); // The motor goes at a speed given to it. Not a specific speed
+    m_climberMotor.set(speed);
   }
 
+  /**
+   * Runs the motor at a specified "up" speed
+   */
   public void climbUp() {
     climb(kClimbUpSpeed);
   }
 
+  /**
+   * Runs the motor at a specified "down" speed
+   */
   public void climbDown() {
     climb(kClimbDownSpeed);
   }
 
+  /**
+   * Stop the motor
+   */
   public void stopClimb() {
     // Sets the speed of the motor to 0.
     climb(0.0);
   }
 
-  private double getRightDistance() {
-    return m_rightEncoder.getPosition(); // Get the position of the right encoder.
+  /**
+   * Get the current height
+   * 
+   * @return The current height, in inches
+   */
+  private double getHeight() {
+    return m_encoder.getPosition();
   }
 
-  private double getLeftDistance() {
-    return m_leftEncoder.getPosition(); // Get the position of the left encoder.
+  /**
+   * Get the current speed
+   * 
+   * @return The current speed, in inches per second
+   */
+  private double getSpeed() {
+    return m_encoder.getVelocity();
   }
 
-  public double getAverageDistance() {
-    return ((getRightDistance() + getLeftDistance()) / 2); // Finds the average of the encoders.
-  }
-
+  /**
+   * Engage the friction brake
+   */
   public void engageFrictionBrake() {
-    m_frictionBrake.set(kFrictionBrakeEnabled); // Sets frictionBreak to the value inputted.
+    m_frictionBrake.set(kFrictionBrakeEnabled);
   }
 
-  public void disengageFrictionBrake() {
+  /**
+   * Release the friction brake
+   */
+  public void releaseFrictionBrake() {
     m_frictionBrake.set(kFrictionBrakeDisabled);
   }
 
   private void shuffleboardInit() {
     // Puts the climber data on the SmartDashboard.
-    m_climberHeights.addNumber("Left", () -> getLeftDistance());
-    m_climberHeights.addNumber("Right", () -> getRightDistance());
-    m_climberHeights.addNumber("Average", () -> getAverageDistance());
-
-    m_climberSpeeds.addNumber("Left Speed", () -> getLeftDistance());
-    m_climberSpeeds.addNumber("Right Speed", () -> getRightDistance());
-    m_climberSpeeds.addNumber("Average Speed", () -> getAverageDistance());
+    m_climberStatus.addNumber("Height", () -> getHeight()).withWidget(BuiltInWidgets.kNumberBar)
+        .withProperties(Map.of("Min", -1)).withProperties(Map.of("Max", 23));
+    m_climberStatus.addNumber("Speed", () -> getSpeed());
 
     m_climberStatus.add("Friction Brake", m_frictionBrake).withWidget(BuiltInWidgets.kToggleButton);
   }
