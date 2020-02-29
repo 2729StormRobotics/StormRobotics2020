@@ -234,7 +234,7 @@ public class Cellevator extends SubsystemBase {
   }
 
   public boolean readyToLoad() {
-    return isBallInFeeder() && !isBottomBallPresent();
+    return !isBottomBallPresent();
   }
 
   /**

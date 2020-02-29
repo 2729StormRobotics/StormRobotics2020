@@ -13,7 +13,6 @@ import frc.robot.commands.HopperStop;
 import frc.robot.commands.IntakeStop;
 import frc.robot.commands.LauncherStop;
 import frc.robot.subsystems.Cellevator;
-import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Launcher;
@@ -25,7 +24,7 @@ public class LauncherModeStop extends ParallelCommandGroup {
   /**
    * Creates a new ExitLauncherMode.
    */
-  public LauncherModeStop(Launcher launcher, Drivetrain drivetrain, Intake intake, Hopper hopper,
+  public LauncherModeStop(Launcher launcher, Intake intake, Hopper hopper,
       Cellevator cellevator) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());super();

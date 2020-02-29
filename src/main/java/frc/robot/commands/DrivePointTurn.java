@@ -22,7 +22,7 @@ public class DrivePointTurn extends PIDCommand {
   /**
    * Creates a new PointTurn.
    */
-  public DrivePointTurn(DoubleSupplier targetAngle, Drivetrain drivetrain) {
+  public DrivePointTurn(double targetAngle, Drivetrain drivetrain) {
     super(
         // The controller that the command will use
         new PIDController(PointTurnPID.kP, PointTurnPID.kI, PointTurnPID.kD),

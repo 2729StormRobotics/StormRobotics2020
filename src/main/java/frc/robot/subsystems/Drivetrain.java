@@ -161,12 +161,12 @@ public class Drivetrain extends SubsystemBase {
 
   // Gets left side distance by averaging left encoders
   private double getLeftDistance() {
-    return -m_leftEncoder.getPosition();
+    return m_leftEncoder.getPosition();
   }
 
   // Gets right side distance by averaging right encoders
   private double getRightDistance() {
-    return -m_rightEncoder.getPosition();
+    return m_rightEncoder.getPosition();
   }
 
   // Gets average distance by averaging the right and left distance
@@ -176,12 +176,12 @@ public class Drivetrain extends SubsystemBase {
 
   // gets the speed from the left motors
   private double getLeftSpeed() {
-    return -m_leftEncoder.getVelocity();
+    return m_leftEncoder.getVelocity();
   }
 
   // gets the speed from the left motors
   private double getRightSpeed() {
-    return -m_rightEncoder.getVelocity();
+    return m_rightEncoder.getVelocity();
   }
 
   // gets the speed by averaging the left and the right speeds

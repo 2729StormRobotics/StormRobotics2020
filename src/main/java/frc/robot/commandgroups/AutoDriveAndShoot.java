@@ -8,9 +8,10 @@
 package frc.robot.commandgroups;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.LauncherVariableShot;
+import frc.robot.commands.DriveDistance;
+import frc.robot.commands.VisionAlign;
 import frc.robot.subsystems.Cellevator;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Launcher;
@@ -18,14 +19,17 @@ import frc.robot.subsystems.Launcher;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class LauncherMode extends SequentialCommandGroup {
+public class AutoDriveAndShoot extends SequentialCommandGroup {
+
   /**
-   * Creates a new LauncherMode.
+   * Creates a new AutoPowerMove.
    */
-  public LauncherMode(Launcher launcher, Intake intake, Hopper hopper, Cellevator cellevator) {
-    // Add your commands in the super() call, e.g.
-    // super(new FooCommand(), new BarCommand());
-    super(new LauncherVariableShot(launcher), new WaitCommand(1),
-        new PowerCellFlow(launcher, intake, hopper, cellevator));
+  public AutoDriveAndShoot(Drivetrain drivetrain, Launcher launcher, Intake intake, Hopper hopper,
+      Cellevator cellevator) {
+
+    // Drive straight for 130 inches, then turn 90 degrees, then enter launcher mode
+    // for 8 seconds
+    super(new DriveDistance(12, drivetrain).withTimeout(3), new VisionAlign(drivetrain).withTimeout(1.5),
+        new LauncherMode(launcher, intake, hopper, cellevator).withTimeout(8));
   }
 }

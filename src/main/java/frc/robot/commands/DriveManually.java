@@ -47,13 +47,13 @@ public class DriveManually extends CommandBase {
     m_drivetrain.tankDrive(m_leftSpeed.getAsDouble(), m_rightSpeed.getAsDouble(), true);
     m_currentSpeed = m_drivetrain.getAverageSpeed();
 
-    // Shift gears if we're at our shifting speed
-    if (Math.abs(m_currentSpeed) > kShiftSpeed) {
-      m_drivetrain.shiftHigh();
-    }
-    else {
-      m_drivetrain.shiftLow();
-    }
+    // Automatic transmission
+    // if (Math.abs(m_currentSpeed) > kShiftSpeed) {
+    //   m_drivetrain.shiftHigh();
+    // }
+    // else {
+    //   m_drivetrain.shiftLow();
+    // }
   }
 
   // Called once the command ends or is interrupted.

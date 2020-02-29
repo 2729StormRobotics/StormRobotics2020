@@ -7,10 +7,10 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Cellevator;
 
-public class CellevateContinuous extends InstantCommand {
+public class CellevateContinuous extends CommandBase {
   private final Cellevator m_cellevator;
 
   /**
@@ -28,5 +28,20 @@ public class CellevateContinuous extends InstantCommand {
   public void initialize() {
     m_cellevator.load();
     m_cellevator.cellevate();
+  }
+
+  @Override
+  public void execute() {
+  }
+
+  @Override
+  public void end(boolean interrupted) {
+    m_cellevator.stopCellevator();
+    m_cellevator.stopLoader();
+  }
+
+  @Override
+  public boolean isFinished() {
+    return false;
   }
 }

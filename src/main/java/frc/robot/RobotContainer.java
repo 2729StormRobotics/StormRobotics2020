@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.*;
@@ -41,6 +43,8 @@ public class RobotContainer {
   private final XboxController m_driver = new XboxController(kDriverControllerPort);
   private final XboxController m_weapons = new XboxController(kWeaponsControllerPort);
 
+  private final SendableChooser<Command> m_autoChooser;
+
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -55,6 +59,14 @@ public class RobotContainer {
     m_climber = new Climber();
     m_cellevator = new Cellevator();
     m_controlPanel = new ControlPanel();
+
+    m_autoChooser = new SendableChooser<>();
+    SmartDashboard.putData("Autonomous Selection", m_autoChooser);
+    m_autoChooser.setDefaultOption("Do Nothing", new DoNothingAuto());
+    m_autoChooser.addOption("Power Move",
+        new AutoPowerMove(m_drivetrain, m_launcher, m_intake, m_hopper, m_cellevator));
+    m_autoChooser.addOption("Drive and Shoot",
+        new AutoDriveAndShoot(m_drivetrain, m_launcher, m_intake, m_hopper, m_cellevator));
 
     m_drivetrain.setDefaultCommand(
         new DriveManually(() -> m_driver.getY(Hand.kLeft), () -> m_driver.getY(Hand.kRight), m_drivetrain));
@@ -73,6 +85,12 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    // Driver controls
+    new JoystickButton(m_driver, Button.kA.value).whileHeld(new VisionAlign(m_drivetrain));
+    new JoystickButton(m_driver, Button.kY.value).whenPressed(new DriveShiftHigh(m_drivetrain));
+    new JoystickButton(m_driver, Button.kB.value).whenPressed(new DriveShiftLow(m_drivetrain));
+
+
     // Operator controls
     new JoystickButton(m_weapons, Button.kBumperRight.value).whenPressed(new IntakeAndAgitate(m_intake, m_hopper));
     new JoystickButton(m_weapons, Button.kBumperRight.value).whenReleased(new IntakeAndAgitateStop(m_intake, m_hopper));
@@ -81,9 +99,9 @@ public class RobotContainer {
     new JoystickButton(m_weapons, Button.kY.value).whenPressed(new ControlPanelSpinForColor(m_controlPanel));
     new JoystickButton(m_weapons, Button.kY.value).whenReleased(new ControlPanelStop(m_controlPanel));
     new JoystickButton(m_weapons, Button.kA.value)
-        .whenPressed(new LauncherMode(m_launcher, m_drivetrain, m_intake, m_hopper, m_cellevator));
+        .whenPressed(new LauncherMode(m_launcher, m_intake, m_hopper, m_cellevator));
     new JoystickButton(m_weapons, Button.kA.value)
-        .whenReleased(new LauncherModeStop(m_launcher, m_drivetrain, m_intake, m_hopper, m_cellevator));
+        .whenReleased(new LauncherModeStop(m_launcher, m_intake, m_hopper, m_cellevator));
     new JoystickButton(m_weapons, Button.kB.value).whenPressed(new IntakeToggle(m_intake));
     new JoystickButton(m_weapons, Button.kStart.value).whenPressed(new LauncherWallShot(m_launcher));
     new JoystickButton(m_weapons, Button.kStart.value).whenReleased(new LauncherStop(m_launcher));
@@ -98,6 +116,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return (new DoNothingAuto());
+    return (m_autoChooser.getSelected());
   }
 }
