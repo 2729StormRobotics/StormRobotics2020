@@ -95,7 +95,7 @@ public class Climber extends SubsystemBase {
    * @param speed The motor speed to drive the climber
    */
   public void climb(double speed) {
-    m_climberMotor.set(speed);
+    m_climberMotor.set(-speed);
   }
 
   /**
