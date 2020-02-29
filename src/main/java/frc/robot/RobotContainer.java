@@ -90,10 +90,9 @@ public class RobotContainer {
     new JoystickButton(m_driver, Button.kY.value).whenPressed(new DriveShiftHigh(m_drivetrain));
     new JoystickButton(m_driver, Button.kB.value).whenPressed(new DriveShiftLow(m_drivetrain));
 
-
     // Operator controls
-    new JoystickButton(m_weapons, Button.kBumperRight.value).whenPressed(new IntakeAgitateLoad(m_intake, m_hopper));
-    new JoystickButton(m_weapons, Button.kBumperRight.value).whenReleased(new IntakeAgitateLoadStop(m_intake, m_hopper));
+    new JoystickButton(m_weapons, Button.kBumperRight.value).whenPressed(new IntakeAndAgitate(m_intake, m_hopper));
+    new JoystickButton(m_weapons, Button.kBumperRight.value).whenReleased(new IntakeAndAgitateStop(m_intake, m_hopper));
     new JoystickButton(m_weapons, Button.kX.value).whenPressed(new ControlPanelSpinForRevs(m_controlPanel));
     new JoystickButton(m_weapons, Button.kX.value).whenReleased(new ControlPanelStop(m_controlPanel));
     new JoystickButton(m_weapons, Button.kY.value).whenPressed(new ControlPanelSpinForColor(m_controlPanel));
