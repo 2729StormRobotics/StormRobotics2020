@@ -13,10 +13,10 @@ import frc.robot.subsystems.Cellevator;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class CellevatorStop extends InstantCommand {
+public class LoaderStop extends InstantCommand {
   private final Cellevator m_cellevator;
   
-  public CellevatorStop(Cellevator subsystem) {
+  public LoaderStop(Cellevator subsystem) {
     m_cellevator = subsystem;
 
     // Use addRequirements() here to declare subsystem dependencies.
@@ -26,6 +26,6 @@ public class CellevatorStop extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_cellevator.stopCellevator();
+    m_cellevator.stopLoader();
   }
 }

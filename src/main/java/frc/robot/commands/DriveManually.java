@@ -39,6 +39,7 @@ public class DriveManually extends CommandBase {
   @Override
   public void initialize() {
     m_drivetrain.stopDrive();
+    m_drivetrain.shiftHigh();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
