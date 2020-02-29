@@ -56,6 +56,7 @@ public class Drivetrain extends SubsystemBase {
   private final ADIS16470_IMU m_imu;
 
   private boolean m_highGear = false;
+  private boolean m_reverseDrive = false;
 
   private final Solenoid m_gearShift;
 
@@ -283,6 +284,23 @@ public class Drivetrain extends SubsystemBase {
     resetAllEncoders();
   }
 
+  // Invert a motor
+  private void invertMotor(CANSparkMax motor) {
+    motor.setInverted(!motor.getInverted());
+  }
+
+  // Reverse Controls
+  public void reverseControls() {
+    m_reverseDrive = !m_reverseDrive;
+    invertMotor(m_leftMotorLeader);
+    invertMotor(m_leftMotorFollower);
+    invertMotor(m_rightMotorLeader);
+    invertMotor(m_rightMotorFollower);
+
+    resetAllEncoders();
+  }
+
+
   public void setDriveStates(TrapezoidProfile.State left, TrapezoidProfile.State right) {
     m_pidControllerLeft.setReference(left.velocity, ControlType.kVelocity, 0,
         m_leftFeedforward.calculate(left.velocity));
@@ -297,7 +315,8 @@ public class Drivetrain extends SubsystemBase {
     m_drivetrainStatus.addNumber("Right Speed", () -> getRightSpeed());
     m_drivetrainStatus.addNumber("Left Position", () -> getLeftDistance());
     m_drivetrainStatus.addNumber("Right Position", () -> getRightDistance());
-    m_drivetrainStatus.addNumber("Direction", () -> getRobotAngle());
+    m_drivetrainStatus.addNumber("Angle", () -> getRobotAngle());
+    m_drivetrainStatus.addBoolean("Reversed?", () -> m_reverseDrive);
   }
 
   public void updateLimelight() {

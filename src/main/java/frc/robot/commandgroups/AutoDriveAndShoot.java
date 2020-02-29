@@ -10,6 +10,7 @@ package frc.robot.commandgroups;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.DriveDistance;
 import frc.robot.commands.DriveShiftLow;
+import frc.robot.commands.IntakeLower;
 import frc.robot.commands.VisionAlign;
 import frc.robot.subsystems.Cellevator;
 import frc.robot.subsystems.Drivetrain;
@@ -30,7 +31,7 @@ public class AutoDriveAndShoot extends SequentialCommandGroup {
 
     // Drive straight for 130 inches, then turn 90 degrees, then enter launcher mode
     // for 8 seconds
-    super(new DriveShiftLow(drivetrain), new DriveDistance(12, drivetrain).withTimeout(3), new VisionAlign(drivetrain).withTimeout(1.5),
+    super(new IntakeLower(intake), new DriveShiftLow(drivetrain), new DriveDistance(12, drivetrain).withTimeout(3), new VisionAlign(drivetrain).withTimeout(1.5),
         new LauncherMode(launcher, intake, hopper, cellevator).withTimeout(8));
   }
 }

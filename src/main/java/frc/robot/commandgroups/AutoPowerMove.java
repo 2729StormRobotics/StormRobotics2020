@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.DriveDistance;
 import frc.robot.commands.DrivePointTurn;
 import frc.robot.commands.DriveShiftLow;
+import frc.robot.commands.IntakeLower;
 import frc.robot.commands.VisionAlign;
 import frc.robot.subsystems.Cellevator;
 import frc.robot.subsystems.Drivetrain;
@@ -30,7 +31,8 @@ public class AutoPowerMove extends SequentialCommandGroup {
 
     // Drive straight for 130 inches, then turn 90 degrees, then enter launcher mode
     // for 8 seconds
-    super(new DriveShiftLow(drivetrain),
+    super(new IntakeLower(intake),
+        new DriveShiftLow(drivetrain),
         new DriveDistance(130, drivetrain).withTimeout(3),
         new DrivePointTurn(45, drivetrain).withTimeout(1.5),
         new DriveDistance(150, drivetrain).withTimeout(5),
