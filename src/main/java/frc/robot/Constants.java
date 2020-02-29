@@ -183,6 +183,7 @@ public final class Constants {
         public static final Value kIntakeRaiseValue = Value.kForward;
 
         public static final double kIntakeMotorSpeed = 0.65;
+        public static final double kEjectMotorSpeed = -1;
 
         // Shuffleboard Tab
         public static final String kShuffleboardTab = "Power Cells";

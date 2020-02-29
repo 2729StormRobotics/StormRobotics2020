@@ -116,9 +116,9 @@ public class Cellevator extends SubsystemBase {
   /**
    * inverts the Cellevator to unload power cells
    */
-  public void invertCellevator() {
-    m_cellevatorMotor.setInverted(!m_cellevatorMotor.getInverted());
-    m_loaderMotor.setInverted(!m_loaderMotor.getInverted());
+  public void eject() {
+    runLoader(-1);
+    runCellevator(-1);
   }
 
   /**

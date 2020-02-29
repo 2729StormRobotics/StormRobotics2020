@@ -8,25 +8,24 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.subsystems.Cellevator;
+import frc.robot.subsystems.Intake;
 
-public class CellevateContinuous extends InstantCommand {
-  private final Cellevator m_cellevator;
+// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
+// information, see:
+// https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
+public class IntakeEject extends InstantCommand {
+  private final Intake m_intake;
 
-  /**
-   * Creates a new CellevateContinuous.
-   */
-  public CellevateContinuous(Cellevator subsystem) {
-    m_cellevator = subsystem;
+  public IntakeEject(Intake subsystem) {
+    m_intake = subsystem;
 
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_cellevator);
+    addRequirements(m_intake);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_cellevator.load();
-    m_cellevator.cellevate();
+    m_intake.eject();
   }
 }

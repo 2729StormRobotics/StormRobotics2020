@@ -10,13 +10,13 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Cellevator;
 
-public class CellevateContinuous extends InstantCommand {
+public class CellevatorEject extends InstantCommand {
   private final Cellevator m_cellevator;
 
   /**
    * Creates a new CellevateContinuous.
    */
-  public CellevateContinuous(Cellevator subsystem) {
+  public CellevatorEject(Cellevator subsystem) {
     m_cellevator = subsystem;
 
     // Use addRequirements() here to declare subsystem dependencies.
@@ -26,7 +26,7 @@ public class CellevateContinuous extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_cellevator.load();
-    m_cellevator.cellevate();
+    m_cellevator.eject();
   }
+
 }
