@@ -38,6 +38,7 @@ public class DriveDistance extends PIDCommand {
     addRequirements(drivetrain);
     // Configure additional PID options by calling `getController` here.
     getController().setTolerance(kPositionTolerance, kVelocityTolerance);
+    drivetrain.resetAllEncoders();
   }
 
   // Returns true when the command should end.

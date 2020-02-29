@@ -229,7 +229,11 @@ public class Launcher extends SubsystemBase {
   }
 
   public void revShortShot() {
-    revToSpeed(kShortShotSpeed);
+    revToSpeed(kWallShotSpeed);
+  }
+
+  public void revTrenchShot() {
+    revToSpeed(kTrenchShotSpeed);
   }
 
   /**

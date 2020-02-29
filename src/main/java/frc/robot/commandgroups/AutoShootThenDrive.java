@@ -21,7 +21,7 @@ import frc.robot.subsystems.Launcher;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class AutoDriveAndShoot extends SequentialCommandGroup {
+public class AutoShootThenDrive extends SequentialCommandGroup {
 private final Drivetrain m_drivetrain;
 private final Launcher m_launcher;
 private final Intake m_intake;
@@ -31,17 +31,18 @@ private final Cellevator m_cellevator;
   /**
    * Creates a new AutoPowerMove.
    */
-  public AutoDriveAndShoot(Drivetrain drivetrain, Launcher launcher, Intake intake, Hopper hopper,
+  public AutoShootThenDrive(Drivetrain drivetrain, Launcher launcher, Intake intake, Hopper hopper,
       Cellevator cellevator) {
 
 
     // Drive straight for 130 inches, then turn 90 degrees, then enter launcher mode
     // for 8 seconds
     super(new IntakeLower(intake),
-        new DriveShiftLow(drivetrain),
-        new DriveDistance(24, drivetrain).withTimeout(3),
         new VisionAlign(drivetrain).withTimeout(3),
-        new LauncherMode(launcher, intake, hopper, cellevator).withTimeout(8));
+        new LauncherMode(launcher, intake, hopper, cellevator).withTimeout(6),
+        new DriveShiftLow(drivetrain),
+        new DriveDistance(24, drivetrain).withTimeout(3)
+        );
 
     m_drivetrain = drivetrain;
     m_launcher = launcher;
