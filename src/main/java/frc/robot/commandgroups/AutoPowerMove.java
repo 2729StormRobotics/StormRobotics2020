@@ -23,7 +23,7 @@ import frc.robot.subsystems.Launcher;
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class AutoPowerMove extends SequentialCommandGroup {
-
+private final Drivetrain m_drivetrain;
   /**
    * Creates a new AutoPowerMove.
    */
@@ -39,5 +39,12 @@ public class AutoPowerMove extends SequentialCommandGroup {
         new DrivePointTurn(-20, drivetrain),
         new VisionAlign(drivetrain).withTimeout(1.5),
         new LauncherMode(launcher, intake, hopper, cellevator).withTimeout(8));
+
+    m_drivetrain = drivetrain;
+  }
+
+  @Override
+  public void end(boolean interrupted) {
+    m_drivetrain.shiftHigh();
   }
 }

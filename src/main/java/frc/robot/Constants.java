@@ -303,10 +303,10 @@ public final class Constants {
         public static final double kHoldVoltage = 4.41;
 
         // Define the maximum height of the climber
-        public static final double kMaxHeight = 20;
+        public static final double kMaxHeight = 21.5;
 
-        public static final boolean kFrictionBrakeEnabled = true;
-        public static final boolean kFrictionBrakeDisabled = false;
+        public static final boolean kFrictionBrakeEnabled = false;
+        public static final boolean kFrictionBrakeDisabled = true;
 
         // Shuffleboard Tab
         public static final String kShuffleboardTab = "Climber";

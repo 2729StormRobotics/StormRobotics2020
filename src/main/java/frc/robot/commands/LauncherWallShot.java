@@ -7,10 +7,10 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Launcher;
 
-public class LauncherWallShot extends CommandBase {
+public class LauncherWallShot extends InstantCommand {
   private final Launcher m_launcher;
 
   /**
@@ -27,17 +27,5 @@ public class LauncherWallShot extends CommandBase {
     m_launcher.stopLauncher();
     m_launcher.setShortLaunchAngle();
     m_launcher.revShortShot();
-  }
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-    m_launcher.stopLauncher();
-  }
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
   }
 }

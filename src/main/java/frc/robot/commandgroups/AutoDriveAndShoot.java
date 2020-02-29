@@ -22,7 +22,7 @@ import frc.robot.subsystems.Launcher;
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class AutoDriveAndShoot extends SequentialCommandGroup {
-
+private final Drivetrain m_drivetrain;
   /**
    * Creates a new AutoPowerMove.
    */
@@ -31,7 +31,17 @@ public class AutoDriveAndShoot extends SequentialCommandGroup {
 
     // Drive straight for 130 inches, then turn 90 degrees, then enter launcher mode
     // for 8 seconds
-    super(new IntakeLower(intake), new DriveShiftLow(drivetrain), new DriveDistance(12, drivetrain).withTimeout(3), new VisionAlign(drivetrain).withTimeout(1.5),
+    super(new IntakeLower(intake),
+        new DriveShiftLow(drivetrain),
+        new DriveDistance(12, drivetrain).withTimeout(3),
+        new VisionAlign(drivetrain).withTimeout(1.5),
         new LauncherMode(launcher, intake, hopper, cellevator).withTimeout(8));
+
+    m_drivetrain = drivetrain;
+  }
+
+  @Override
+  public void end(boolean interrupted) {
+    m_drivetrain.shiftHigh();
   }
 }

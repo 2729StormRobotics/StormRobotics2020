@@ -37,13 +37,17 @@ public class ClimbManually extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (m_climber.atMaxHeight() && m_speed.getAsDouble() > 0) {
+    if (m_climber.atMaxHeight() && -m_speed.getAsDouble() > 0) {
       m_climber.stopClimb();
     }
-    else if (m_climber.atMinHeight() && m_speed.getAsDouble() < 0) {
+    else if (m_climber.atMinHeight() && -m_speed.getAsDouble() < 0) {
       m_climber.stopClimb();
+    }
+    else if (Math.abs(m_speed.getAsDouble()) < 0.02) {
+      m_climber.engageFrictionBrake();
     }
     else {
+      m_climber.releaseFrictionBrake();
       m_climber.climb(m_speed.getAsDouble());
     }
   }
@@ -52,6 +56,7 @@ public class ClimbManually extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_climber.stopClimb();
+    m_climber.engageFrictionBrake();
   }
 
   // Returns true when the command should end.
