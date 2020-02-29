@@ -17,6 +17,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -70,6 +71,10 @@ public class Drivetrain extends SubsystemBase {
   private double m_xOffset = 0; // Positive values mean that target is to the right of the camera; negative
   // values mean target is to the left. Measured in degrees
   private boolean m_targetVisible = false;
+
+  private final NetworkTable m_PartyTable;
+  private final NetworkTableEntry m_HighGearStatus;
+  private final NetworkTableEntry m_LowGearStatus;
 
   /**
    * Creates a new Drivetrain.
@@ -269,6 +274,7 @@ public class Drivetrain extends SubsystemBase {
     if (m_highGear) {
       m_highGear = false;
       shiftGears();
+      m_LowGearStatus.setBoolean(true);
     }
   }
 
@@ -277,6 +283,7 @@ public class Drivetrain extends SubsystemBase {
     if (!m_highGear) {
       m_highGear = true;
       shiftGears();
+      m_HighGearStatus.setBoolean(true);
     }
   }
 

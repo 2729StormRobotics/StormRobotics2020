@@ -17,6 +17,9 @@ import static frc.robot.Constants.ControlPanelConstants.*;
 
 import java.util.Map;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
@@ -53,6 +56,9 @@ public class ControlPanel extends SubsystemBase {
   private SuppliedValueWidget<Boolean> m_targetColorWidget;
   private SuppliedValueWidget<Boolean> m_currentColorWidget;
 
+  private final NetworkTable m_PartyTable;
+  private final NetworkTableEntry m_ControlPanelColorStatus;
+
   /**
    * Creates a new ControlPanel.
    */
@@ -75,6 +81,9 @@ public class ControlPanel extends SubsystemBase {
         .withProperties(Map.of("Label position", "TOP"));
 
     shuffleboardInit();
+
+    m_PartyTable = NetworkTableInstance.getDefault().getTable("Party Statuses");
+    m_ControlPanelColorStatus = m_PartyTable.getEntry("Color Detected");
   }
 
   // Spins the control panel
@@ -173,6 +182,7 @@ public class ControlPanel extends SubsystemBase {
 
   public boolean onTargetColor() {
     return m_currentColor.equals(m_targetColor);
+    m_ControlPanelColorStatus.setBoolean(true);
   }
 
   // checks to see if wheel has passed 8 times
