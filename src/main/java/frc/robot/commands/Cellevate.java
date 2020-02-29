@@ -26,8 +26,6 @@ public class Cellevate extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_cellevator.stopCellevator();
-    m_cellevator.stopLoader();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

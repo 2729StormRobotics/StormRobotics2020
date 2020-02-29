@@ -7,9 +7,8 @@
 
 package frc.robot.commandgroups;
 
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.commands.HopperAgitate;
-import frc.robot.commands.IntakeLower;
 import frc.robot.commands.IntakeRun;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
@@ -17,7 +16,7 @@ import frc.robot.subsystems.Intake;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class IntakeAndAgitate extends SequentialCommandGroup {
+public class IntakeAndAgitate extends ParallelCommandGroup {
 
   /**
    * Creates a new IntakeAndCellevate.
@@ -25,6 +24,6 @@ public class IntakeAndAgitate extends SequentialCommandGroup {
   public IntakeAndAgitate(Intake intake, Hopper hopper) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());super();
-    super(new IntakeLower(intake), new IntakeRun(intake), new HopperAgitate(hopper));
+    super(new IntakeRun(intake), new HopperAgitate(hopper));
   }
 }

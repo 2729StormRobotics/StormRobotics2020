@@ -41,6 +41,7 @@ public class Cellevator extends SubsystemBase {
   private boolean m_previousBBMiddle;
   private boolean m_previousBBBottom;
   private boolean m_previousBBTop;
+  private boolean m_ballInFeeder;
 
   /**
    * Creates a new Cellevator.
@@ -62,6 +63,7 @@ public class Cellevator extends SubsystemBase {
     m_previousBBBottom = false;
     m_previousBBTop = false;
     m_intakeStatus = NetworkTableInstance.getDefault().getTable("Power Cells").getEntry("Intake Status");
+    m_ballInFeeder = m_intakeStatus.getBoolean(false);
 
     m_cellevatorTab = Shuffleboard.getTab(kShuffleboardTab);
     m_cellevatorConditions = m_cellevatorTab.getLayout("Power Cells", BuiltInLayouts.kList)
@@ -154,7 +156,7 @@ public class Cellevator extends SubsystemBase {
    * Gets the sensor value to detect if a ball is in the hopper to be loaded
    */
   public boolean isBallInFeeder() {
-    return m_intakeStatus.getBoolean(false);
+    return m_ballInFeeder;
     // return !m_ballDetectFeed.get();
   }
 
@@ -289,6 +291,8 @@ public class Cellevator extends SubsystemBase {
       // sets the previous value equal to the present
       setBeamBreakTopPrevious(isTopBallPresent());
     }
+
+    m_ballInFeeder = m_intakeStatus.getBoolean(false);
   }
 
 }

@@ -46,8 +46,8 @@ public class Intake extends SubsystemBase {
   // starts the intake motor
   // it is continuous until stopIntakeMotor is called
   public void runIntake(double speed) {
-    m_intakeMotor.set(speed);
     m_intakeStatus.setBoolean(true);
+    m_intakeMotor.set(speed);
   }
 
   public void intake() {
