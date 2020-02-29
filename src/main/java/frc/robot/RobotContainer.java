@@ -89,11 +89,13 @@ public class RobotContainer {
     new JoystickButton(m_driver, Button.kX.value).whileHeld(new VisionAlign(m_drivetrain));
     new JoystickButton(m_driver, Button.kY.value).whenPressed(new DriveShiftHigh(m_drivetrain));
     new JoystickButton(m_driver, Button.kB.value).whenPressed(new DriveShiftLow(m_drivetrain));
-    // new JoystickButton(m_driver, Button.kA.value).whenPressed(new DriveReverse(m_drivetrain));
+    new JoystickButton(m_driver, Button.kA.value).whenPressed(new DriveReverse(m_drivetrain));
 
     // Operator controls
-    new JoystickButton(m_weapons, Button.kBumperRight.value).whenPressed(new IntakeAndAgitate(m_intake, m_hopper));
-    new JoystickButton(m_weapons, Button.kBumperRight.value).whenReleased(new IntakeAndAgitateStop(m_intake, m_hopper));
+    new JoystickButton(m_weapons, Button.kBumperRight.value).whenPressed(new PowerCellFlow(m_launcher, m_intake, m_hopper, m_cellevator));
+    new JoystickButton(m_weapons, Button.kBumperRight.value).whenReleased(new PowerCellStop(m_launcher, m_intake, m_hopper, m_cellevator));
+    new JoystickButton(m_weapons, Button.kBumperLeft.value).whenPressed(new IntakeAndAgitate(m_intake, m_hopper));
+    new JoystickButton(m_weapons, Button.kBumperLeft.value).whenReleased(new IntakeAndAgitateStop(m_intake, m_hopper));
     new JoystickButton(m_weapons, Button.kX.value).whenPressed(new ControlPanelSpinForRevs(m_controlPanel));
     new JoystickButton(m_weapons, Button.kX.value).whenReleased(new ControlPanelStop(m_controlPanel));
     new JoystickButton(m_weapons, Button.kY.value).whenPressed(new ControlPanelSpinForColor(m_controlPanel));
