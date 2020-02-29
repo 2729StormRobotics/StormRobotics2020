@@ -44,7 +44,7 @@ public class ClimbManually extends CommandBase {
       m_climber.stopClimb();
     }
     else {
-      m_climber.climb(m_speed.getAsDouble());
+      m_climber.climb(-m_speed.getAsDouble());
     }
   }
 
