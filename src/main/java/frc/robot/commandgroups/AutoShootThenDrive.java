@@ -7,9 +7,9 @@
 
 package frc.robot.commandgroups;
 
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.DriveDistance;
-import frc.robot.commands.DriveShiftLow;
 import frc.robot.commands.IntakeLower;
 import frc.robot.commands.VisionAlign;
 import frc.robot.subsystems.Cellevator;
@@ -38,9 +38,7 @@ private final Cellevator m_cellevator;
     // Drive straight for 130 inches, then turn 90 degrees, then enter launcher mode
     // for 8 seconds
     super(new IntakeLower(intake),
-        new VisionAlign(drivetrain).withTimeout(3),
-        new LauncherMode(launcher, intake, hopper, cellevator).withTimeout(6),
-        new DriveShiftLow(drivetrain),
+        new LauncherMode(launcher, intake, hopper, cellevator).withTimeout(8),
         new DriveDistance(24, drivetrain).withTimeout(3)
         );
 

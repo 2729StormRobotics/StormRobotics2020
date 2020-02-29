@@ -7,7 +7,9 @@
 
 package frc.robot.commandgroups;
 
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.DoNothingAuto;
 import frc.robot.commands.DriveDistance;
 import frc.robot.commands.DrivePointTurn;
 import frc.robot.commands.DriveShiftLow;
@@ -38,7 +40,10 @@ private final Drivetrain m_drivetrain;
         new DriveDistance(150, drivetrain).withTimeout(5),
         new DrivePointTurn(-20, drivetrain),
         new VisionAlign(drivetrain).withTimeout(1.5),
-        new LauncherMode(launcher, intake, hopper, cellevator).withTimeout(8));
+        new ConditionalCommand(
+          new LauncherMode(launcher, intake, hopper, cellevator).withTimeout(8),
+          new DoNothingAuto(),
+          () -> drivetrain.isTargetCentered()));
 
     m_drivetrain = drivetrain;
   }

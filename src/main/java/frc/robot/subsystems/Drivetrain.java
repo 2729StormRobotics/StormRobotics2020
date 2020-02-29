@@ -305,6 +305,14 @@ public class Drivetrain extends SubsystemBase {
     resetAllEncoders();
   }
 
+  /**
+   * Returns true if the target is within a range of the center crosshair of the
+   * camera
+   */
+  public boolean isTargetCentered() {
+    return (isVisionTargetDetected() && (m_xOffset > -1.5) && (m_xOffset < 1.5));
+  }
+
 
   public void setDriveStates(TrapezoidProfile.State left, TrapezoidProfile.State right) {
     m_pidControllerLeft.setReference(left.velocity, ControlType.kVelocity, 0,

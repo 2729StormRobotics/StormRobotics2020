@@ -110,8 +110,8 @@ public class RobotContainer {
 
     new JoystickButton(m_weapons, Button.kX.value).whenPressed(new ControlPanelSpinForRevs(m_controlPanel));
     new JoystickButton(m_weapons, Button.kX.value).whenReleased(new ControlPanelStop(m_controlPanel));
-    new JoystickButton(m_weapons, Button.kY.value).whenPressed(new ControlPanelSpinForColor(m_controlPanel));
-    new JoystickButton(m_weapons, Button.kY.value).whenReleased(new ControlPanelStop(m_controlPanel));
+    // new JoystickButton(m_weapons, Button.kY.value).whenPressed(new ControlPanelSpinForColor(m_controlPanel));
+    // new JoystickButton(m_weapons, Button.kY.value).whenReleased(new ControlPanelStop(m_controlPanel));
 
     new JoystickButton(m_weapons, Button.kA.value)
         .whenPressed(new LauncherMode(m_launcher, m_intake, m_hopper, m_cellevator));
@@ -120,8 +120,8 @@ public class RobotContainer {
     new JoystickButton(m_weapons, Button.kB.value).whenPressed(new IntakeToggle(m_intake));
     new JoystickButton(m_weapons, Button.kStart.value).whenPressed(new LauncherWallShot(m_launcher));
     new JoystickButton(m_weapons, Button.kStart.value).whenReleased(new LauncherStop(m_launcher));
-    new JoystickButton(m_weapons, Button.kStickRight.value).whenPressed(new LauncherTrenchShot(m_launcher));
-    new JoystickButton(m_weapons, Button.kStickRight.value).whenReleased(new LauncherStop(m_launcher));
+    new JoystickButton(m_weapons, Button.kY.value).whenPressed(new LauncherTrenchShot(m_launcher));
+    new JoystickButton(m_weapons, Button.kY.value).whenReleased(new LauncherStop(m_launcher));
 
 
 

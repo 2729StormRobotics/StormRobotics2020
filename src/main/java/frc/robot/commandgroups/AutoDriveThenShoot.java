@@ -7,7 +7,9 @@
 
 package frc.robot.commandgroups;
 
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.DoNothingAuto;
 import frc.robot.commands.DriveDistance;
 import frc.robot.commands.DriveShiftLow;
 import frc.robot.commands.IntakeLower;
@@ -41,7 +43,11 @@ private final Cellevator m_cellevator;
         new DriveShiftLow(drivetrain),
         new DriveDistance(24, drivetrain).withTimeout(3),
         new VisionAlign(drivetrain).withTimeout(3),
-        new LauncherMode(launcher, intake, hopper, cellevator).withTimeout(8));
+        new ConditionalCommand(
+          new LauncherMode(launcher, intake, hopper, cellevator).withTimeout(8),
+          new DoNothingAuto(),
+          () -> drivetrain.isTargetCentered())
+        );
 
     m_drivetrain = drivetrain;
     m_launcher = launcher;
