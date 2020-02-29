@@ -8,6 +8,9 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.PartyConstants.*;
 
@@ -15,11 +18,32 @@ public class Party extends SubsystemBase {
   
   // Create instances of led driver, created as motor controller because it is controlled by standard PWM signal
   private final Spark m_ledDriver;
+  private final NetworkTable m_PartyTable;
+  private final NetworkTableEntry m_CellStatus;
+  private final NetworkTableEntry m_AlignStatus;
+  private final NetworkTableEntry m_RevStatus;
+  private final NetworkTableEntry m_LaunchAngleStatus;
+  private final NetworkTableEntry m_FrictionBrakeStatus;
+  private final NetworkTableEntry m_ControlPanelStatus;
+  private final NetworkTableEntry m_HighGearStatus;
+  private final NetworkTableEntry m_LowGearStatus;
   
   /**
    * Creates a new Party.
    */
-  public Party() {    
+  public Party() {  
+    
+    m_PartyTable = NetworkTableInstance.getDefault().getTable("Party Statuses");
+    m_CellStatus = m_PartyTable.getEntry("Cell Count");
+    m_AlignStatus = m_PartyTable.getEntry("Aligned");
+    m_RevStatus = m_PartyTable.getEntry(("Revved"));
+    m_LaunchAngleStatus = m_PartyTable.getEntry("Launch Angle Toggled");
+    m_FrictionBrakeStatus = m_PartyTable.getEntry("Friction Brake Engaged");
+    m_ControlPanelStatus = m_PartyTable.getEntry("Color Detected");
+    m_HighGearStatus = m_PartyTable.getEntry("High Gear");
+    m_LowGearStatus = m_PartyTable.getEntry("Low Gear");
+    
+
     // Instantiate led driver and assign to its port
     m_ledDriver = new Spark(kLedBlinkinDriverPort);
   }
