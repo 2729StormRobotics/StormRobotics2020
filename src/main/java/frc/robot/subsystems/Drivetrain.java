@@ -241,7 +241,12 @@ public class Drivetrain extends SubsystemBase {
   // Drives the motor using tank drive
   // Change the squareInputs if needed
   public void tankDrive(double leftPower, double rightPower, boolean squareInputs) {
-    m_drive.tankDrive(leftPower, rightPower, squareInputs);
+    if (m_reverseDrive) {
+      m_drive.tankDrive(rightPower, leftPower, squareInputs);
+    }
+    else {
+      m_drive.tankDrive(leftPower, rightPower, squareInputs);
+    }
   }
 
   // Drives the motors using arcade drive
