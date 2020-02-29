@@ -24,9 +24,11 @@ public class Party extends SubsystemBase {
   private final NetworkTableEntry m_RevStatus;
   private final NetworkTableEntry m_LaunchAngleStatus;
   private final NetworkTableEntry m_FrictionBrakeStatus;
-  private final NetworkTableEntry m_ControlPanelStatus;
+  private final NetworkTableEntry m_ControlPanelColorStatus;
   private final NetworkTableEntry m_HighGearStatus;
   private final NetworkTableEntry m_LowGearStatus;
+
+  private int cellCount = 0;
   
   /**
    * Creates a new Party.
@@ -39,7 +41,7 @@ public class Party extends SubsystemBase {
     m_RevStatus = m_PartyTable.getEntry(("Revved"));
     m_LaunchAngleStatus = m_PartyTable.getEntry("Launch Angle Toggled");
     m_FrictionBrakeStatus = m_PartyTable.getEntry("Friction Brake Engaged");
-    m_ControlPanelStatus = m_PartyTable.getEntry("Color Detected");
+    m_ControlPanelColorStatus = m_PartyTable.getEntry("Color Detected");
     m_HighGearStatus = m_PartyTable.getEntry("High Gear");
     m_LowGearStatus = m_PartyTable.getEntry("Low Gear");
     
@@ -120,9 +122,14 @@ public class Party extends SubsystemBase {
     // for anything extra
     m_ledDriver.set(kOrange);
   }
+
+  public void updateNetworkTable() {
+    cellCount = m_CellStatus.getNumber(0).intValue();
+  }
   
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    updateNetworkTable();
   }
 }

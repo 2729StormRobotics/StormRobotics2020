@@ -15,6 +15,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
@@ -44,6 +45,10 @@ public class Launcher extends SubsystemBase {
 
   private final ShuffleboardTab m_launcherTab;
   private final ShuffleboardLayout m_launcherStatus;
+
+  private final NetworkTable m_PartyTable;
+  private final NetworkTableEntry m_RevStatus;
+  private final NetworkTableEntry m_LaunchAngleStatus;
 
   private String m_launchType = "Disabled";
 
@@ -88,6 +93,13 @@ public class Launcher extends SubsystemBase {
         .withProperties(Map.of("Label position", "TOP"));
 
     shuffleboardInit();
+
+    m_PartyTable = NetworkTableInstance.getDefault().getTable("Party Statuses");
+    m_RevStatus = m_PartyTable.getEntry("Revved")
+    m_LaunchAngleStatus = m_PartyTable.getEntry("Launch Angle Toggled");
+
+
+
   }
 
   /**
@@ -158,6 +170,7 @@ public class Launcher extends SubsystemBase {
   public void setLongLaunchAngle() {
     m_launcherAnglePistons.set(kLongLaunchValue);
     m_launchType = "Long Shot";
+    m_LaunchAngleStatus.setBoolean(true);
   }
 
   /**
@@ -166,6 +179,7 @@ public class Launcher extends SubsystemBase {
   public void setShortLaunchAngle() {
     m_launcherAnglePistons.set(kShortLaunchValue);
     m_launchType = "Wall Shot";
+    m_LaunchAngleStatus.setBoolean(true);
   }
 
   /**
@@ -222,6 +236,7 @@ public class Launcher extends SubsystemBase {
     double revSpeed = speed;
     if (revSpeed > kMaxShotSpeed) {
       revSpeed = kMaxShotSpeed;
+      m_RevStatus.setBoolean(true);
     }
 
     double feedforward = m_feedForward.calculate(revSpeed);
@@ -229,7 +244,8 @@ public class Launcher extends SubsystemBase {
   }
 
   public void revShortShot() {
-    revToSpeed(kWallShotSpeed);
+    revToSpeed(kShortShotSpeed);
+    m_RevStatus.setBoolean(true);
   }
 
   public void revTrenchShot() {

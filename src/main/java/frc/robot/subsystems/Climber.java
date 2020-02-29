@@ -24,6 +24,10 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+
 public class Climber extends SubsystemBase {
   private final CANSparkMax m_climberMotor;
 
@@ -34,6 +38,10 @@ public class Climber extends SubsystemBase {
 
   private final ShuffleboardTab m_climberTab;
   private final ShuffleboardLayout m_climberStatus;
+
+  private final NetworkTable m_PartyTable;
+  private final NetworkTableEntry m_FrictionBrakeStatus;
+
 
   /**
    * Creates a new Climber subsystem.
@@ -53,6 +61,10 @@ public class Climber extends SubsystemBase {
     m_climberStatus = m_climberTab.getLayout("Climber Status", BuiltInLayouts.kList);
 
     shuffleboardInit();
+
+    m_PartyTable = NetworkTableInstance.getDefault().getTable("Party Statuses");
+    m_FrictionBrakeStatus = m_PartyTable.getEntry("Friction Brake Engaged");
+
   }
 
   /**
@@ -161,6 +173,7 @@ public class Climber extends SubsystemBase {
    */
   public void engageFrictionBrake() {
     m_frictionBrake.set(kFrictionBrakeEnabled);
+    m_FrictionBrakeStatus.setBoolean(true);
   }
 
   /**
