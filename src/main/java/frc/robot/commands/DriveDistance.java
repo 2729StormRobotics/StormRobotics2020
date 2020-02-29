@@ -32,7 +32,7 @@ public class DriveDistance extends PIDCommand {
         // This uses the output
         output -> {
           // Use the output here
-          drivetrain.arcadeDrive(output, 0, false);
+          drivetrain.arcadeDrive(-output, 0, false);
         });
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);

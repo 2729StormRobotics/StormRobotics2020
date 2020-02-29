@@ -62,7 +62,7 @@ public class Cellevator extends SubsystemBase {
     m_previousBBMiddle = false;
     m_previousBBBottom = false;
     m_previousBBTop = false;
-    m_intakeStatus = NetworkTableInstance.getDefault().getTable("Power Cells").getEntry("Intake Status");
+    m_intakeStatus = NetworkTableInstance.getDefault().getTable("Power Cells").getEntry("Intake Running");
     m_ballInFeeder = m_intakeStatus.getBoolean(false);
 
     m_cellevatorTab = Shuffleboard.getTab(kShuffleboardTab);

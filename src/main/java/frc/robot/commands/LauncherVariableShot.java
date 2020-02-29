@@ -32,7 +32,7 @@ public class LauncherVariableShot extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double speed = m_launcher.calculateLaunchSpeed();
+    double speed = m_launcher.calculateLaunchSpeedQuad();
     if (Math.abs(speed - previousSpeed) > 1) {
       m_launcher.revToSpeed(speed);
     }
