@@ -248,6 +248,10 @@ public class Launcher extends SubsystemBase {
     m_RevStatus.setBoolean(true);
   }
 
+  public void revTrenchShot() {
+    revToSpeed(kTrenchShotSpeed);
+  }
+
   /**
    * Get the horizontal distance from the vision target from network tables
    * 

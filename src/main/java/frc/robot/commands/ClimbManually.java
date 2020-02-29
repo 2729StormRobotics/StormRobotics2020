@@ -30,8 +30,7 @@ public class ClimbManually extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_climber.stopClimb();
-    m_climber.releaseFrictionBrake();
+    System.out.println("Initialized!");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -39,9 +38,11 @@ public class ClimbManually extends CommandBase {
   public void execute() {
     if (m_climber.atMaxHeight() && -m_speed.getAsDouble() > 0) {
       m_climber.stopClimb();
+      m_climber.engageFrictionBrake();
     }
     else if (m_climber.atMinHeight() && -m_speed.getAsDouble() < 0) {
       m_climber.stopClimb();
+      m_climber.engageFrictionBrake();
     }
     else if (Math.abs(m_speed.getAsDouble()) < 0.01) {
       m_climber.engageFrictionBrake();

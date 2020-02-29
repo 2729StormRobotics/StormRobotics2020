@@ -65,8 +65,11 @@ public class RobotContainer {
     m_autoChooser.setDefaultOption("Do Nothing", new DoNothingAuto());
     m_autoChooser.addOption("Power Move",
         new AutoPowerMove(m_drivetrain, m_launcher, m_intake, m_hopper, m_cellevator));
-    m_autoChooser.addOption("Drive and Shoot",
-        new AutoDriveAndShoot(m_drivetrain, m_launcher, m_intake, m_hopper, m_cellevator));
+    m_autoChooser.addOption("Drive then Shoot",
+        new AutoDriveThenShoot(m_drivetrain, m_launcher, m_intake, m_hopper, m_cellevator));
+    m_autoChooser.addOption("Shoot then Drive",
+        new AutoDriveThenShoot(m_drivetrain, m_launcher, m_intake, m_hopper, m_cellevator));
+    m_autoChooser.addOption("Just Drive", new DriveDistance(36, m_drivetrain));
 
     m_drivetrain.setDefaultCommand(
         new DriveManually(() -> m_driver.getY(Hand.kLeft), () -> m_driver.getY(Hand.kRight), m_drivetrain));
@@ -92,14 +95,24 @@ public class RobotContainer {
     new JoystickButton(m_driver, Button.kA.value).whenPressed(new DriveReverse(m_drivetrain));
 
     // Operator controls
-    new JoystickButton(m_weapons, Button.kBumperRight.value).whenPressed(new PowerCellFlow(m_launcher, m_intake, m_hopper, m_cellevator));
-    new JoystickButton(m_weapons, Button.kBumperRight.value).whenReleased(new PowerCellStop(m_launcher, m_intake, m_hopper, m_cellevator));
-    new JoystickButton(m_weapons, Button.kBumperLeft.value).whenPressed(new IntakeAndAgitate(m_intake, m_hopper));
-    new JoystickButton(m_weapons, Button.kBumperLeft.value).whenReleased(new IntakeAndAgitateStop(m_intake, m_hopper));
+    // new JoystickButton(m_weapons, Button.kBumperRight.value).whenPressed(new
+    // PowerCellFlow(m_launcher, m_intake, m_hopper, m_cellevator));
+    // new JoystickButton(m_weapons, Button.kBumperRight.value).whenReleased(new
+    // PowerCellStop(m_launcher, m_intake, m_hopper, m_cellevator));
+    // new JoystickButton(m_weapons, Button.kBumperLeft.value).whenPressed(new
+    // IntakeAndAgitate(m_intake, m_hopper));
+    // new JoystickButton(m_weapons, Button.kBumperLeft.value).whenReleased(new
+    // IntakeAndAgitateStop(m_intake, m_hopper));
+    new JoystickButton(m_weapons, Button.kBumperRight.value).whenPressed(new IntakeAndAgitate(m_intake, m_hopper));
+    new JoystickButton(m_weapons, Button.kBumperRight.value).whenReleased(new IntakeAndAgitateStop(m_intake, m_hopper));
+    new JoystickButton(m_weapons, Button.kBumperLeft.value).whenPressed(new IntakeEject(m_intake));
+    new JoystickButton(m_weapons, Button.kBumperLeft.value).whenReleased(new IntakeStop(m_intake));
+
     new JoystickButton(m_weapons, Button.kX.value).whenPressed(new ControlPanelSpinForRevs(m_controlPanel));
     new JoystickButton(m_weapons, Button.kX.value).whenReleased(new ControlPanelStop(m_controlPanel));
     new JoystickButton(m_weapons, Button.kY.value).whenPressed(new ControlPanelSpinForColor(m_controlPanel));
     new JoystickButton(m_weapons, Button.kY.value).whenReleased(new ControlPanelStop(m_controlPanel));
+
     new JoystickButton(m_weapons, Button.kA.value)
         .whenPressed(new LauncherMode(m_launcher, m_intake, m_hopper, m_cellevator));
     new JoystickButton(m_weapons, Button.kA.value)
@@ -107,6 +120,11 @@ public class RobotContainer {
     new JoystickButton(m_weapons, Button.kB.value).whenPressed(new IntakeToggle(m_intake));
     new JoystickButton(m_weapons, Button.kStart.value).whenPressed(new LauncherWallShot(m_launcher));
     new JoystickButton(m_weapons, Button.kStart.value).whenReleased(new LauncherStop(m_launcher));
+    new JoystickButton(m_weapons, Button.kStickRight.value).whenPressed(new LauncherTrenchShot(m_launcher));
+    new JoystickButton(m_weapons, Button.kStickRight.value).whenReleased(new LauncherStop(m_launcher));
+
+
+
     new JoystickButton(m_weapons, Button.kBack.value).whenPressed(new PowerCellEject(m_intake, m_hopper, m_cellevator));
 
   }

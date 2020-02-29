@@ -7,17 +7,16 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Launcher;
 
-public class LauncherVariableShot extends CommandBase {
+public class LauncherTrenchShot extends InstantCommand {
   private final Launcher m_launcher;
-  private double previousSpeed = 0;
 
   /**
    * Creates a new LauncherVariableShot.
    */
-  public LauncherVariableShot(Launcher subsystem) {
+  public LauncherTrenchShot(Launcher subsystem) {
     m_launcher = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -27,26 +26,6 @@ public class LauncherVariableShot extends CommandBase {
   public void initialize() {
     m_launcher.stopLauncher();
     m_launcher.setLongLaunchAngle();
-  }
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    double speed = m_launcher.calculateLaunchSpeedQuad();
-    if (Math.abs(speed - previousSpeed) > 1) {
-      m_launcher.revToSpeed(speed);
-    }
-  }
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-    m_launcher.stopLauncher();
-  }
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
+    m_launcher.revTrenchShot();
   }
 }
