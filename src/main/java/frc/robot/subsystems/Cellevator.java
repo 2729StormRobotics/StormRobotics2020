@@ -15,6 +15,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -33,6 +35,7 @@ public class Cellevator extends SubsystemBase {
 
   private final ShuffleboardTab m_cellevatorTab;
   private final ShuffleboardLayout m_cellevatorConditions;
+  private final NetworkTableEntry m_intakeStatus;
 
   private int m_powerCellCount;
   private boolean m_previousBBMiddle;
@@ -58,10 +61,12 @@ public class Cellevator extends SubsystemBase {
     m_previousBBMiddle = false;
     m_previousBBBottom = false;
     m_previousBBTop = false;
+    m_intakeStatus = NetworkTableInstance.getDefault().getTable("Power Cells").getEntry("Intake Status");
 
     m_cellevatorTab = Shuffleboard.getTab(kShuffleboardTab);
     m_cellevatorConditions = m_cellevatorTab.getLayout("Power Cells", BuiltInLayouts.kList)
         .withProperties(Map.of("Label position", "TOP"));
+
     shuffleboardInit();
 
   }
@@ -149,7 +154,8 @@ public class Cellevator extends SubsystemBase {
    * Gets the sensor value to detect if a ball is in the hopper to be loaded
    */
   public boolean isBallInFeeder() {
-    return !m_ballDetectFeed.get();
+    return m_intakeStatus.getBoolean(false);
+    // return !m_ballDetectFeed.get();
   }
 
   /**
@@ -234,7 +240,7 @@ public class Cellevator extends SubsystemBase {
   }
 
   public boolean readyToLoad() {
-    return !isBottomBallPresent();
+    return isBallInFeeder() && !isBottomBallPresent();
   }
 
   /**

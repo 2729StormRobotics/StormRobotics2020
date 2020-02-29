@@ -27,6 +27,7 @@ public class Cellevate extends CommandBase {
   @Override
   public void initialize() {
     m_cellevator.stopCellevator();
+    m_cellevator.stopLoader();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -37,12 +38,19 @@ public class Cellevate extends CommandBase {
     } else {
       m_cellevator.stopCellevator();
     }
+
+    if (m_cellevator.readyToLoad()) {
+      m_cellevator.load();
+    } else {
+      m_cellevator.stopLoader();
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     m_cellevator.stopCellevator();
+    m_cellevator.stopLoader();
   }
 
   // Returns true when the command should end.
