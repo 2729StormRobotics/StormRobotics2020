@@ -110,8 +110,10 @@ public class RobotContainer {
 
     new JoystickButton(m_weapons, Button.kX.value).whenPressed(new ControlPanelSpinForRevs(m_controlPanel));
     new JoystickButton(m_weapons, Button.kX.value).whenReleased(new ControlPanelStop(m_controlPanel));
-    // new JoystickButton(m_weapons, Button.kY.value).whenPressed(new ControlPanelSpinForColor(m_controlPanel));
-    // new JoystickButton(m_weapons, Button.kY.value).whenReleased(new ControlPanelStop(m_controlPanel));
+    // new JoystickButton(m_weapons, Button.kY.value).whenPressed(new
+    // ControlPanelSpinForColor(m_controlPanel));
+    // new JoystickButton(m_weapons, Button.kY.value).whenReleased(new
+    // ControlPanelStop(m_controlPanel));
 
     new JoystickButton(m_weapons, Button.kA.value)
         .whenPressed(new LauncherMode(m_launcher, m_intake, m_hopper, m_cellevator));
@@ -123,10 +125,9 @@ public class RobotContainer {
     new JoystickButton(m_weapons, Button.kY.value).whenPressed(new LauncherTrenchShot(m_launcher));
     new JoystickButton(m_weapons, Button.kY.value).whenReleased(new LauncherStop(m_launcher));
 
-
-
     new JoystickButton(m_weapons, Button.kBack.value).whenPressed(new PowerCellEject(m_intake, m_hopper, m_cellevator));
-
+    new JoystickButton(m_weapons, Button.kBack.value)
+        .whenReleased(new PowerCellStop(m_launcher, m_intake, m_hopper, m_cellevator));
   }
 
   /**
