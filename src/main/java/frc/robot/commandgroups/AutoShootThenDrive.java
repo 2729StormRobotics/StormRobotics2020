@@ -7,11 +7,9 @@
 
 package frc.robot.commandgroups;
 
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.DriveDistance;
 import frc.robot.commands.IntakeLower;
-import frc.robot.commands.VisionAlign;
 import frc.robot.subsystems.Cellevator;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Hopper;

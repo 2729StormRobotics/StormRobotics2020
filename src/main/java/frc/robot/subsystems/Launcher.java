@@ -168,6 +168,7 @@ public class Launcher extends SubsystemBase {
     m_launcherAnglePistons.set(kLongLaunchValue);
     m_launchType = "Long Shot";
     m_LaunchAngleStatus.setBoolean(false);
+
   }
 
   /**
@@ -176,7 +177,7 @@ public class Launcher extends SubsystemBase {
   public void setShortLaunchAngle() {
     m_launcherAnglePistons.set(kShortLaunchValue);
     m_launchType = "Wall Shot";
-    m_LaunchAngleStatus.setBoolean(true);
+    // m_LaunchAngleStatus.setBoolean(true);
   }
 
   /**
@@ -203,7 +204,7 @@ public class Launcher extends SubsystemBase {
    * @return The speed of the left motor in RPM.
    */
   public double getLeftLauncherSpeed() {
-    return m_leftEncoder.getVelocity() / kVelocityConversion;
+    return m_leftEncoder.getVelocity();
   }
 
   /**
@@ -212,7 +213,7 @@ public class Launcher extends SubsystemBase {
    * @return The speed of the right motor in RPM.
    */
   public double getRightLauncherSpeed() {
-    return m_rightEncoder.getVelocity() / kVelocityConversion;
+    return m_rightEncoder.getVelocity();
   }
 
   /**

@@ -7,10 +7,13 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Launcher;
 
-public class LauncherWallShot extends InstantCommand {
+import static frc.robot.Constants.LauncherConstants.kWallShotSpeed;;
+
+
+public class LauncherWallShot extends CommandBase {
   private final Launcher m_launcher;
 
   /**
@@ -27,5 +30,10 @@ public class LauncherWallShot extends InstantCommand {
     m_launcher.stopLauncher();
     m_launcher.setShortLaunchAngle();
     m_launcher.revWallShot();
+  }
+
+  @Override
+  public boolean isFinished() {
+    return Math.abs(m_launcher.getLauncherAvgSpeed() -  kWallShotSpeed) < .5;
   }
 }

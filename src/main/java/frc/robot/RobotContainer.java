@@ -70,7 +70,7 @@ public class RobotContainer {
     m_autoChooser.addOption("Drive then Shoot",
         new AutoDriveThenShoot(m_drivetrain, m_launcher, m_intake, m_hopper, m_cellevator));
     m_autoChooser.addOption("Shoot then Drive",
-        new AutoDriveThenShoot(m_drivetrain, m_launcher, m_intake, m_hopper, m_cellevator));
+        new AutoShootThenDrive(m_drivetrain, m_launcher, m_intake, m_hopper, m_cellevator));
     m_autoChooser.addOption("Just Drive", new DriveDistance(36, m_drivetrain));
 
     m_drivetrain.setDefaultCommand(
@@ -122,10 +122,14 @@ public class RobotContainer {
     new JoystickButton(m_weapons, Button.kA.value)
         .whenReleased(new LauncherModeStop(m_launcher, m_intake, m_hopper, m_cellevator));
     new JoystickButton(m_weapons, Button.kB.value).whenPressed(new IntakeToggle(m_intake));
-    new JoystickButton(m_weapons, Button.kStart.value).whenPressed(new LauncherWallShot(m_launcher));
-    new JoystickButton(m_weapons, Button.kStart.value).whenReleased(new LauncherStop(m_launcher));
-    new JoystickButton(m_weapons, Button.kY.value).whenPressed(new LauncherTrenchShot(m_launcher));
-    new JoystickButton(m_weapons, Button.kY.value).whenReleased(new LauncherStop(m_launcher));
+    new JoystickButton(m_weapons, Button.kStart.value)
+        .whenPressed(new LauncherModeWall(m_launcher, m_intake, m_hopper, m_cellevator));
+    new JoystickButton(m_weapons, Button.kStart.value)
+        .whenReleased(new LauncherModeStop(m_launcher, m_intake, m_hopper, m_cellevator));
+    new JoystickButton(m_weapons, Button.kY.value)
+        .whenPressed(new LauncherModeTrench(m_launcher, m_intake, m_hopper, m_cellevator));
+    new JoystickButton(m_weapons, Button.kY.value)
+        .whenReleased(new LauncherModeStop(m_launcher, m_intake, m_hopper, m_cellevator));
 
     new JoystickButton(m_weapons, Button.kBack.value).whenPressed(new PowerCellEject(m_intake, m_hopper, m_cellevator));
     new JoystickButton(m_weapons, Button.kBack.value)

@@ -44,7 +44,7 @@ public class ClimbManually extends CommandBase {
       m_climber.stopClimb();
       m_climber.engageFrictionBrake();
     }
-    else if (Math.abs(m_speed.getAsDouble()) < 0.01) {
+    else if (Math.abs(m_speed.getAsDouble()) < 0.05) {
       m_climber.engageFrictionBrake();
       m_climber.stopClimb();
     }
