@@ -26,6 +26,6 @@ public class LauncherWallShot extends InstantCommand {
   public void initialize() {
     m_launcher.stopLauncher();
     m_launcher.setShortLaunchAngle();
-    m_launcher.revShortShot();
+    m_launcher.revWallShot();
   }
 }
