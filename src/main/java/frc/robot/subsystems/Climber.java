@@ -173,7 +173,7 @@ public class Climber extends SubsystemBase {
    */
   public void engageFrictionBrake() {
     m_frictionBrake.set(kFrictionBrakeEnabled);
-    m_FrictionBrakeStatus.setBoolean(true);
+    // m_FrictionBrakeStatus.setBoolean(true);
   }
 
   /**
