@@ -40,7 +40,7 @@ public class Climber extends SubsystemBase {
   private final ShuffleboardLayout m_climberStatus;
 
   private final NetworkTable m_PartyTable;
-  private final NetworkTableEntry m_FrictionBrakeStatus;
+  private final NetworkTableEntry m_ClimbStatus;
 
 
   /**
@@ -63,7 +63,7 @@ public class Climber extends SubsystemBase {
     shuffleboardInit();
 
     m_PartyTable = NetworkTableInstance.getDefault().getTable("Party Statuses");
-    m_FrictionBrakeStatus = m_PartyTable.getEntry("Friction Brake Engaged");
+    m_ClimbStatus = m_PartyTable.getEntry("Climb Status");
 
   }
 
@@ -108,6 +108,12 @@ public class Climber extends SubsystemBase {
    */
   public void climb(double speed) {
     m_climberMotor.set(-speed);
+    if (Math.abs(speed) >= 0.05) {
+      m_ClimbStatus.setBoolean(true);
+    } else {
+      
+    m_ClimbStatus.setBoolean(false);
+    }
   }
 
   /**
@@ -173,7 +179,6 @@ public class Climber extends SubsystemBase {
    */
   public void engageFrictionBrake() {
     m_frictionBrake.set(kFrictionBrakeEnabled);
-    m_FrictionBrakeStatus.setBoolean(true);
   }
 
   /**

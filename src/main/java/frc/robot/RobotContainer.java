@@ -31,6 +31,7 @@ import static frc.robot.Constants.OIConstants.*;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+  private final Party m_party;
   private final Drivetrain m_drivetrain;
   private final Vision m_vision;
   private final Intake m_intake;
@@ -50,7 +51,8 @@ public class RobotContainer {
    */
   public RobotContainer() {
     CameraServer.getInstance().startAutomaticCapture();
-
+    
+    m_party = new Party();
     m_drivetrain = new Drivetrain();
     m_vision = new Vision();
     m_intake = new Intake();

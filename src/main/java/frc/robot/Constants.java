@@ -340,16 +340,16 @@ public final class Constants {
         // Each possible LED mode correlates to a value for the Spark, as defined in the Rev Blinkin docs.
         // The LED modes correspond to a particular activity on the robot, used as LED color feedback.
         public static final double kDisabled = 0.43;            // Beats per minute: Red and Orange
+        public static final double kHighGear = 0.93;            // Solid White
+        public static final double kLowGear = 0.67;             // Solid Gold
         public static final double k1PC = 0.17;                 // Solid: Orange
         public static final double k2PC = 0.27;                 // Heartbeat Fast: Orange
         public static final double k3PC = 0.35;                 // Strobe: Orange
         public static final double kAligned = 0.75;             // Solid: Dark Green
-        public static final double kRevingToSpeed = 0.79;       // Solid: Blue Green
-        public static final double kRevFullSpeed = -0.37;       // Color Wave: Forest
-        public static final double kHighAngleShoot = -0.15;     // Strobe: Red
-        public static final double kLowAngleShoot = -0.03;      // Solid: Red
-        public static final double kClimbMaxHeight = 0.57;      // Solid: Hot Pink
-        public static final double kClimbing = -0.93;           // Lava: Rainbow
+        public static final double kRevToSpeed = 0.57;          // Solid: Hot Pink 
+        public static final double kRevvedAndAligned = -0.03;   // Solid: Red
+        public static final double kLaunchAngleToggle = 0.79;   // Solid: Blue Green
+        public static final double kControlPanel = 0.71;        // Solid Lawn Green
         public static final double kDoneClimb = -0.99;          // Rainbow: Rainbow
     }
 

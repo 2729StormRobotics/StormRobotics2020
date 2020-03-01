@@ -82,6 +82,10 @@ public class Launcher extends SubsystemBase {
     // Initialize pid coefficients
     pidInit();
 
+    m_PartyTable = NetworkTableInstance.getDefault().getTable("Party Statuses");
+    m_RevStatus = m_PartyTable.getEntry("Revved");
+    m_LaunchAngleStatus = m_PartyTable.getEntry("Launch Angle Toggled");
+
     // Initialize pistons
     pistonInit();
 
@@ -93,13 +97,6 @@ public class Launcher extends SubsystemBase {
         .withProperties(Map.of("Label position", "TOP"));
 
     shuffleboardInit();
-
-    m_PartyTable = NetworkTableInstance.getDefault().getTable("Party Statuses");
-    m_RevStatus = m_PartyTable.getEntry("Revved");
-    m_LaunchAngleStatus = m_PartyTable.getEntry("Launch Angle Toggled");
-
-
-
   }
 
   /**
@@ -170,7 +167,7 @@ public class Launcher extends SubsystemBase {
   public void setLongLaunchAngle() {
     m_launcherAnglePistons.set(kLongLaunchValue);
     m_launchType = "Long Shot";
-    m_LaunchAngleStatus.setBoolean(true);
+    m_LaunchAngleStatus.setBoolean(false);
   }
 
   /**
@@ -278,7 +275,7 @@ public class Launcher extends SubsystemBase {
     return launchSpeed;
   }
 
-    /**
+  /**
    * Calculate the desired speed of the launch motors.
    * 
    * @param distance The horizontal distance from the vision target
@@ -286,7 +283,7 @@ public class Launcher extends SubsystemBase {
    */
   public double calculateLaunchSpeedQuad() {
     double distance = getDistanceToTarget();
-    double launchSpeed = -0.00220687 * Math.pow(distance, 2) + 0.843151 * distance -7.62407;
+    double launchSpeed = -0.00220687 * Math.pow(distance, 2) + 0.843151 * distance - 7.62407;
 
     if (launchSpeed < 0) {
       launchSpeed = 0;
