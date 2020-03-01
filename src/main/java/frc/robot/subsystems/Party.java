@@ -48,79 +48,94 @@ public class Party extends SubsystemBase {
 
     // Instantiate led driver and assign to its port
     m_ledDriver = new Spark(kLedBlinkinDriverPort);
-  }
-
-  // Method for setting LED mode to normal: Red and Orange Color Waves
-  public void setToNormal() {
-    m_ledDriver.set(kNormal);
+    m_ledDriver.setSafetyEnabled(enabled);
   }
 
   // Methods for each LED mode
-  // Set LED blinkin to the spark motor double
-  public void turnWhite() {
-    // For when there is 1 power cell in cellevator
-    m_ledDriver.set(kWhite);
+  // Set LED blinkin to the spark motor double  
+  public void setDisabledColor() {
+    // For when robot is disabled
+    // Beats per minute, orange and red
+    m_ledDriver1.set(kDisabled);
+    m_ledDriver2.set(kDisabled);
   }
 
-  public void turnGray() {
-    // For when when there is 2 power cells in cellevator
-    m_ledDriver.set(kGray);
+  public void set1PowercellColor() {
+    // For when there is one powercell in cellevator
+    // Color 2 Solid
+    m_ledDriver1.set(k1PC);
+    m_ledDriver2.set(k1PC);
   }
 
-  public void turnBlack() {
-    // For when there are 3 power cells in cellevator
-    m_ledDriver.set(kBlack);
+  public void set2PowercellColor() {
+    // For when there are two powercells in the cellevator
+    // Color 2 Heartbeat Fast
+    m_ledDriver1.set(k2PC);
+    m_ledDriver2.set(k2PC);
   }
 
-  public void turnGreen() {
-    // For when aligned to target
-    m_ledDriver.set(kGreen);
+  public void set3PowercellColor() {
+    // For when there are three powercells in the cellevator
+    // Color 2 Strobe
+    m_ledDriver1.set(k3PC);
+    m_ledDriver2.set(k3PC);
   }
 
-  public void turnYellow() {
-    // For when aligning to target but not aligned yet
-    m_ledDriver.set(kYellow);
+  public void setAlignedColor() {
+    // For when the robot is aligned to the target
+    // Dark Green Solid
+    m_ledDriver1.set(kAligned);
+    m_ledDriver2.set(kAligned);
   }
 
-  public void turnHeartbeatBlue() {
-    // For when launcher is at desired speed
-    m_ledDriver.set(kHeartbeatBlue);
+  public void setRevtoSpeedColor() {
+    // For when the launcher is revved to speed
+    // Blue Green Solid
+    m_ledDriver1.set(kRevingToSpeed);
+    m_ledDriver2.set(kRevingToSpeed);
   }
 
-  public void turnPink() {
-    // For when launcher is at higher angle
-    m_ledDriver.set(kPink);
+  public void setRevvedandAlignedColor() {
+    // For when the launcher is ready to launch, aligned and revved
+    // Forest Color Wave
+    m_ledDriver1.set(kRevFullSpeed);
+    m_ledDriver2.set(kRevFullSpeed);
   }
 
-  public void turnViolet() {
-    // For when launcher is at lower angle
-    m_ledDriver.set(kViolet);
+  public void setHighAngleColor() {
+    // For when the launcher is at the high angle
+    // Color 1 Strobe
+    m_ledDriver1.set(kHighAngleShoot);
+    m_ledDriver2.set(kHighAngleShoot);
   }
 
-  public void turnStrobeGold() {
-    // For when climber is going up
-    m_ledDriver.set(kStrobeGold);
+  public void setLowAngleColor() {
+    // For when the launcher is at the low angle
+    // Color 1 Solid
+    m_ledDriver1.set(kLowAngleShoot);
+    m_ledDriver2.set(kLowAngleShoot);
   }
 
-  public void turnStrobeWhite() {
-    // For when climber is going down
-    m_ledDriver.set(kStrobeWhite);
+  public void setClimbMaxColor() {
+    // For when the climbing hook is at max height
+    // Hot Pink Solid
+    m_ledDriver1.set(kClimbMaxHeight);
+    m_ledDriver2.set(kClimbMaxHeight);
   }
 
-  public void turnRed() {
-    // For when climber hooks have reached max height
-    m_ledDriver.set(kRed);
+  public void setClimbingColor() {
+    // For when the robot is climbing
+    // Rainbow Lava
+    m_ledDriver1.set(kClimbing);
+    m_ledDriver2.set(kClimbMaxHeight);
   }
 
-  public void turnRainbowParty() {
-    // For when a successful climb has been completed
-    // Also has a designated button on controller for any other time
-    m_ledDriver.set(kRainbowParty);
-  }
-
-  public void turnOrange() {
-    // for anything extra
-    m_ledDriver.set(kOrange);
+  public void setRainbowParty() {
+    // For when a successful climb has been done
+    // there is also a designated button for anytime
+    // Rainbow Rainbow
+    m_ledDriver1.set(kDoneClimb);
+    m_ledDriver2.set(kDoneClimb);
   }
 
   public void updateNetworkTable() {
