@@ -43,7 +43,6 @@ public class Cellevator extends SubsystemBase {
   private boolean m_previousBBTop;
   private boolean m_ballInFeeder;
 
-
   /**
    * Creates a new Cellevator.
    */
@@ -240,6 +239,13 @@ public class Cellevator extends SubsystemBase {
         && getMiddlePrevious();
 
     return topClearAndMiddleOccupied || onlyBottomOccupied;
+  }
+
+  public boolean safeToCellevateForLaunch() {
+    boolean middleOccupied = !isMiddleGapClear();
+    boolean onlyBottomOccupied = isBottomBallPresent() && isMiddleGapClear() && getMiddlePrevious();
+
+    return middleOccupied || onlyBottomOccupied;
   }
 
   public boolean readyToLoad() {
