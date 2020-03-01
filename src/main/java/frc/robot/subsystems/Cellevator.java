@@ -253,6 +253,10 @@ public class Cellevator extends SubsystemBase {
     return isBallInFeeder() && !isBottomBallPresent();
   }
 
+  public boolean readyToLoadForLaunch() {
+    return !isBottomBallPresent();
+  }
+
   /**
    * Creates the entries for our shuffleboard tab
    */

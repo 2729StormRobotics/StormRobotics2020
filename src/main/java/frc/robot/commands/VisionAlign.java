@@ -46,6 +46,7 @@ public class VisionAlign extends PIDCommand {
 
     getController().setTolerance(kAutoAlignTolerance, kAutoAlignSpeedTolerance);
     SendableRegistry.setName(getController(), "Vision Align PID");
+    m_drivetrain.shiftLow();
 
     addRequirements(m_drivetrain);
   }

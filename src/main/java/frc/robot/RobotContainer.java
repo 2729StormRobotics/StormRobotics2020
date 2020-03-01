@@ -120,10 +120,14 @@ public class RobotContainer {
     new JoystickButton(m_weapons, Button.kA.value)
         .whenReleased(new LauncherModeStop(m_launcher, m_intake, m_hopper, m_cellevator));
     new JoystickButton(m_weapons, Button.kB.value).whenPressed(new IntakeToggle(m_intake));
-    new JoystickButton(m_weapons, Button.kStart.value).whenPressed(new LauncherWallShot(m_launcher));
-    new JoystickButton(m_weapons, Button.kStart.value).whenReleased(new LauncherStop(m_launcher));
-    new JoystickButton(m_weapons, Button.kY.value).whenPressed(new LauncherTrenchShot(m_launcher));
-    new JoystickButton(m_weapons, Button.kY.value).whenReleased(new LauncherStop(m_launcher));
+    new JoystickButton(m_weapons, Button.kStart.value)
+        .whenPressed(new LauncherModeWall(m_launcher, m_intake, m_hopper, m_cellevator));
+    new JoystickButton(m_weapons, Button.kStart.value)
+        .whenReleased(new LauncherModeStop(m_launcher, m_intake, m_hopper, m_cellevator));
+    new JoystickButton(m_weapons, Button.kY.value)
+        .whenPressed(new LauncherModeTrench(m_launcher, m_intake, m_hopper, m_cellevator));
+    new JoystickButton(m_weapons, Button.kY.value)
+        .whenReleased(new LauncherModeStop(m_launcher, m_intake, m_hopper, m_cellevator));
 
     new JoystickButton(m_weapons, Button.kBack.value).whenPressed(new PowerCellEject(m_intake, m_hopper, m_cellevator));
     new JoystickButton(m_weapons, Button.kBack.value)

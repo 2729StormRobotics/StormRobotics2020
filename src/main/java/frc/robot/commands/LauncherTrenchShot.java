@@ -19,6 +19,7 @@ public class LauncherTrenchShot extends InstantCommand {
   public LauncherTrenchShot(Launcher subsystem) {
     m_launcher = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(m_launcher);
   }
 
   // Called when the command is initially scheduled.

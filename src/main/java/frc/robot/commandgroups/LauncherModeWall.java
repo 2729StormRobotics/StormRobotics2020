@@ -7,11 +7,8 @@
 
 package frc.robot.commandgroups;
 
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import frc.robot.commands.CellevateForLaunch;
-import frc.robot.commands.HopperAgitate;
-import frc.robot.commands.IntakeRun;
-import frc.robot.commands.LauncherVariableShot;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.LauncherWallShot;
 import frc.robot.subsystems.Cellevator;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
@@ -20,12 +17,14 @@ import frc.robot.subsystems.Launcher;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class PowerCellFlow extends ParallelCommandGroup {
+public class LauncherModeWall extends SequentialCommandGroup {
   /**
-   * Creates a new PowerCellFlow.
+   * Creates a new LauncherMode.
    */
-  public PowerCellFlow(Launcher launcher, Intake intake, Hopper hopper, Cellevator cellevator) {
+  public LauncherModeWall(Launcher launcher, Intake intake, Hopper hopper, Cellevator cellevator) {
     // Add your commands in the super() call, e.g.
-    super(new LauncherVariableShot(launcher), new IntakeRun(intake), new HopperAgitate(hopper), new CellevateForLaunch(cellevator));
+    // super(new FooCommand(), new BarCommand());
+    super(new LauncherWallShot(launcher),
+        new PowerCellFlowFixed(intake, hopper, cellevator));
   }
 }

@@ -37,7 +37,7 @@ public class CellevateForLaunch extends CommandBase {
       m_cellevator.stopCellevator();
     }
 
-    if (m_cellevator.readyToLoad()) {
+    if (m_cellevator.readyToLoadForLaunch()) {
       m_cellevator.load();
     } else {
       m_cellevator.stopLoader();
