@@ -95,7 +95,7 @@ public class Launcher extends SubsystemBase {
     shuffleboardInit();
 
     m_PartyTable = NetworkTableInstance.getDefault().getTable("Party Statuses");
-    m_RevStatus = m_PartyTable.getEntry("Revved")
+    m_RevStatus = m_PartyTable.getEntry("Revved");
     m_LaunchAngleStatus = m_PartyTable.getEntry("Launch Angle Toggled");
 
 
@@ -243,8 +243,8 @@ public class Launcher extends SubsystemBase {
     m_pidController.setReference(revSpeed, ControlType.kVelocity, 0, feedforward);
   }
 
-  public void revShortShot() {
-    revToSpeed(kShortShotSpeed);
+  public void revWallShot() {
+    revToSpeed(kWallShotSpeed);
     m_RevStatus.setBoolean(true);
   }
 

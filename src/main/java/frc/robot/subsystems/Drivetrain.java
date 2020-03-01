@@ -72,9 +72,9 @@ public class Drivetrain extends SubsystemBase {
   // values mean target is to the left. Measured in degrees
   private boolean m_targetVisible = false;
 
-  private final NetworkTable m_PartyTable;
-  private final NetworkTableEntry m_HighGearStatus;
-  private final NetworkTableEntry m_LowGearStatus;
+  // private final NetworkTable m_PartyTable;
+  // private final NetworkTableEntry m_HighGearStatus;
+  // private final NetworkTableEntry m_LowGearStatus;
 
   /**
    * Creates a new Drivetrain.
@@ -274,7 +274,7 @@ public class Drivetrain extends SubsystemBase {
     if (m_highGear) {
       m_highGear = false;
       shiftGears();
-      m_LowGearStatus.setBoolean(true);
+      // m_LowGearStatus.setBoolean(true);
     }
   }
 
@@ -283,7 +283,7 @@ public class Drivetrain extends SubsystemBase {
     if (!m_highGear) {
       m_highGear = true;
       shiftGears();
-      m_HighGearStatus.setBoolean(true);
+      // m_HighGearStatus.setBoolean(true);
     }
   }
 

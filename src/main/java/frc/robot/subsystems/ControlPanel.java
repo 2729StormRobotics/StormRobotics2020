@@ -181,8 +181,9 @@ public class ControlPanel extends SubsystemBase {
   }
 
   public boolean onTargetColor() {
-    return m_currentColor.equals(m_targetColor);
-    m_ControlPanelColorStatus.setBoolean(true);
+    boolean onTargetColor = m_currentColor.equals(m_targetColor);
+    m_ControlPanelColorStatus.setBoolean(onTargetColor);
+    return onTargetColor;
   }
 
   // checks to see if wheel has passed 8 times
