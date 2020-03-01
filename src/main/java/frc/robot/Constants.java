@@ -141,9 +141,9 @@ public final class Constants {
 
         public static final double kVelocityConversion = 1.0 / 60.0;
 
-        public static final double kWallShotSpeed = 53;
-        public static final double kTrenchShotSpeed = 75;
-        public static final double kMaxShotSpeed = 80;
+        public static final double kWallShotSpeed = 52;
+        public static final double kTrenchShotSpeed = 84;
+        public static final double kMaxShotSpeed = 85;
 
         public static final Value kShortLaunchValue = Value.kReverse;
         public static final Value kLongLaunchValue = Value.kForward;

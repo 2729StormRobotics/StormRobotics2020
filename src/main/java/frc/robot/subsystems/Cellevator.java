@@ -243,7 +243,7 @@ public class Cellevator extends SubsystemBase {
 
   public boolean cellevateForLaunch() {
     boolean topOccupied = isTopBallPresent();
-    boolean middleOccupied = isMiddleGapClear() && !getMiddlePrevious();
+    boolean middleOccupied = isMiddleGapClear() || !getMiddlePrevious();
     boolean bottomOccupied = isBottomBallPresent();
 
     return topOccupied || middleOccupied || bottomOccupied;
@@ -254,7 +254,7 @@ public class Cellevator extends SubsystemBase {
   }
 
   public boolean readyToLoadForLaunch() {
-    return !isBottomBallPresent();
+    return !isBottomBallPresent() && isMiddleGapClear();
   }
 
   /**

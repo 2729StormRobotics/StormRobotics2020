@@ -206,7 +206,7 @@ public class Launcher extends SubsystemBase {
    * @return The speed of the left motor in RPM.
    */
   public double getLeftLauncherSpeed() {
-    return m_leftEncoder.getVelocity() / kVelocityConversion;
+    return m_leftEncoder.getVelocity();
   }
 
   /**
@@ -215,7 +215,7 @@ public class Launcher extends SubsystemBase {
    * @return The speed of the right motor in RPM.
    */
   public double getRightLauncherSpeed() {
-    return m_rightEncoder.getVelocity() / kVelocityConversion;
+    return m_rightEncoder.getVelocity();
   }
 
   /**

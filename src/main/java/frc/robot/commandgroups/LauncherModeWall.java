@@ -24,7 +24,7 @@ public class LauncherModeWall extends SequentialCommandGroup {
   public LauncherModeWall(Launcher launcher, Intake intake, Hopper hopper, Cellevator cellevator) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
-    super(new LauncherWallShot(launcher),
-        new PowerCellFlowFixed(intake, hopper, cellevator));
+    super(new LauncherWallShot(launcher).withTimeout(2),
+        new PowerCellFlowWall(launcher, intake, hopper, cellevator));
   }
 }

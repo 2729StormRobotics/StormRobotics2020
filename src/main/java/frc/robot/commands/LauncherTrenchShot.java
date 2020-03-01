@@ -7,10 +7,12 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Launcher;
 
-public class LauncherTrenchShot extends InstantCommand {
+import static frc.robot.Constants.LauncherConstants.kTrenchShotSpeed;
+
+public class LauncherTrenchShot extends CommandBase {
   private final Launcher m_launcher;
 
   /**
@@ -27,5 +29,10 @@ public class LauncherTrenchShot extends InstantCommand {
   public void initialize() {
     m_launcher.setLongLaunchAngle();
     m_launcher.revTrenchShot();
+  }
+
+  @Override
+  public boolean isFinished() {
+    return Math.abs(m_launcher.getLauncherAvgSpeed() -  kTrenchShotSpeed) < .5;
   }
 }

@@ -51,6 +51,12 @@ public class VisionAlign extends PIDCommand {
     addRequirements(m_drivetrain);
   }
 
+  @Override
+  public void end(boolean interrupted) {
+    m_drivetrain.shiftHigh();
+    super.end(interrupted);
+  }
+
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {

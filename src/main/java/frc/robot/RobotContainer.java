@@ -68,7 +68,7 @@ public class RobotContainer {
     m_autoChooser.addOption("Drive then Shoot",
         new AutoDriveThenShoot(m_drivetrain, m_launcher, m_intake, m_hopper, m_cellevator));
     m_autoChooser.addOption("Shoot then Drive",
-        new AutoDriveThenShoot(m_drivetrain, m_launcher, m_intake, m_hopper, m_cellevator));
+        new AutoShootThenDrive(m_drivetrain, m_launcher, m_intake, m_hopper, m_cellevator));
     m_autoChooser.addOption("Just Drive", new DriveDistance(36, m_drivetrain));
 
     m_drivetrain.setDefaultCommand(
