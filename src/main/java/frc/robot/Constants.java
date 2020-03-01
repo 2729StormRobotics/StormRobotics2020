@@ -335,7 +335,7 @@ public final class Constants {
 
     public static final class PartyConstants {
         // DIO port number constants for the two LED Blinkin Drivers
-        public static final int kLedBlinkinDriverPort = 0;
+        public static final int kLedBlinkinDriverPort = 9;
 
         // Each possible LED mode correlates to a value for the Spark, as defined in the Rev Blinkin docs.
         // The LED modes correspond to a particular activity on the robot, used as LED color feedback.

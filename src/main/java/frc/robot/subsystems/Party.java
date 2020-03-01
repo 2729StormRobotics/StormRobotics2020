@@ -46,7 +46,7 @@ public class Party extends SubsystemBase {
     m_PartyTable = NetworkTableInstance.getDefault().getTable("Party Statuses");
     m_CellStatus = m_PartyTable.getEntry("Cell Count");
     m_AlignStatus = m_PartyTable.getEntry("Aligned");
-    m_RevStatus = m_PartyTable.getEntry(("Revved"));
+    m_RevStatus = m_PartyTable.getEntry("Revved");
     m_LaunchAngleStatus = m_PartyTable.getEntry("Launch Angle Toggled");
     m_ClimbStatus = m_PartyTable.getEntry("Climb Status");
     m_ControlPanelColorStatus = m_PartyTable.getEntry("Color Detected");
@@ -155,6 +155,7 @@ public class Party extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     updateNetworkTable();
+
     if (m_ClimbStatus.getBoolean(false)) {
       setRainbowParty();
     }
