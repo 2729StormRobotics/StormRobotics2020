@@ -78,7 +78,7 @@ public class RobotContainer {
                         () -> m_driver.getY(Hand.kLeft), () -> m_driver.getY(Hand.kRight), m_drivetrain));
 
         m_climber.setDefaultCommand(new ClimbManually(() -> m_weapons.getY(Hand.kLeft), m_climber));
-        m_cellevator.setDefaultCommand(new Cellevate(m_cellevator));
+        m_cellevator.setDefaultCommand(new CellevateForIndex(m_cellevator));
 
         // Configure the button bindings
         configureButtonBindings();
