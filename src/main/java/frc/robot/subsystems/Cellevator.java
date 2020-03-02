@@ -11,10 +11,10 @@ import static frc.robot.Constants.CellevatorConstants.*;
 
 import java.util.Map;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -25,30 +25,33 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Cellevator extends SubsystemBase {
-  private final CANSparkMax m_loaderMotor;
-  private final CANSparkMax m_cellevatorMotor;
+  private final WPI_TalonSRX m_loaderMotor;
+  private final WPI_TalonSRX m_cellevatorMotor;
 
   private final DigitalInput m_ballDetectTop;
   private final DigitalInput m_ballDetectBottom;
   private final DigitalInput m_ballDetectMiddle;
   private final DigitalInput m_ballDetectFeed;
 
-  private final ShuffleboardTab m_cellevatorTab;
-  private final ShuffleboardLayout m_cellevatorConditions;
-  private final NetworkTableEntry m_intakeStatus;
+  private final ShuffleboardTab m_testingTab;
+  private final ShuffleboardLayout m_cellevatorStatus;
 
   private int m_powerCellCount;
-  private boolean m_previousBBMiddle;
-  private boolean m_previousBBBottom;
-  private boolean m_previousBBTop;
-  private boolean m_ballInFeeder;
+  private int m_powerCellsIn;
+  private int m_powerCellsOut;
+  private boolean m_previousBottomBall;
+  private boolean m_previousMiddleBall;
+  private boolean m_previousTopBall;
+
+  private final NetworkTable m_partyTable;
+  private final NetworkTableEntry m_cellCountPartyStatus;
 
   /**
    * Creates a new Cellevator.
    */
   public Cellevator() {
-    m_cellevatorMotor = new CANSparkMax(kCellevatorMotorPort, MotorType.kBrushed);
-    m_loaderMotor = new CANSparkMax(kLoaderMotorPort, MotorType.kBrushed);
+    m_cellevatorMotor = new WPI_TalonSRX(kCellevatorMotorPort);
+    m_loaderMotor = new WPI_TalonSRX(kLoaderMotorPort);
 
     motorInit(m_cellevatorMotor, kHolderMotorInverted);
     motorInit(m_loaderMotor, kLoaderMotorInverted);
@@ -59,25 +62,28 @@ public class Cellevator extends SubsystemBase {
     m_ballDetectFeed = new DigitalInput(kBallFeedPort);
 
     m_powerCellCount = 0;
-    m_previousBBMiddle = false;
-    m_previousBBBottom = false;
-    m_previousBBTop = false;
-    m_intakeStatus = NetworkTableInstance.getDefault().getTable("Power Cells").getEntry("Intake Running");
-    m_ballInFeeder = m_intakeStatus.getBoolean(false);
+    m_powerCellsIn = 0;
+    m_powerCellsOut = 0;
+    m_previousBottomBall = false;
+    m_previousMiddleBall = false;
+    m_previousTopBall = false;
 
-    m_cellevatorTab = Shuffleboard.getTab(kShuffleboardTab);
-    m_cellevatorConditions = m_cellevatorTab.getLayout("Power Cells", BuiltInLayouts.kList)
+    m_testingTab = Shuffleboard.getTab(kShuffleboardTab);
+    m_cellevatorStatus = m_testingTab.getLayout("Power Cells", BuiltInLayouts.kList)
         .withProperties(Map.of("Label position", "TOP"));
 
-    shuffleboardInit();
+    m_partyTable = NetworkTableInstance.getDefault().getTable("Party Statuses");
+    m_cellCountPartyStatus = m_partyTable.getEntry("Cell Count");
 
+    shuffleboardInit();
   }
 
-  private void motorInit(CANSparkMax motor, boolean invert) {
-    motor.restoreFactoryDefaults(); // Reset settings in motor in case they are changed
-    motor.setIdleMode(IdleMode.kBrake); // Sets the motors to brake mode from the beginning
+  private void motorInit(WPI_TalonSRX motor, boolean invert) {
+    motor.configFactoryDefault(); // Reset settings in motor in case they are changed
+    motor.setNeutralMode(NeutralMode.Brake); // Sets the motors to brake mode from the beginning
     motor.setInverted(invert); // Inverts the motor if needed
-    motor.setSmartCurrentLimit(kCellevatorCurrentLimit);
+    motor.configContinuousCurrentLimit(kCellevatorCurrentLimit); // Set the continuous current limit
+    motor.configPeakCurrentLimit(0); // Set peak to zero so that the continuous current limit is always obeyed
   }
 
   /**
@@ -85,7 +91,7 @@ public class Cellevator extends SubsystemBase {
    * 
    * @param speed The speed to run the Cellevator motors
    */
-  public void runCellevator(double speed) {
+  private void runCellevator(double speed) {
     m_cellevatorMotor.set(speed);
   }
 
@@ -105,7 +111,7 @@ public class Cellevator extends SubsystemBase {
    * 
    * @param speed The speed to run the Cellevator motors
    */
-  public void runLoader(double speed) {
+  private void runLoader(double speed) {
     m_loaderMotor.set(speed);
   }
 
@@ -124,8 +130,8 @@ public class Cellevator extends SubsystemBase {
    * inverts the Cellevator to unload power cells
    */
   public void eject() {
-    runLoader(-1);
-    runCellevator(-1);
+    runLoader(-0.8);
+    runCellevator(-0.8);
   }
 
   /**
@@ -137,11 +143,25 @@ public class Cellevator extends SubsystemBase {
   }
 
   /**
+   * Returns whether a ball was previously present at the top of the cellevator
+   */
+  public boolean wasTopBallPresent() {
+    return m_previousTopBall;
+  }
+
+  /**
    * Gets the beam break value to see if there is a power cell present at the
    * middle of the cellevator
    */
-  public boolean isMiddleGapClear() {
-    return m_ballDetectMiddle.get();
+  public boolean isMiddleBallPresent() {
+    return !m_ballDetectMiddle.get();
+  }
+
+  /**
+   * Returns whether a ball was previously present at the middle of the cellevator
+   */
+  public boolean wasMiddleBallPresent() {
+    return m_previousMiddleBall;
   }
 
   /**
@@ -153,124 +173,91 @@ public class Cellevator extends SubsystemBase {
   }
 
   /**
+   * Returns whether a ball was previously present at the bottom of the cellevator
+   */
+  public boolean wasBottomBallPresent() {
+    return m_previousBottomBall;
+  }
+
+  /**
    * Gets the sensor value to detect if a ball is in the hopper to be loaded
    */
   public boolean isBallInFeeder() {
-    return m_ballInFeeder;
-    // return !m_ballDetectFeed.get();
-  }
-
-  /**
-   * returns the value of the beam break middle value before the current value
-   * 
-   * @return
-   */
-  public boolean getMiddlePrevious() {
-    return m_previousBBMiddle;
-  }
-
-  /**
-   * returns the value of the beam break bottom value before the current value
-   * 
-   * @return
-   */
-  public boolean getBottomPrevious() {
-    return m_previousBBBottom;
-  }
-
-  /**
-   * returns the value of the beam break top value before the current value
-   * 
-   * @return
-   */
-  public boolean getTopPrevious() {
-    return m_previousBBTop;
-  }
-
-  /**
-   * sets the boolean value of the previous middle beam break
-   */
-  public void setBeamBreakMiddlePrevious(boolean value) {
-    m_previousBBMiddle = value;
-  }
-
-  /**
-   * sets the boolean value of the previous bottom beam break
-   */
-  public void setBeamBreakBottomPrevious(boolean value) {
-    m_previousBBBottom = value;
-  }
-
-  /**
-   * sets the boolean value of the previous top beam break
-   */
-  public void setBeamBreakTopPrevious(boolean value) {
-    m_previousBBTop = value;
+    return !m_ballDetectFeed.get();
   }
 
   /**
    * adds to the count
    */
-  public void addPowerCellCount() {
-    m_powerCellCount++;
+  private void addIntakePowerCellCount() {
+    m_powerCellsIn++;
   }
 
   /**
    * subtracts from the count
    */
-  public void subtractPowerCellCount() {
-    m_powerCellCount--;
+  private void addLaunchPowerCellCount() {
+    m_powerCellsOut++;
+  }
+
+  /**
+   * sets the number of power cells in the cellevator by detecting their presence
+   * with the beam breaks
+   */
+  private void setPowerCellCount() {
+    m_powerCellCount = (isBottomBallPresent() ? 1 : 0) + (isMiddleBallPresent() ? 1 : 0) + (isTopBallPresent() ? 1 : 0);
+    m_cellCountPartyStatus.setNumber(m_powerCellCount);
   }
 
   /**
    * returns the amount of power cells in the cellevator
    */
-  public int getPowerCellCount() {
+  public int getCurrentCellCount() {
     return m_powerCellCount;
   }
 
   /**
-   * creates a boolean with a value that represents which condition is happening
-   * if either of the two conditions are true, then the holder motor will run
+   * Determines if it is safe to run the cellevator according to the following
+   * criteria: 1) No ball in the top OR 2) Only a ball in the bottom (safe to move
+   * to middle)
    */
-  public boolean safeToCellelevate() {
-    boolean topClearAndMiddleOccupied = !isTopBallPresent() && !isMiddleGapClear();
-    boolean onlyBottomOccupied = isBottomBallPresent() && !isTopBallPresent() && isMiddleGapClear()
-        && getMiddlePrevious();
+  public boolean safeToCellelevateForIndex() {
+    boolean topClearAndMiddleOccupied = !isTopBallPresent() && isMiddleBallPresent();
+    boolean onlyBottomOccupied = isBottomBallPresent() && !isTopBallPresent() && !isMiddleBallPresent();
 
     return topClearAndMiddleOccupied || onlyBottomOccupied;
   }
 
-  public boolean cellevateForLaunch() {
+  public boolean safeToCellevateForLaunch() {
     boolean topOccupied = isTopBallPresent();
-    boolean middleOccupied = isMiddleGapClear() || !getMiddlePrevious();
+    boolean middleOccupied = isMiddleBallPresent();
     boolean bottomOccupied = isBottomBallPresent();
 
     return topOccupied || middleOccupied || bottomOccupied;
   }
 
-  public boolean readyToLoad() {
-    return isBallInFeeder() && !isBottomBallPresent() && isMiddleGapClear();
-  }
-
-  public boolean readyToLoadForLaunch() {
-    return !isBottomBallPresent() && isMiddleGapClear();
+  public boolean safeToLoad() {
+    return isBallInFeeder() && !isBottomBallPresent();
   }
 
   /**
    * Creates the entries for our shuffleboard tab
    */
   private void shuffleboardInit() {
-    m_cellevatorConditions.addBoolean("Ball Held", () -> isTopBallPresent());
-    m_cellevatorConditions.addBoolean("Ball Loaded", () -> isBottomBallPresent());
-    m_cellevatorConditions.addBoolean("Gap Clear", () -> isMiddleGapClear());
-    m_cellevatorConditions.addNumber("Cell Count", () -> getPowerCellCount());
-    m_cellevatorConditions.addBoolean("Ball in Feeder", () -> isBallInFeeder());
+    m_cellevatorStatus.addBoolean("Top Ball", () -> isTopBallPresent());
+    m_cellevatorStatus.addBoolean("Bottom Ball", () -> isBottomBallPresent());
+    m_cellevatorStatus.addBoolean("Middle Ball", () -> isMiddleBallPresent());
+    m_cellevatorStatus.addNumber("Cellevator Count", () -> getCurrentCellCount());
+    m_cellevatorStatus.addNumber("Cells In", () -> m_powerCellsIn);
+    m_cellevatorStatus.addNumber("Cells Out", () -> m_powerCellsOut);
+    m_cellevatorStatus.addBoolean("Ball in Feeder", () -> isBallInFeeder());
   }
 
+  // This method will be called once per scheduler run
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    // Sets the current count of power cells in the cellevator
+    setPowerCellCount();
 
     /*
      * If the previous bottom beam break is not equal to the current then check if
@@ -279,32 +266,29 @@ public class Cellevator extends SubsystemBase {
      * This means that there is a power cell that has been taken in so we can add
      * one to the count
      */
-    if (m_previousBBBottom != isBottomBallPresent()) {
+    if (wasBottomBallPresent() != isBottomBallPresent()) {
       if (isBottomBallPresent()) {
-        addPowerCellCount();
+        addIntakePowerCellCount();
       }
       // sets the previous value equal to the present
-      setBeamBreakBottomPrevious(isBottomBallPresent());
+      m_previousBottomBall = isBottomBallPresent();
     }
 
-    if (m_previousBBMiddle != isMiddleGapClear()) {
+    if (wasMiddleBallPresent() != isMiddleBallPresent()) {
       // sets the previous value equal to the present
-      setBeamBreakMiddlePrevious(isMiddleGapClear());
+      m_previousMiddleBall = isMiddleBallPresent();
     }
 
-    if (m_previousBBTop != isTopBallPresent()) {
+    if (wasTopBallPresent() != isTopBallPresent()) {
       // if the previous top beam break is not equal to the current then checki if the
       // current value is false
       // this means that the power cell left the cellevator and into the launcher so
       // we can subtract one from the count
       if (!isTopBallPresent()) {
-        subtractPowerCellCount();
+        addLaunchPowerCellCount();
       }
       // sets the previous value equal to the present
-      setBeamBreakTopPrevious(isTopBallPresent());
+      m_previousTopBall = isTopBallPresent();
     }
-
-    m_ballInFeeder = m_intakeStatus.getBoolean(false);
   }
-
 }
