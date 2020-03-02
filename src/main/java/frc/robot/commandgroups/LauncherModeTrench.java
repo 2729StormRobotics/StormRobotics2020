@@ -8,7 +8,6 @@
 package frc.robot.commandgroups;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.LauncherTrenchShot;
 import frc.robot.subsystems.Cellevator;
 import frc.robot.subsystems.Hopper;

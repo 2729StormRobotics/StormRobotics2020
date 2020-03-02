@@ -141,12 +141,14 @@ public class Party extends SubsystemBase {
     boolean highGear = m_HighGearStatus.getBoolean(false);
     if (highGear != m_PriorHighGear) {
       m_GearshiftTimer.reset();
+      m_GearshiftTimer.start();
     }
     m_PriorHighGear = highGear;
 
     boolean launchAngle = m_LaunchAngleStatus.getBoolean(false);
     if (launchAngle != m_PriorLaunchAngle) {
       m_LaunchToggleTimer.reset();
+      m_LaunchToggleTimer.start();
     }
     m_PriorLaunchAngle = launchAngle;
   }
