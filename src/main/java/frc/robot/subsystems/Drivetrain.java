@@ -7,17 +7,10 @@
 
 package frc.robot.subsystems;
 
-import com.analog.adis16470.frc.ADIS16470_IMU;
-import com.revrobotics.CANEncoder;
-import com.revrobotics.CANPIDController;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.ControlType;
-import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -32,36 +25,34 @@ import static frc.robot.Constants.DriveConstants.*;
 
 import java.util.Map;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 public class Drivetrain extends SubsystemBase {
   // Creates variables for motor groups and differential drive
 
-  private final CANSparkMax m_leftMotorLeader;
-  private final CANSparkMax m_leftMotorFollower;
-  private final CANSparkMax m_rightMotorLeader;
-  private final CANSparkMax m_rightMotorFollower;
+  private final WPI_TalonSRX m_leftMotorLeader;
+  private final WPI_TalonSRX m_leftMotorFollower;
+  private final WPI_TalonSRX m_rightMotorLeader;
+  private final WPI_TalonSRX m_rightMotorFollower;
 
   private final DifferentialDrive m_drive;
-
-  // Creates variables for encoders
-  private final CANEncoder m_leftEncoder;
-  private final CANEncoder m_rightEncoder;
 
   private final SimpleMotorFeedforward m_leftFeedforward;
   private final SimpleMotorFeedforward m_rightFeedforward;
 
-  // pid controller
-  private final CANPIDController m_pidControllerLeft;
-  private final CANPIDController m_pidControllerRight;
-
   // Declare the gyro.
-  private final ADIS16470_IMU m_imu;
+  private final ADXRS450_Gyro m_imu;
 
   private boolean m_highGear = false;
   private boolean m_reverseDrive = false;
 
   private final Solenoid m_gearShift;
 
-  private final ShuffleboardTab m_drivetrainTab;
+  private final ShuffleboardTab m_testingTab;
   private final ShuffleboardLayout m_drivetrainStatus;
 
   // Add the Network Table for the limelight
@@ -81,10 +72,10 @@ public class Drivetrain extends SubsystemBase {
    */
   public Drivetrain() {
     // Sets variables equal to their ports and types
-    m_leftMotorLeader = new CANSparkMax(kLeftMotor1Port, MotorType.kBrushless);
-    m_leftMotorFollower = new CANSparkMax(kLeftMotor2Port, MotorType.kBrushless);
-    m_rightMotorLeader = new CANSparkMax(kRightMotor1Port, MotorType.kBrushless);
-    m_rightMotorFollower = new CANSparkMax(kRightMotor2Port, MotorType.kBrushless);
+    m_leftMotorLeader = new WPI_TalonSRX(kLeftMotor1Port);
+    m_leftMotorFollower = new WPI_TalonSRX(kLeftMotor2Port);
+    m_rightMotorLeader = new WPI_TalonSRX(kRightMotor1Port);
+    m_rightMotorFollower = new WPI_TalonSRX(kRightMotor2Port);
 
     motorInit(m_rightMotorLeader, kRightReversedDefault);
     motorInit(m_rightMotorFollower, kRightReversedDefault);
@@ -93,13 +84,6 @@ public class Drivetrain extends SubsystemBase {
 
     m_rightMotorFollower.follow(m_rightMotorLeader);
     m_leftMotorFollower.follow(m_leftMotorLeader);
-
-    m_leftEncoder = m_leftMotorLeader.getEncoder();
-    m_rightEncoder = m_rightMotorLeader.getEncoder();
-
-    // PID controllers for left and right side
-    m_pidControllerLeft = m_leftMotorLeader.getPIDController();
-    m_pidControllerRight = m_rightMotorLeader.getPIDController();
 
     m_drive = new DifferentialDrive(m_leftMotorLeader, m_rightMotorLeader);
     m_drive.setRightSideInverted(false);
@@ -110,53 +94,50 @@ public class Drivetrain extends SubsystemBase {
     m_rightFeedforward = new SimpleMotorFeedforward(kRightS, kRightV, kRightA);
 
     // Instantiate the gyro.
-    m_imu = new ADIS16470_IMU();
+    m_imu = new ADXRS450_Gyro();
     resetGyro();
 
     // Set a member variable for the limelight network table
     m_limelight = NetworkTableInstance.getDefault().getTable("limelight");
 
-    m_drivetrainTab = Shuffleboard.getTab(kShuffleboardTab);
-    m_drivetrainStatus = m_drivetrainTab.getLayout("Status", BuiltInLayouts.kList)
+    m_testingTab = Shuffleboard.getTab(kShuffleboardTab);
+    m_drivetrainStatus = m_testingTab.getLayout("Drivetrain", BuiltInLayouts.kList)
         .withProperties(Map.of("Label position", "TOP"));
 
     shuffleboardInit();
   }
 
-  private void motorInit(CANSparkMax motor, boolean invert) {
-    motor.restoreFactoryDefaults(); // Resets settings in motor in case they are changed
-    motor.setIdleMode(IdleMode.kBrake); // Sets the motors to brake mode from the beginning
-    motor.setSmartCurrentLimit(kCurrentLimit);
-    motor.setInverted(invert);
-    //motor.setOpenLoopRampRate(2);
-
-    encoderInit(motor.getEncoder()); // Initializes encoder within motor
+  private void motorInit(WPI_TalonSRX motor, boolean invert) {
+    motor.configFactoryDefault(); // Restores the default values in case something persists
+    motor.setNeutralMode(NeutralMode.Brake); // motor mode to brake mode
+    motor.setInverted(invert); // Invert the motor if needed.
+    encoderInit(motor); // Initialize the encoder.
   }
 
-  private void encoderInit(CANEncoder encoder) {
-    // Converts the input into desired value for distance and velocity
-    if (m_highGear) {
-      encoder.setPositionConversionFactor(kHighDistancePerPulse);
-      encoder.setVelocityConversionFactor(kHighSpeedPerPulse);
-    } else {
-      encoder.setPositionConversionFactor(kLowDistancePerPulse);
-      encoder.setVelocityConversionFactor(kLowSpeedPerPulse);
-    }
+  private void encoderInit(WPI_TalonSRX encoder) {
+    encoder.configSelectedFeedbackSensor(FeedbackDevice.SoftwareEmulatedSensor);
     encoderReset(encoder);
   }
 
-  private void encoderReset(CANEncoder encoder) {
-    encoder.setPosition(0);
+  private void encoderReset(WPI_TalonSRX encoder) {
+    // Converts the input into desired value for distance and velocity
+    if (m_highGear) {
+      encoder.configSelectedFeedbackCoefficient(kHighDistancePerPulse);
+    } else {
+      encoder.configSelectedFeedbackCoefficient(kLowDistancePerPulse);
+    }
+
+    encoder.setSelectedSensorPosition(0);
   }
 
   public void resetLeftEncoder() {
     // Resets all left-side drive encoders
-    encoderReset(m_leftEncoder);
+    encoderReset(m_leftMotorLeader);
   }
 
   public void resetRightEncoder() {
     // Resets all right-side drive encoders
-    encoderReset(m_rightEncoder);
+    encoderReset(m_rightMotorLeader);
   }
 
   // Resets all drive encoders
@@ -167,12 +148,12 @@ public class Drivetrain extends SubsystemBase {
 
   // Gets left side distance by averaging left encoders
   private double getLeftDistance() {
-    return -m_leftEncoder.getPosition();
+    return -m_leftMotorLeader.getSelectedSensorPosition();
   }
 
   // Gets right side distance by averaging right encoders
   private double getRightDistance() {
-    return -m_rightEncoder.getPosition();
+    return -m_rightMotorLeader.getSelectedSensorPosition();
   }
 
   // Gets average distance by averaging the right and left distance
@@ -182,12 +163,12 @@ public class Drivetrain extends SubsystemBase {
 
   // gets the speed from the left motors
   private double getLeftSpeed() {
-    return -m_leftEncoder.getVelocity();
+    return -m_leftMotorLeader.getSelectedSensorVelocity();
   }
 
   // gets the speed from the left motors
   private double getRightSpeed() {
-    return -m_rightEncoder.getVelocity();
+    return -m_rightMotorLeader.getSelectedSensorVelocity();
   }
 
   // gets the speed by averaging the left and the right speeds
@@ -227,15 +208,15 @@ public class Drivetrain extends SubsystemBase {
   }
 
   private void setLeftDistancePID() {
-    m_pidControllerLeft.setP(DriveDistancePID.kLeftP, DriveDistancePID.kProfile);
-    m_pidControllerLeft.setI(DriveDistancePID.kLeftI, DriveDistancePID.kProfile);
-    m_pidControllerLeft.setD(DriveDistancePID.kLeftD, DriveDistancePID.kProfile);
+    m_leftMotorLeader.config_kP(DriveDistancePID.kProfile, DriveDistancePID.kLeftP);
+    m_leftMotorLeader.config_kI(DriveDistancePID.kProfile, DriveDistancePID.kLeftI);
+    m_leftMotorLeader.config_kD(DriveDistancePID.kProfile, DriveDistancePID.kLeftD);
   }
 
   private void setRightDistancePID() {
-    m_pidControllerRight.setP(DriveDistancePID.kRightP, DriveDistancePID.kProfile);
-    m_pidControllerRight.setI(DriveDistancePID.kRightI, DriveDistancePID.kProfile);
-    m_pidControllerRight.setD(DriveDistancePID.kRightD, DriveDistancePID.kProfile);
+    m_rightMotorLeader.config_kP(DriveDistancePID.kProfile, DriveDistancePID.kRightP);
+    m_rightMotorLeader.config_kI(DriveDistancePID.kProfile, DriveDistancePID.kRightI);
+    m_rightMotorLeader.config_kD(DriveDistancePID.kProfile, DriveDistancePID.kRightD);
   }
 
   public void setDistancePID() {
@@ -248,14 +229,16 @@ public class Drivetrain extends SubsystemBase {
   public void tankDrive(double leftPower, double rightPower, boolean squareInputs) {
     if (m_reverseDrive) {
       m_drive.tankDrive(rightPower, leftPower, squareInputs);
-    }
-    else {
+    } else {
       m_drive.tankDrive(leftPower, rightPower, squareInputs);
     }
   }
 
   // Drives the motors using arcade drive
   public void arcadeDrive(double speed, double turn, boolean squareInputs) {
+    if (m_reverseDrive) {
+      reverseControls();
+    }
     m_drive.arcadeDrive(speed, turn, squareInputs);
   }
 
@@ -290,14 +273,14 @@ public class Drivetrain extends SubsystemBase {
   // Method to handle updating the pistons and encoder conversions
   private void shiftGears() {
     m_gearShift.set(m_highGear);
-    encoderInit(m_leftEncoder);
-    encoderInit(m_rightEncoder);
+    encoderInit(m_leftMotorLeader);
+    encoderInit(m_rightMotorLeader);
 
     resetAllEncoders();
   }
 
   // Invert a motor
-  private void invertMotor(CANSparkMax motor) {
+  private void invertMotor(WPI_TalonSRX motor) {
     motor.setInverted(!motor.getInverted());
   }
 
@@ -320,11 +303,10 @@ public class Drivetrain extends SubsystemBase {
     return (isVisionTargetDetected() && (m_xOffset > -1.5) && (m_xOffset < 1.5));
   }
 
-
   public void setDriveStates(TrapezoidProfile.State left, TrapezoidProfile.State right) {
-    m_pidControllerLeft.setReference(left.velocity, ControlType.kVelocity, 0,
+    m_leftMotorLeader.set(ControlMode.Position, left.position, DemandType.ArbitraryFeedForward,
         m_leftFeedforward.calculate(left.velocity));
-    m_pidControllerRight.setReference(right.velocity, ControlType.kVelocity, 0,
+    m_rightMotorLeader.set(ControlMode.Position, right.velocity, DemandType.ArbitraryFeedForward,
         m_rightFeedforward.calculate(right.velocity));
   }
 

@@ -51,8 +51,8 @@ public class Climber extends SubsystemBase {
 
     m_frictionBrake.set(kFrictionBrakeEnabled);
 
-    m_testingTab = Shuffleboard.getTab(kShuffleboardTab);
-    m_climberStatus = m_testingTab.getLayout("Climber Status", BuiltInLayouts.kList);
+    m_testingTab = Shuffleboard.getTab("Testing");
+    m_climberStatus = m_testingTab.getLayout("Climber", BuiltInLayouts.kList);
 
     shuffleboardInit();
 

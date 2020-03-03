@@ -68,7 +68,7 @@ public class Cellevator extends SubsystemBase {
     m_previousMiddleBall = false;
     m_previousTopBall = false;
 
-    m_testingTab = Shuffleboard.getTab(kShuffleboardTab);
+    m_testingTab = Shuffleboard.getTab("Testing");
     m_cellevatorStatus = m_testingTab.getLayout("Power Cells", BuiltInLayouts.kList)
         .withProperties(Map.of("Label position", "TOP"));
 

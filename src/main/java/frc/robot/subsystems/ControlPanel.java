@@ -76,8 +76,8 @@ public class ControlPanel extends SubsystemBase {
     m_colorMatch.addColorMatch(kGreenTarget);
     m_colorMatch.addColorMatch(kYellowTarget);
 
-    m_testingTab = Shuffleboard.getTab(kShuffleboardTab);
-    m_controlPanelStatus = m_testingTab.getLayout("Control Panel Status", BuiltInLayouts.kList)
+    m_testingTab = Shuffleboard.getTab("Testing");
+    m_controlPanelStatus = m_testingTab.getLayout("Control Panel", BuiltInLayouts.kList)
         .withProperties(Map.of("Label position", "TOP"));
 
     shuffleboardInit();
