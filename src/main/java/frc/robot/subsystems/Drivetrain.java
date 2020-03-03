@@ -304,9 +304,9 @@ public class Drivetrain extends SubsystemBase {
 
   public void setDriveStates(TrapezoidProfile.State left, TrapezoidProfile.State right) {
     m_leftMotorLeader.set(ControlMode.Position, left.position, DemandType.ArbitraryFeedForward,
-        m_leftFeedforward.calculate(left.velocity));
+        m_leftFeedforward.calculate(left.velocity) / 12.0);
     m_rightMotorLeader.set(ControlMode.Position, right.velocity, DemandType.ArbitraryFeedForward,
-        m_rightFeedforward.calculate(right.velocity));
+        m_rightFeedforward.calculate(right.velocity) / 12.0);
   }
 
   // puts data on the SmartDashboard

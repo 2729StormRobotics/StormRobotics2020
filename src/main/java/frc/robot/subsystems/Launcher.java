@@ -7,12 +7,12 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANEncoder;
-import com.revrobotics.CANPIDController;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.ControlType;
-import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -30,14 +30,10 @@ import static frc.robot.Constants.LauncherConstants.*;
 import java.util.Map;
 
 public class Launcher extends SubsystemBase {
-  private final CANSparkMax m_leftMotor;
-  private final CANSparkMax m_rightMotor;
-
-  private final CANEncoder m_leftEncoder;
-  private final CANEncoder m_rightEncoder;
+  private final WPI_TalonSRX m_leftMotor;
+  private final WPI_TalonSRX m_rightMotor;
 
   private final SimpleMotorFeedforward m_feedForward;
-  private final CANPIDController m_pidController;
 
   private final DoubleSolenoid m_launcherAnglePistons;
 
@@ -60,24 +56,18 @@ public class Launcher extends SubsystemBase {
     m_launcherAnglePistons = new DoubleSolenoid(kLongAngleChannel, kShortAngleChannel);
 
     // Instantiate the motors.
-    m_leftMotor = new CANSparkMax(kLeftMotorPort, MotorType.kBrushless);
-    m_rightMotor = new CANSparkMax(kRightMotorPort, MotorType.kBrushless);
-
-    // Instantiate the encoder.
-    m_leftEncoder = m_leftMotor.getEncoder();
-    m_rightEncoder = m_rightMotor.getEncoder();
+    m_leftMotor = new WPI_TalonSRX(kLeftMotorPort);
+    m_rightMotor = new WPI_TalonSRX(kRightMotorPort);
 
     // Initialize the the motors.
     motorInit(m_leftMotor);
     motorInit(m_rightMotor);
 
-    // Make right motor follow the left motor and set it to inverted.
-    m_leftMotor.follow(m_rightMotor, true);
+    // Make left motor follow the right motor and set it to inverted.
+    m_leftMotor.follow(m_rightMotor);
+    m_leftMotor.setInverted(InvertType.OpposeMaster);
 
     m_feedForward = new SimpleMotorFeedforward(kS, kV, kA);
-
-    // Initialize the PID controller for the motor controller.
-    m_pidController = m_rightMotor.getPIDController();
 
     // Initialize pid coefficients
     pidInit();
@@ -104,10 +94,10 @@ public class Launcher extends SubsystemBase {
    * 
    * @param motor The motor to initialize
    */
-  private void motorInit(CANSparkMax motor) {
-    motor.restoreFactoryDefaults(); // Just in case any settings persist between reboots.
-    motor.setIdleMode(IdleMode.kCoast); // Set the motor to coast mode, so that we don't lose momentum when we stop
-    encoderInit(motor.getEncoder());
+  private void motorInit(WPI_TalonSRX motor) {
+    motor.configFactoryDefault(); // Restores the default values in case something persists
+    motor.setNeutralMode(NeutralMode.Brake); // motor mode to brake mode
+    encoderInit(motor);
   }
 
   /**
@@ -115,8 +105,9 @@ public class Launcher extends SubsystemBase {
    * 
    * @param encoder The encoder to initialize
    */
-  private void encoderInit(CANEncoder encoder) {
-    encoder.setVelocityConversionFactor(kVelocityConversion);
+  private void encoderInit(WPI_TalonSRX encoder) {
+    encoder.configSelectedFeedbackSensor(FeedbackDevice.SoftwareEmulatedSensor);
+    encoder.configSelectedFeedbackCoefficient(kVelocityConversion);
     encoderReset(encoder); // Reset the encoder to 0, just in case
   }
 
@@ -125,8 +116,8 @@ public class Launcher extends SubsystemBase {
    * 
    * @param encoder The encoder to reset
    */
-  private void encoderReset(CANEncoder encoder) {
-    encoder.setPosition(0);
+  private void encoderReset(WPI_TalonSRX encoder) {
+    encoder.setSelectedSensorPosition(0);
   }
 
   /**
@@ -134,24 +125,7 @@ public class Launcher extends SubsystemBase {
    */
   private void pidInit() {
     // Set the proportional constant.
-    m_pidController.setP(LauncherPID.kP);
-    // Set the integral constant.
-    m_pidController.setI(LauncherPID.kI);
-    // Set the derivative constant.
-    m_pidController.setD(LauncherPID.kD);
-    // Set the integral zone. This value is the maximum |error| for the integral
-    // gain to take effect.
-    m_pidController.setIZone(LauncherPID.kIz);
-    // Set the feed-forward constant.
-    m_pidController.setFF(LauncherPID.kF);
-    // Set the output range.
-    m_pidController.setOutputRange(LauncherPID.kMinOutput, LauncherPID.kMaxOutput);
-  }
-
-  public void pidAdjust() {
-    m_pidController.setP(LauncherPID.kP);
-    m_pidController.setI(LauncherPID.kI);
-    m_pidController.setD(LauncherPID.kD);
+    m_rightMotor.config_kP(0, LauncherPID.kP);
   }
 
   /**
@@ -199,30 +173,12 @@ public class Launcher extends SubsystemBase {
   }
 
   /**
-   * Get the speed of the left motor.
-   * 
-   * @return The speed of the left motor in RPM.
-   */
-  public double getLeftLauncherSpeed() {
-    return m_leftEncoder.getVelocity();
-  }
-
-  /**
-   * Get the speed of the right motor.
+   * Get the speed of the motors.
    * 
    * @return The speed of the right motor in RPM.
    */
   public double getRightLauncherSpeed() {
-    return m_rightEncoder.getVelocity();
-  }
-
-  /**
-   * Get the average speed of the launcher motors.
-   * 
-   * @return The average speed of both launcher motors in RPM.
-   */
-  public double getLauncherAvgSpeed() {
-    return ((getLeftLauncherSpeed() + getRightLauncherSpeed()) / 2.0);
+    return m_rightMotor.getSelectedSensorVelocity();
   }
 
   /**
@@ -238,7 +194,7 @@ public class Launcher extends SubsystemBase {
     }
 
     double feedforward = m_feedForward.calculate(revSpeed);
-    m_pidController.setReference(revSpeed, ControlType.kVelocity, 0, feedforward);
+    m_rightMotor.set(ControlMode.Velocity, revSpeed, DemandType.ArbitraryFeedForward, feedforward / 12.0);
   }
 
   public void revWallShot() {
@@ -297,9 +253,9 @@ public class Launcher extends SubsystemBase {
    * Initialize the shuffleboard data
    */
   private void shuffleboardInit() {
-    m_launcherStatus.addNumber("Rev Speed", () -> getLauncherAvgSpeed());
+    m_launcherStatus.addNumber("Rev Speed", () -> getRightLauncherSpeed() * 60.0);
     m_launcherStatus.addString("Launch Type", () -> m_launchType);
-    m_launcherStatus.addNumber("Target Speed", () -> calculateLaunchSpeed());
+    m_launcherStatus.addNumber("Target Speed", () -> calculateLaunchSpeedQuad() * 60.0);
   }
 
   @Override

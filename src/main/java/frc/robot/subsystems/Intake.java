@@ -7,9 +7,6 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -22,9 +19,6 @@ public class Intake extends SubsystemBase {
   private final WPI_TalonSRX m_intakeMotor;
   private final DoubleSolenoid m_intakePistons;
 
-  private final NetworkTable m_intakeTable;
-  private final NetworkTableEntry m_intakeStatus;
-
   /**
    * Creates a new Intake.
    */
@@ -35,15 +29,11 @@ public class Intake extends SubsystemBase {
     m_intakeMotor.configFactoryDefault();
     m_intakeMotor.setNeutralMode(NeutralMode.Coast);
     m_intakeMotor.setInverted(true);
-
-    m_intakeTable = NetworkTableInstance.getDefault().getTable("Power Cells");
-    m_intakeStatus = m_intakeTable.getEntry("Intake Running");
   }
 
   // starts the intake motor
   // it is continuous until stopIntakeMotor is called
   public void runIntake(double speed) {
-    m_intakeStatus.setBoolean(true);
     m_intakeMotor.set(speed);
   }
 
@@ -58,7 +48,6 @@ public class Intake extends SubsystemBase {
   // stops the intake motor
   public void stopIntake() {
     m_intakeMotor.set(0);
-    m_intakeStatus.setBoolean(false);
   }
 
   // raises the intake mechanism using pistons
