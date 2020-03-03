@@ -38,7 +38,6 @@ public class Climber extends SubsystemBase {
   private final NetworkTable m_PartyTable;
   private final NetworkTableEntry m_ClimbPartyStatus;
 
-
   /**
    * Creates a new Climber subsystem.
    */
@@ -52,7 +51,8 @@ public class Climber extends SubsystemBase {
     m_frictionBrake.set(kFrictionBrakeEnabled);
 
     m_testingTab = Shuffleboard.getTab("Testing");
-    m_climberStatus = m_testingTab.getLayout("Climber", BuiltInLayouts.kList);
+    m_climberStatus = m_testingTab.getLayout("Climber", BuiltInLayouts.kList)
+        .withProperties(Map.of("Label Position", "TOP"));
 
     shuffleboardInit();
 
@@ -69,7 +69,7 @@ public class Climber extends SubsystemBase {
    */
   private void motorInit(WPI_TalonSRX motor, boolean invert) {
     motor.configFactoryDefault(); // Restores the default values in case something persists
-    motor.setNeutralMode(NeutralMode.Brake); //motor mode to brake mode
+    motor.setNeutralMode(NeutralMode.Brake); // motor mode to brake mode
     motor.setInverted(invert); // Invert the motor if needed.
     encoderInit(motor); // Initialize the encoder.
   }
@@ -188,7 +188,7 @@ public class Climber extends SubsystemBase {
         .withProperties(Map.of("Min", -1)).withProperties(Map.of("Max", 23));
     m_climberStatus.addNumber("Speed", () -> getSpeed());
 
-    m_climberStatus.add("Friction Brake", m_frictionBrake);
+    m_climberStatus.addBoolean("Friction Brake", () -> m_frictionBrake.get());
   }
 
   @Override
