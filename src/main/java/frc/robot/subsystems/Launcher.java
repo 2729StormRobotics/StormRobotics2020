@@ -39,7 +39,7 @@ public class Launcher extends SubsystemBase {
 
   private final NetworkTable m_limelight;
 
-  private final ShuffleboardTab m_launcherTab;
+  private final ShuffleboardTab m_testingTab;
   private final ShuffleboardLayout m_launcherStatus;
 
   private final NetworkTable m_PartyTable;
@@ -82,8 +82,8 @@ public class Launcher extends SubsystemBase {
     // Instantiate the limelight NetworkTable
     m_limelight = NetworkTableInstance.getDefault().getTable("limelight");
 
-    m_launcherTab = Shuffleboard.getTab(kShuffleboardTab);
-    m_launcherStatus = m_launcherTab.getLayout("Launcher Status", BuiltInLayouts.kList)
+    m_testingTab = Shuffleboard.getTab("Testing");
+    m_launcherStatus = m_testingTab.getLayout("Launcher Status", BuiltInLayouts.kList)
         .withProperties(Map.of("Label position", "TOP"));
 
     shuffleboardInit();

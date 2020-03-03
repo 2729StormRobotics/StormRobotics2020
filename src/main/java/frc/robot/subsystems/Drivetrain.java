@@ -99,7 +99,7 @@ public class Drivetrain extends SubsystemBase {
     // Set a member variable for the limelight network table
     m_limelight = NetworkTableInstance.getDefault().getTable("limelight");
 
-    m_testingTab = Shuffleboard.getTab(kShuffleboardTab);
+    m_testingTab = Shuffleboard.getTab("Testing");
     m_drivetrainStatus = m_testingTab.getLayout("Drivetrain", BuiltInLayouts.kList)
         .withProperties(Map.of("Label position", "TOP"));
 
