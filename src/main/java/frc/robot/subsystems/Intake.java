@@ -15,12 +15,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.IntakeConstants.*;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 public class Intake extends SubsystemBase {
-  private final CANSparkMax m_intakeMotor;
+  private final WPI_TalonSRX m_intakeMotor;
   private final DoubleSolenoid m_intakePistons;
 
   private final NetworkTable m_intakeTable;
@@ -30,11 +29,11 @@ public class Intake extends SubsystemBase {
    * Creates a new Intake.
    */
   public Intake() {
-    m_intakeMotor = new CANSparkMax(kIntakeMotorPort, MotorType.kBrushed);
+    m_intakeMotor = new WPI_TalonSRX(kIntakeMotorPort);
     m_intakePistons = new DoubleSolenoid(kIntakeRaiseChannel, kIntakeLowerChannel);
 
-    m_intakeMotor.restoreFactoryDefaults();
-    m_intakeMotor.setIdleMode(IdleMode.kCoast);
+    m_intakeMotor.configFactoryDefault();
+    m_intakeMotor.setNeutralMode(NeutralMode.Coast);
     m_intakeMotor.setInverted(true);
 
     m_intakeTable = NetworkTableInstance.getDefault().getTable("Power Cells");
