@@ -33,6 +33,6 @@ public class LauncherTrenchShot extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return Math.abs(m_launcher.getLauncherAvgSpeed() -  kTrenchShotSpeed) < .5;
+    return Math.abs(m_launcher.getRightLauncherSpeed() -  kTrenchShotSpeed) < .5;
   }
 }

@@ -34,6 +34,6 @@ public class LauncherWallShot extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return Math.abs(m_launcher.getLauncherAvgSpeed() -  kWallShotSpeed) < .5;
+    return Math.abs(m_launcher.getRightLauncherSpeed() -  kWallShotSpeed) < .5;
   }
 }
