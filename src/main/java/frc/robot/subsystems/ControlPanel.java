@@ -51,7 +51,7 @@ public class ControlPanel extends SubsystemBase {
   private Color m_currentColor = kNoColor;
   private Color m_targetColor = kUnknownColor;
 
-  private final ShuffleboardTab m_controlPanelTab;
+  private final ShuffleboardTab m_testingTab;
   private final ShuffleboardLayout m_controlPanelStatus;
   private SuppliedValueWidget<Boolean> m_targetColorWidget;
   private SuppliedValueWidget<Boolean> m_currentColorWidget;
@@ -65,7 +65,7 @@ public class ControlPanel extends SubsystemBase {
   public ControlPanel() {
     m_spinnerMotor = new WPI_TalonSRX(kSpinnerMotorPort);
     m_spinnerMotor.configFactoryDefault();
-    m_spinnerMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+    m_spinnerMotor.configSelectedFeedbackSensor(FeedbackDevice.SoftwareEmulatedSensor);
     m_spinnerMotor.configSelectedFeedbackCoefficient(kRevConversion);
 
     m_colorSensor = new ColorSensorV3(Port.kOnboard);
@@ -76,8 +76,8 @@ public class ControlPanel extends SubsystemBase {
     m_colorMatch.addColorMatch(kGreenTarget);
     m_colorMatch.addColorMatch(kYellowTarget);
 
-    m_controlPanelTab = Shuffleboard.getTab(kShuffleboardTab);
-    m_controlPanelStatus = m_controlPanelTab.getLayout("Control Panel Status", BuiltInLayouts.kList)
+    m_testingTab = Shuffleboard.getTab(kShuffleboardTab);
+    m_controlPanelStatus = m_testingTab.getLayout("Control Panel Status", BuiltInLayouts.kList)
         .withProperties(Map.of("Label position", "TOP"));
 
     shuffleboardInit();
@@ -230,7 +230,9 @@ public class ControlPanel extends SubsystemBase {
 
   @Override
   public void periodic() {
-    m_targetColorWidget.withWidget(BuiltInWidgets.kBooleanBox).withProperties(Map.of("colorWhenTrue", m_targetColorString));
-    m_currentColorWidget.withWidget(BuiltInWidgets.kBooleanBox).withProperties(Map.of("colorWhenTrue", m_currentColorString));
+    m_targetColorWidget.withWidget(BuiltInWidgets.kBooleanBox)
+        .withProperties(Map.of("colorWhenTrue", m_targetColorString));
+    m_currentColorWidget.withWidget(BuiltInWidgets.kBooleanBox)
+        .withProperties(Map.of("colorWhenTrue", m_currentColorString));
   }
 }
