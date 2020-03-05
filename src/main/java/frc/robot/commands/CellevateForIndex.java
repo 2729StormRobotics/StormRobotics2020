@@ -10,13 +10,13 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Cellevator;
 
-public class Cellevate extends CommandBase {
+public class CellevateForIndex extends CommandBase {
   private final Cellevator m_cellevator;
 
   /**
    * Creates a new Cellevate.
    */
-  public Cellevate(Cellevator subsystem) {
+  public CellevateForIndex(Cellevator subsystem) {
     m_cellevator = subsystem;
 
     // Use addRequirements() here to declare subsystem dependencies.
@@ -31,13 +31,13 @@ public class Cellevate extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (m_cellevator.safeToCellelevate()) {
+    if (m_cellevator.safeToCellelevateForIndex()) {
       m_cellevator.cellevate();
     } else {
       m_cellevator.stopCellevator();
     }
 
-    if (m_cellevator.readyToLoad()) {
+    if (m_cellevator.readyToLoadForIndex()) {
       m_cellevator.load();
     } else {
       m_cellevator.stopLoader();

@@ -31,7 +31,7 @@ public class CellevateForLaunch extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (m_cellevator.cellevateForLaunch()) {
+    if (m_cellevator.safeToCellevateForLaunch()) {
       m_cellevator.cellevate();
     } else {
       m_cellevator.stopCellevator();

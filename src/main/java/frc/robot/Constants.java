@@ -84,7 +84,7 @@ public final class Constants {
         public static final double kRightA = 0.567;
 
         // Shuffleboard Tab
-        public static final String kShuffleboardTab = "Drivetrain";
+        public static final String kShuffleboardTab = "Testing";
 
         /**
          * Our PID values for Drive Distance. Must be determined experimentally.
@@ -154,7 +154,7 @@ public final class Constants {
         public static final double kA = 0.018;
 
         // Shuffleboard Tab
-        public static final String kShuffleboardTab = "Launcher";
+        public static final String kShuffleboardTab = "Testing";
 
         /**
          * Our PID values for Maintaining Speed. Must be determined experimentally.
@@ -187,7 +187,7 @@ public final class Constants {
         public static final double kEjectMotorSpeed = -1;
 
         // Shuffleboard Tab
-        public static final String kShuffleboardTab = "Power Cells";
+        public static final String kShuffleboardTab = "Testing";
     }
 
     public static final class HopperConstants {
@@ -195,7 +195,7 @@ public final class Constants {
         public static final double kHopperMotorSpeed = 0.25; // TODO: Change the speed after testing.
 
         // Shuffleboard Tab
-        public static final String kShuffleboardTab = "Power Cells";
+        public static final String kShuffleboardTab = "Testing";
     }
 
     public static final class CellevatorConstants {
@@ -224,7 +224,7 @@ public final class Constants {
         public static final double kLoaderMotorSpeed = 0.5; // TODO: test and update value
 
         // Shuffleboard Tab
-        public static final String kShuffleboardTab = "Life Cycle";
+        public static final String kShuffleboardTab = "Testing";
     }
 
     public static final class ControlPanelConstants {
@@ -278,7 +278,7 @@ public final class Constants {
         public static final double kRevConversion = 1 / kCPR * kControlPanelDiameter / kSpinnerWheelDiameter;
 
         // Shuffleboard Tab
-        public static final String kShuffleboardTab = "Control Panel";
+        public static final String kShuffleboardTab = "Testing";
     }
 
     public static final class ClimberConstants {
@@ -310,7 +310,7 @@ public final class Constants {
         public static final boolean kFrictionBrakeDisabled = true;
 
         // Shuffleboard Tab
-        public static final String kShuffleboardTab = "Climber";
+        public static final String kShuffleboardTab = "Testing";
     }
 
     public static final class VisionConstants {
@@ -330,7 +330,7 @@ public final class Constants {
         public static final double kDistanceTolerance = 1.0;
 
         // Shuffleboard Tab
-        public static final String kShuffleboardTab = "Vision";
+        public static final String kShuffleboardTab = "Testing";
     }
 
     public static final class PartyConstants {

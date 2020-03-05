@@ -58,7 +58,7 @@ public class Climber extends SubsystemBase {
     m_frictionBrake.set(kFrictionBrakeDisabled);
 
     m_climberTab = Shuffleboard.getTab(kShuffleboardTab);
-    m_climberStatus = m_climberTab.getLayout("Climber Status", BuiltInLayouts.kList);
+    m_climberStatus = m_climberTab.getLayout("Climber Status", BuiltInLayouts.kList).withProperties(Map.of("Label Position", "TOP"));
 
     shuffleboardInit();
 
@@ -162,7 +162,7 @@ public class Climber extends SubsystemBase {
    * @return true if the current height is above its maximum
    */
   public boolean atMaxHeight() {
-    return m_encoder.getPosition() > kMaxHeight;
+    return getHeight() > kMaxHeight;
   }
 
   /**
@@ -171,7 +171,7 @@ public class Climber extends SubsystemBase {
    * @return true if the current height is below its minimum
    */
   public boolean atMinHeight() {
-    return m_encoder.getPosition() < 0;
+    return getHeight() < 0;
   }
 
   /**

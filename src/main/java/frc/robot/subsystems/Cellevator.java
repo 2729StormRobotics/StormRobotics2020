@@ -124,8 +124,8 @@ public class Cellevator extends SubsystemBase {
    * inverts the Cellevator to unload power cells
    */
   public void eject() {
-    runLoader(-1);
-    runCellevator(-1);
+    runLoader(-0.5);
+    runCellevator(-0.5);
   }
 
   /**
@@ -233,7 +233,7 @@ public class Cellevator extends SubsystemBase {
    * creates a boolean with a value that represents which condition is happening
    * if either of the two conditions are true, then the holder motor will run
    */
-  public boolean safeToCellelevate() {
+  public boolean safeToCellelevateForIndex() {
     boolean topClearAndMiddleOccupied = !isTopBallPresent() && !isMiddleGapClear();
     boolean onlyBottomOccupied = isBottomBallPresent() && !isTopBallPresent() && isMiddleGapClear()
         && getMiddlePrevious();
@@ -241,7 +241,7 @@ public class Cellevator extends SubsystemBase {
     return topClearAndMiddleOccupied || onlyBottomOccupied;
   }
 
-  public boolean cellevateForLaunch() {
+  public boolean safeToCellevateForLaunch() {
     boolean topOccupied = isTopBallPresent();
     boolean middleOccupied = isMiddleGapClear() || !getMiddlePrevious();
     boolean bottomOccupied = isBottomBallPresent();
@@ -249,7 +249,7 @@ public class Cellevator extends SubsystemBase {
     return topOccupied || middleOccupied || bottomOccupied;
   }
 
-  public boolean readyToLoad() {
+  public boolean readyToLoadForIndex() {
     return isBallInFeeder() && !isBottomBallPresent() && isMiddleGapClear();
   }
 
