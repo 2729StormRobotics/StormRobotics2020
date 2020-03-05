@@ -45,6 +45,7 @@ public class RobotContainer {
     private final XboxController m_weapons = new XboxController(kWeaponsControllerPort);
 
     private final SendableChooser<Command> m_autoChooser;
+    private final SendableChooser<String> m_driveChooser;
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -73,9 +74,20 @@ public class RobotContainer {
                 new AutoShootThenDrive(m_drivetrain, m_launcher, m_intake, m_hopper, m_cellevator));
         m_autoChooser.addOption("Just Drive", new DriveDistance(36, m_drivetrain));
 
+        m_driveChooser = new SendableChooser<>();
+        SmartDashboard.putData("Drive Type", m_driveChooser);
+        m_driveChooser.setDefaultOption("Tank Drive", "Tank");
+        m_driveChooser.addOption("Arcade Drive", "Arcade");
+        m_driveChooser.addOption("Trigger Drive", "Trigger");
+
         m_drivetrain.setDefaultCommand(
-                new DriveManually(() -> m_driver.getTriggerAxis(Hand.kRight), () -> m_driver.getTriggerAxis(Hand.kLeft),
-                        () -> m_driver.getY(Hand.kLeft), () -> m_driver.getY(Hand.kRight), m_drivetrain));
+                new DriveManually(m_driveChooser,
+                        () -> m_driver.getTriggerAxis(Hand.kRight),
+                        () -> m_driver.getTriggerAxis(Hand.kLeft),
+                        () -> m_driver.getY(Hand.kLeft),
+                        () -> m_driver.getY(Hand.kRight),
+                        () -> m_driver.getX(Hand.kRight),
+                        m_drivetrain));
 
         m_climber.setDefaultCommand(new ClimbManually(() -> m_weapons.getY(Hand.kLeft), m_climber));
         m_cellevator.setDefaultCommand(new Cellevate(m_cellevator));

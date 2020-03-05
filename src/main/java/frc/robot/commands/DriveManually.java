@@ -7,6 +7,8 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
@@ -14,10 +16,13 @@ import java.util.function.DoubleSupplier;
 
 public class DriveManually extends CommandBase {
   private final Drivetrain m_drivetrain;
-  private final DoubleSupplier m_leftSpeed;
-  private final DoubleSupplier m_rightSpeed;
-  private final DoubleSupplier m_forwardSpeed;
-  private final DoubleSupplier m_reverseSpeed;
+  private final DoubleSupplier m_leftTank;
+  private final DoubleSupplier m_rightTank;
+  private final DoubleSupplier m_forwardTrigger;
+  private final DoubleSupplier m_reverseTrigger;
+  private final DoubleSupplier m_turn;
+  private final SendableChooser<String> m_driveChooser;
+  private String m_driveType = "Tank";
   private double m_currentSpeed = 0;
 
   /**
@@ -27,13 +32,16 @@ public class DriveManually extends CommandBase {
    * @param rightSpeed speed of right motors
    * @param subsystem  the subsystem being used--in this case, the drivetrain
    */
-  public DriveManually(DoubleSupplier forwardSpeed, DoubleSupplier reverseSpeed, DoubleSupplier leftSpeed,
-      DoubleSupplier rightSpeed, Drivetrain subsystem) {
+  public DriveManually(SendableChooser<String> type, DoubleSupplier rightTrigger, DoubleSupplier leftTrigger,
+      DoubleSupplier leftY, DoubleSupplier rightY, DoubleSupplier rightX, Drivetrain subsystem) {
     m_drivetrain = subsystem;
-    m_leftSpeed = leftSpeed;
-    m_rightSpeed = rightSpeed;
-    m_forwardSpeed = forwardSpeed;
-    m_reverseSpeed = reverseSpeed;
+    m_leftTank = leftY;
+    m_rightTank = rightY;
+    m_forwardTrigger = rightTrigger;
+    m_reverseTrigger = leftTrigger;
+    m_turn = rightX;
+
+    m_driveChooser = type;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_drivetrain);
@@ -43,15 +51,21 @@ public class DriveManually extends CommandBase {
   @Override
   public void initialize() {
     m_drivetrain.stopDrive();
+    m_driveType = m_driveChooser.getSelected();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (Math.abs(m_forwardSpeed.getAsDouble() - m_reverseSpeed.getAsDouble()) > 0.03) {
-      m_drivetrain.triggerDrive(m_forwardSpeed.getAsDouble(), m_reverseSpeed.getAsDouble(), 0, true);
+    m_driveType = m_driveChooser.getSelected();
+
+    if (m_driveType.equals("Arcade")) {
+      m_drivetrain.arcadeDrive(m_leftTank.getAsDouble(), m_turn.getAsDouble(), true);
+    } else if (m_driveType.equals("Trigger")) {
+      m_drivetrain.triggerDrive(m_forwardTrigger.getAsDouble(), m_reverseTrigger.getAsDouble(), m_turn.getAsDouble(),
+          true);
     } else {
-      m_drivetrain.tankDrive(m_leftSpeed.getAsDouble(), m_rightSpeed.getAsDouble(), true);
+      m_drivetrain.tankDrive(m_leftTank.getAsDouble(), m_rightTank.getAsDouble(), true);
     }
     m_currentSpeed = m_drivetrain.getAverageSpeed();
 
