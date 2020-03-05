@@ -256,7 +256,12 @@ public class Drivetrain extends SubsystemBase {
 
   // Drives the motors using arcade drive
   public void arcadeDrive(double speed, double turn, boolean squareInputs) {
-    m_drive.arcadeDrive(speed, turn, squareInputs);
+    if (m_reverseDrive) {
+    m_drive.arcadeDrive(speed, -turn, squareInputs);
+    }
+    else {
+      m_drive.arcadeDrive(speed, turn, squareInputs);
+    }
   }
 
   // Drives the motor using trigger drive
