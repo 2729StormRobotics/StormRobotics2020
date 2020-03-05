@@ -43,7 +43,7 @@ private final Cellevator m_cellevator;
       new DriveShiftLow(drivetrain),
       new VisionAlign(drivetrain),
       new ConditionalCommand(
-          new LauncherMode(launcher, intake, hopper, cellevator).withTimeout(8),
+          new LauncherMode(launcher, intake, hopper, cellevator).withTimeout(3),
           new DoNothingAuto(),
           () -> drivetrain.isTargetCentered()
         ),
@@ -59,12 +59,22 @@ private final Cellevator m_cellevator;
           new DoNothingAuto(),
           () -> drivetrain.isTargetCentered()
         )
-      );
+    );
 
     m_drivetrain = drivetrain;
     m_launcher = launcher;
     m_intake = intake;
     m_hopper = hopper;
     m_cellevator = cellevator;
+  }
+
+  @Override
+  public void end(boolean interupted) {
+    m_drivetrain.shiftHigh();
+    m_launcher.stopLauncher();
+    m_intake.stopIntake();
+    m_hopper.stopHopper();
+    m_cellevator.stopCellevator();
+    m_cellevator.stopLoader();
   }
 }
