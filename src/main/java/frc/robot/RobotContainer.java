@@ -72,6 +72,7 @@ public class RobotContainer {
         m_autoChooser.addOption("Shoot then Drive",
                 new AutoShootThenDrive(m_drivetrain, m_launcher, m_intake, m_hopper, m_cellevator));
         m_autoChooser.addOption("Just Drive", new DriveDistance(36, m_drivetrain));
+        m_autoChooser.addOption("Simple Auto Route", new AutoPath1(m_drivetrain, m_launcher, m_intake, m_hopper, m_cellevator));
 
         m_drivetrain.setDefaultCommand(
                 new DriveManually(() -> m_driver.getTriggerAxis(Hand.kRight), () -> m_driver.getTriggerAxis(Hand.kLeft),
