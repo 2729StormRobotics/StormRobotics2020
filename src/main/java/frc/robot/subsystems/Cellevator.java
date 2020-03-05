@@ -17,6 +17,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -46,6 +47,8 @@ public class Cellevator extends SubsystemBase {
   private final NetworkTable m_partyTable;
   private final NetworkTableEntry m_cellCountPartyStatus;
 
+  private final Timer m_CellCountTimer = new Timer();
+
   /**
    * Creates a new Cellevator.
    */
@@ -74,6 +77,8 @@ public class Cellevator extends SubsystemBase {
 
     m_partyTable = NetworkTableInstance.getDefault().getTable("Party Statuses");
     m_cellCountPartyStatus = m_partyTable.getEntry("Cell Count");
+
+    m_CellCountTimer.start();
 
     shuffleboardInit();
   }

@@ -141,7 +141,7 @@ public class Launcher extends SubsystemBase {
   public void setLongLaunchAngle() {
     m_launcherAnglePistons.set(kLongLaunchValue);
     m_launchType = "Long Shot";
-    m_LaunchAngleStatus.setBoolean(false);
+    m_LaunchAngleStatus.setBoolean(true);
 
   }
 
@@ -151,7 +151,7 @@ public class Launcher extends SubsystemBase {
   public void setShortLaunchAngle() {
     m_launcherAnglePistons.set(kShortLaunchValue);
     m_launchType = "Wall Shot";
-    // m_LaunchAngleStatus.setBoolean(true);
+    m_LaunchAngleStatus.setBoolean(true);
   }
 
   /**

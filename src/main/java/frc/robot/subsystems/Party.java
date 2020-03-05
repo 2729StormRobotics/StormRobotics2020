@@ -7,6 +7,8 @@
 
 package frc.robot.subsystems;
 
+import frc.robot.subsystems.Cellevator;
+
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -32,9 +34,11 @@ public class Party extends SubsystemBase {
 
   private final Timer m_LaunchToggleTimer = new Timer();
   private final Timer m_GearshiftTimer = new Timer();
+  private final Timer m_RevToSpeedTimer = new Timer();
 
   private boolean m_PriorHighGear = false;
   private boolean m_PriorLaunchAngle = false;
+  private boolean m_PriorRevving = false;
 
   private int cellCount = 0;
 
@@ -55,6 +59,7 @@ public class Party extends SubsystemBase {
 
     m_LaunchToggleTimer.start();
     m_GearshiftTimer.start();
+    m_RevToSpeedTimer.start();
 
     // Instantiate led driver and assign to its port
     m_ledDriver = new Spark(kLedBlinkinDriverPort);
@@ -129,7 +134,7 @@ public class Party extends SubsystemBase {
   }
 
   public void setRainbowParty() {
-    // For when robot is climbing has been done
+    // For when robot is climbing
     // there is also a designated button for anytime
     // Rainbow Rainbow
     m_ledDriver.set(kDoneClimb);
@@ -151,6 +156,13 @@ public class Party extends SubsystemBase {
       m_LaunchToggleTimer.start();
     }
     m_PriorLaunchAngle = launchAngle;
+
+    boolean revToSpeed = m_RevStatus.getBoolean(false);
+    if (revToSpeed != m_PriorRevving) {
+      m_RevToSpeedTimer.reset();
+      m_RevToSpeedTimer.start();
+    }
+    m_PriorRevving = revToSpeed;
   }
 
   @Override
@@ -160,22 +172,21 @@ public class Party extends SubsystemBase {
 
     if (m_ClimbStatus.getBoolean(false)) {
       setRainbowParty();
-    }
-    if (m_AlignStatus.getBoolean(false)) {
+    } else if (m_AlignStatus.getBoolean(false)) {
       if (m_RevStatus.getBoolean(false)) {
         setRevvedandAlignedColor();
       }
       setAlignedColor();
-    } else if (m_RevStatus.getBoolean(false)) {
-      setRevtoSpeedColor();
     } else if (m_ControlPanelColorStatus.getBoolean(false)) {
       setControlPanelColor();
-    } else if (!m_LaunchToggleTimer.hasElapsed(3)) {
-      setLaunchAngleColor();
+    } else if (m_RevStatus.getBoolean(false) && !m_RevToSpeedTimer.hasElapsed(3)) {
+      setRevtoSpeedColor();
     } else if (m_HighGearStatus.getBoolean(false) && !m_GearshiftTimer.hasElapsed(3)) {
       setGearshiftHighColor();
     } else if (m_LowGearStatus.getBoolean(false) && !m_GearshiftTimer.hasElapsed(3)) {
       setGearshiftLowColor();
+    } else if (m_LaunchAngleStatus.getBoolean(false) && !m_LaunchToggleTimer.hasElapsed(3)) {
+      setLaunchAngleColor();
     } else if (cellCount == 3) {
       set3PowercellColor();
     } else if (cellCount == 2) {
