@@ -47,12 +47,10 @@ private final Cellevator m_cellevator;
           new DoNothingAuto(),
           () -> drivetrain.isTargetCentered()
         ),
-      new DrivePointTurn(135, drivetrain),
+      new DrivePointTurn(-45, drivetrain),
       new DriveDistance(96, drivetrain).withTimeout(3),
       new IntakeRun(intake),
-      new DrivePointTurn(180, drivetrain),
-      new DriveDistance(96, drivetrain).withTimeout(3),
-      new DrivePointTurn(180, drivetrain),
+      new DriveDistance(-96, drivetrain).withTimeout(3),
       new VisionAlign(drivetrain),
       new ConditionalCommand(
           new LauncherMode(launcher, intake, hopper, cellevator).withTimeout(3),
