@@ -93,6 +93,8 @@ public class RobotContainer {
                 m_commands = m_testingTab.getLayout("Commands", BuiltInLayouts.kGrid).withProperties(
                                 Map.of("Number of columns", 2, "Number of rows", 5, "Label position", "HIDDEN"));
 
+                // sendTestingCommands();
+                
                 // Configure the button bindings
                 configureButtonBindings();
         }
@@ -152,6 +154,10 @@ public class RobotContainer {
                 new JoystickButton(m_weapons, Button.kBack.value)
                                 .whenReleased(new PowerCellStop(m_launcher, m_intake, m_hopper, m_cellevator));
         }
+
+        // sendTestingCommands() {
+                // 
+        // }
 
         /**
          * Use this to pass the autonomous command to the main {@link Robot} class.

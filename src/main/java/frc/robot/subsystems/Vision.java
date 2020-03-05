@@ -25,6 +25,9 @@ public class Vision extends SubsystemBase {
   // Percentage of the image the target takes
   private double m_targetArea;
 
+  // Skew of the target?
+  private double m_skew;
+
   // Is target detected
   private double m_targetValue;
 
@@ -35,6 +38,7 @@ public class Vision extends SubsystemBase {
   private final NetworkTableEntry m_targetDistance;
   private final NetworkTableEntry m_targetDetection; 
   private final NetworkTableEntry m_targetOffset;
+  private final NetworkTableEntry m_targetSkew;
 
 
   /**
@@ -52,6 +56,7 @@ public class Vision extends SubsystemBase {
     m_targetDistance = m_limelightTable.getEntry("Target Distance");
     m_targetDetection = m_limelightTable.getEntry("Target Detection");
     m_targetOffset = m_limelightTable.getEntry("Target Offset");
+    m_targetSkew = m_limelightTable.getEntry("Target Skew");
   }
 
   public void disableLED() {
@@ -69,6 +74,13 @@ public class Vision extends SubsystemBase {
    */
   public double getXOffset() {
     return m_xOffset;
+  }
+
+  /**
+   * Returns a value of the skew of the target in degrees, maybe
+   */
+  public double getSkew() {
+    return m_skew;
   }
 
   /**
@@ -138,12 +150,14 @@ public class Vision extends SubsystemBase {
     m_yOffset = m_limelightTable.getEntry("ty").getDouble(0.0);
     m_targetArea = m_limelightTable.getEntry("ta").getDouble(0.0);
     m_targetValue = m_limelightTable.getEntry("tv").getDouble(0.0);
+    m_skew = m_limelightTable.getEntry("ts").getDouble(0.0);
 
     // Updates the values of the math for target distance and value to the network
     // table
     m_targetDistance.setDouble(getTargetDistance());
     m_targetDetection.setBoolean(isTargetDetected());
     m_targetOffset.setDouble(getXOffset());
+    m_targetSkew.setDouble(getSkew());
   }
 
   @Override
