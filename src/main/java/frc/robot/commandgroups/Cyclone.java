@@ -38,7 +38,7 @@ public class Cyclone extends SequentialCommandGroup {
     new DriveShiftLow(drivetrain),
     new VisionAlign(drivetrain).withTimeout(3),
     new ConditionalCommand(
-        new LauncherMode(launcher, intake, hopper, cellevator).withTimeout(8),
+        new LauncherMode(launcher, intake, hopper, cellevator).withTimeout(3),
         new DoNothingAuto(),
         () -> drivetrain.isTargetCentered()
     ),
@@ -46,7 +46,7 @@ public class Cyclone extends SequentialCommandGroup {
     new DriveDistance(192, drivetrain).withTimeout(3),
     new IntakeToggle(intake).withTimeout(3),
     new ConditionalCommand(
-        new LauncherMode(launcher, intake, hopper, cellevator).withTimeout(8),
+        new LauncherMode(launcher, intake, hopper, cellevator).withTimeout(3),
         new DoNothingAuto(),
         () -> drivetrain.isTargetCentered()
     )
