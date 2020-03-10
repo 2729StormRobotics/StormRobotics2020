@@ -36,9 +36,9 @@ private final Drivetrain m_drivetrain;
     super(new IntakeLower(intake),
         new DriveShiftLow(drivetrain),
         new DriveDistance(130, drivetrain).withTimeout(3),
-        new DrivePointTurn(45, drivetrain).withTimeout(1.5),
+        new DrivePointTurn(() -> 45, drivetrain).withTimeout(1.5),
         new DriveDistance(150, drivetrain).withTimeout(5),
-        new DrivePointTurn(-20, drivetrain),
+        new DrivePointTurn(() -> -20, drivetrain),
         new VisionAlign(drivetrain).withTimeout(1.5),
         new ConditionalCommand(
           new LauncherMode(launcher, intake, hopper, cellevator).withTimeout(8),

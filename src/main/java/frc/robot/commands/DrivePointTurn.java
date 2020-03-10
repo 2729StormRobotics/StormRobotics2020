@@ -13,6 +13,8 @@ import frc.robot.subsystems.Drivetrain;
 
 import static frc.robot.Constants.DriveConstants.*;
 
+import java.util.function.DoubleSupplier;
+
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
@@ -20,7 +22,7 @@ public class DrivePointTurn extends PIDCommand {
   /**
    * Creates a new PointTurn.
    */
-  public DrivePointTurn(double targetAngle, Drivetrain drivetrain) {
+  public DrivePointTurn(DoubleSupplier targetAngle, Drivetrain drivetrain) {
     super(
         // The controller that the command will use
         new PIDController(PointTurnPID.kP, PointTurnPID.kI, PointTurnPID.kD),

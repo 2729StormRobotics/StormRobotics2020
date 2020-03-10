@@ -62,6 +62,8 @@ public class RobotContainer {
         m_cellevator = new Cellevator();
         m_controlPanel = new ControlPanel();
 
+        SmartDashboard.putNumber("Angle to Turn", 0);
+
         m_autoChooser = new SendableChooser<>();
         SmartDashboard.putData("Autonomous Selection", m_autoChooser);
         m_autoChooser.setDefaultOption("Do Nothing", new DoNothingAuto());
@@ -72,6 +74,7 @@ public class RobotContainer {
         m_autoChooser.addOption("Shoot then Drive",
                 new AutoShootThenDrive(m_drivetrain, m_launcher, m_intake, m_hopper, m_cellevator));
         m_autoChooser.addOption("Just Drive", new DriveDistance(36, m_drivetrain));
+        m_autoChooser.addOption("Point Turn", new DrivePointTurn(() -> SmartDashboard.getNumber("Angle to Turn", 0), m_drivetrain));
 
         m_drivetrain.setDefaultCommand(
                 new DriveManually(() -> m_driver.getTriggerAxis(Hand.kRight), () -> m_driver.getTriggerAxis(Hand.kLeft),
