@@ -44,7 +44,8 @@ public class Launcher extends SubsystemBase {
 
   private final NetworkTable m_PartyTable;
   private final NetworkTableEntry m_RevStatus;
-  private final NetworkTableEntry m_LaunchAngleStatus;
+  private final NetworkTableEntry m_LongLaunchAngleStatus;
+  private final NetworkTableEntry m_ShortLaunchAngleStatus;
 
   private String m_launchType = "Disabled";
 
@@ -74,7 +75,8 @@ public class Launcher extends SubsystemBase {
 
     m_PartyTable = NetworkTableInstance.getDefault().getTable("Party Statuses");
     m_RevStatus = m_PartyTable.getEntry("Revved");
-    m_LaunchAngleStatus = m_PartyTable.getEntry("Launch Angle Toggled");
+    m_LongLaunchAngleStatus = m_PartyTable.getEntry("Long Launch Angle");
+    m_ShortLaunchAngleStatus = m_PartyTable.getEntry("Short Launch Angle");
 
     // Initialize pistons
     pistonInit();
@@ -141,7 +143,7 @@ public class Launcher extends SubsystemBase {
   public void setLongLaunchAngle() {
     m_launcherAnglePistons.set(kLongLaunchValue);
     m_launchType = "Long Shot";
-    m_LaunchAngleStatus.setBoolean(true);
+    m_LongLaunchAngleStatus.setBoolean(true);
 
   }
 
@@ -151,7 +153,7 @@ public class Launcher extends SubsystemBase {
   public void setShortLaunchAngle() {
     m_launcherAnglePistons.set(kShortLaunchValue);
     m_launchType = "Wall Shot";
-    m_LaunchAngleStatus.setBoolean(true);
+    m_ShortLaunchAngleStatus.setBoolean(true);
   }
 
   /**

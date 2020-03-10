@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
@@ -62,9 +63,9 @@ public class Drivetrain extends SubsystemBase {
   // values mean target is to the left. Measured in degrees
   private boolean m_targetVisible = false;
 
-  // private final NetworkTable m_PartyTable;
-  // private final NetworkTableEntry m_HighGearStatus;
-  // private final NetworkTableEntry m_LowGearStatus;
+  private final NetworkTable m_PartyTable;
+  private final NetworkTableEntry m_HighGearStatus;
+  private final NetworkTableEntry m_LowGearStatus;
 
   /**
    * Creates a new Drivetrain.
@@ -102,6 +103,10 @@ public class Drivetrain extends SubsystemBase {
     m_testingTab = Shuffleboard.getTab("Testing");
     m_drivetrainStatus = m_testingTab.getLayout("Drivetrain", BuiltInLayouts.kList)
         .withProperties(Map.of("Label position", "TOP"));
+
+    m_PartyTable = NetworkTableInstance.getDefault().getTable("Party Statuses");
+    m_HighGearStatus = m_PartyTable.getEntry("High Gear");
+    m_LowGearStatus = m_PartyTable.getEntry("Low Gear");
 
     shuffleboardInit();
   }
@@ -256,7 +261,7 @@ public class Drivetrain extends SubsystemBase {
     if (m_highGear) {
       m_highGear = false;
       shiftGears();
-      // m_LowGearStatus.setBoolean(true);
+      m_LowGearStatus.setBoolean(true);
     }
   }
 
@@ -265,7 +270,7 @@ public class Drivetrain extends SubsystemBase {
     if (!m_highGear) {
       m_highGear = true;
       shiftGears();
-      // m_HighGearStatus.setBoolean(true);
+      m_HighGearStatus.setBoolean(true);
     }
   }
 

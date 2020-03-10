@@ -7,8 +7,6 @@
 
 package frc.robot.subsystems;
 
-import frc.robot.subsystems.Cellevator;
-
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -26,18 +24,23 @@ public class Party extends SubsystemBase {
   private final NetworkTableEntry m_CellStatus;
   private final NetworkTableEntry m_AlignStatus;
   private final NetworkTableEntry m_RevStatus;
-  private final NetworkTableEntry m_LaunchAngleStatus;
+  private final NetworkTableEntry m_LongLaunchAngleStatus;
+  private final NetworkTableEntry m_ShortLaunchAngleStatus;
   private final NetworkTableEntry m_ClimbStatus;
   private final NetworkTableEntry m_ControlPanelColorStatus;
   private final NetworkTableEntry m_HighGearStatus;
   private final NetworkTableEntry m_LowGearStatus;
 
-  private final Timer m_LaunchToggleTimer = new Timer();
-  private final Timer m_GearshiftTimer = new Timer();
+  private final Timer m_LongLaunchToggleTimer = new Timer();
+  private final Timer m_ShortLaunchToggleTimer = new Timer();
+  private final Timer m_HighGearshiftTimer = new Timer();
+  private final Timer m_LowGearshiftTimer = new Timer();
   private final Timer m_RevToSpeedTimer = new Timer();
 
   private boolean m_PriorHighGear = false;
-  private boolean m_PriorLaunchAngle = false;
+  private boolean m_PriorLowGear;
+  private boolean m_PriorLongLaunchAngle = false;
+  private boolean m_PriorShortLaunchAngle = false;
   private boolean m_PriorRevving = false;
 
   private int cellCount = 0;
@@ -51,14 +54,17 @@ public class Party extends SubsystemBase {
     m_CellStatus = m_PartyTable.getEntry("Cell Count");
     m_AlignStatus = m_PartyTable.getEntry("Aligned");
     m_RevStatus = m_PartyTable.getEntry("Revved");
-    m_LaunchAngleStatus = m_PartyTable.getEntry("Launch Angle Toggled");
+    m_LongLaunchAngleStatus = m_PartyTable.getEntry("Long Launch Angle");
+    m_ShortLaunchAngleStatus = m_PartyTable.getEntry("Short Launch Angle");
     m_ClimbStatus = m_PartyTable.getEntry("Climb Status");
     m_ControlPanelColorStatus = m_PartyTable.getEntry("Color Detected");
     m_HighGearStatus = m_PartyTable.getEntry("High Gear");
     m_LowGearStatus = m_PartyTable.getEntry("Low Gear");
 
-    m_LaunchToggleTimer.start();
-    m_GearshiftTimer.start();
+    m_LongLaunchToggleTimer.start();
+    m_ShortLaunchToggleTimer.start();
+    m_HighGearshiftTimer.start();
+    m_LowGearshiftTimer.start();
     m_RevToSpeedTimer.start();
 
     // Instantiate led driver and assign to its port
@@ -145,17 +151,31 @@ public class Party extends SubsystemBase {
 
     boolean highGear = m_HighGearStatus.getBoolean(false);
     if (highGear != m_PriorHighGear) {
-      m_GearshiftTimer.reset();
-      m_GearshiftTimer.start();
+      m_HighGearshiftTimer.reset();
+      m_HighGearshiftTimer.start();
     }
     m_PriorHighGear = highGear;
 
-    boolean launchAngle = m_LaunchAngleStatus.getBoolean(false);
-    if (launchAngle != m_PriorLaunchAngle) {
-      m_LaunchToggleTimer.reset();
-      m_LaunchToggleTimer.start();
+    boolean lowGear = m_LowGearStatus.getBoolean(false);
+    if (lowGear != m_PriorLowGear) {
+      m_LowGearshiftTimer.reset();
+      m_LowGearshiftTimer.start();
     }
-    m_PriorLaunchAngle = launchAngle;
+    m_PriorLowGear = lowGear;
+
+    boolean longLaunchAngle = m_LongLaunchAngleStatus.getBoolean(false);
+    if (longLaunchAngle != m_PriorLongLaunchAngle) {
+      m_LongLaunchToggleTimer.reset();
+      m_LongLaunchToggleTimer.start();
+    }
+    m_PriorLongLaunchAngle = longLaunchAngle;
+
+    boolean shortLaunchAngle = m_ShortLaunchAngleStatus.getBoolean(false);
+    if (shortLaunchAngle != m_PriorShortLaunchAngle) {
+      m_ShortLaunchToggleTimer.reset();
+      m_ShortLaunchToggleTimer.start();
+    }
+    m_PriorShortLaunchAngle = shortLaunchAngle;
 
     boolean revToSpeed = m_RevStatus.getBoolean(false);
     if (revToSpeed != m_PriorRevving) {
@@ -179,14 +199,16 @@ public class Party extends SubsystemBase {
       setAlignedColor();
     } else if (m_ControlPanelColorStatus.getBoolean(false)) {
       setControlPanelColor();
-    } else if (m_RevStatus.getBoolean(false) && !m_RevToSpeedTimer.hasElapsed(3)) {
-      setRevtoSpeedColor();
-    } else if (m_HighGearStatus.getBoolean(false) && !m_GearshiftTimer.hasElapsed(3)) {
-      setGearshiftHighColor();
-    } else if (m_LowGearStatus.getBoolean(false) && !m_GearshiftTimer.hasElapsed(3)) {
-      setGearshiftLowColor();
-    } else if (m_LaunchAngleStatus.getBoolean(false) && !m_LaunchToggleTimer.hasElapsed(3)) {
+    } else if (m_LongLaunchAngleStatus.getBoolean(false) && !m_LongLaunchToggleTimer.hasElapsed(3)) {
       setLaunchAngleColor();
+    } else if (m_ShortLaunchAngleStatus.getBoolean(false) && !m_ShortLaunchToggleTimer.hasElapsed(3)) {
+      setLaunchAngleColor();
+    } else if (m_RevStatus.getBoolean(false) && !m_RevToSpeedTimer.hasElapsed(3)) {
+      setRevtoSpeedColor(); 
+    } else if (m_LowGearStatus.getBoolean(false) && !m_LowGearshiftTimer.hasElapsed(3)) {
+      setGearshiftLowColor();
+    } else if (m_HighGearStatus.getBoolean(false) && !m_HighGearshiftTimer.hasElapsed(3)) {
+      setGearshiftHighColor();
     } else if (cellCount == 3) {
       set3PowercellColor();
     } else if (cellCount == 2) {
