@@ -41,22 +41,22 @@ private final Cellevator m_cellevator;
     super(
       new IntakeLower(intake), 
       new DriveShiftLow(drivetrain),
-      new VisionAlign(drivetrain),
-      new ConditionalCommand(
-          new LauncherMode(launcher, intake, hopper, cellevator).withTimeout(3),
-          new DoNothingAuto(),
-          () -> drivetrain.isTargetCentered()
-        ),
-      new DrivePointTurn(-45, drivetrain),
+      // new VisionAlign(drivetrain),
+      // new ConditionalCommand(
+      //     new LauncherMode(launcher, intake, hopper, cellevator).withTimeout(3),
+      //     new DoNothingAuto(),
+      //     () -> drivetrain.isTargetCentered()
+      //   ),
+      new DrivePointTurn(-45, drivetrain).withTimeout(2),
       new DriveDistance(96, drivetrain).withTimeout(3),
-      new IntakeRun(intake),
-      new DriveDistance(-96, drivetrain).withTimeout(3),
-      new VisionAlign(drivetrain),
-      new ConditionalCommand(
-          new LauncherMode(launcher, intake, hopper, cellevator).withTimeout(3),
-          new DoNothingAuto(),
-          () -> drivetrain.isTargetCentered()
-        )
+      new IntakeRun(intake).withTimeout(2),
+      new DriveDistance(-96, drivetrain).withTimeout(3)
+      // new VisionAlign(drivetrain),
+      // new ConditionalCommand(
+      //     new LauncherMode(launcher, intake, hopper, cellevator).withTimeout(3),
+      //     new DoNothingAuto(),
+      //     () -> drivetrain.isTargetCentered()
+      //   )
     );
 
     m_drivetrain = drivetrain;
