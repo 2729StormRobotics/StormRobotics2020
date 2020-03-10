@@ -17,6 +17,8 @@ import static frc.robot.Constants.DriveConstants.*;
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class DrivePointTurn extends PIDCommand {
+  private final Drivetrain m_drivetrain;
+
   /**
    * Creates a new PointTurn.
    */
@@ -33,11 +35,18 @@ public class DrivePointTurn extends PIDCommand {
           // Use the output here
           drivetrain.arcadeDrive(0, output, false);
         });
+        m_drivetrain = drivetrain;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(drivetrain);
+    addRequirements(m_drivetrain);
     // Configure additional PID options by calling `getController` here.
     getController().setTolerance(PointTurnPID.kAngleTolerance, PointTurnPID.kTurnSpeedTolerance);
     getController().enableContinuousInput(-180, +180);
+  }
+
+  @Override
+  public void initialize() {
+    m_drivetrain.resetGyro();
+    super.initialize();
   }
 
   // Returns true when the command should end.

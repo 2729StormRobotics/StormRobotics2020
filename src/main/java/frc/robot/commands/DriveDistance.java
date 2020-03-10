@@ -17,6 +17,7 @@ import static frc.robot.Constants.DriveConstants.DriveDistancePID.*;
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class DriveDistance extends PIDCommand {
+  private Drivetrain m_drivetrain;
   
   /**
    * Creates a new PointTurn.
@@ -34,11 +35,18 @@ public class DriveDistance extends PIDCommand {
           // Use the output here
           drivetrain.arcadeDrive(-output, 0, false);
         });
+
+        m_drivetrain = drivetrain;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(drivetrain);
+    addRequirements(m_drivetrain);
     // Configure additional PID options by calling `getController` here.
     getController().setTolerance(kPositionTolerance, kVelocityTolerance);
-    drivetrain.resetAllEncoders();
+  }
+
+  @Override
+  public void initialize() {
+    m_drivetrain.resetAllEncoders();
+    super.initialize();
   }
 
   // Returns true when the command should end.

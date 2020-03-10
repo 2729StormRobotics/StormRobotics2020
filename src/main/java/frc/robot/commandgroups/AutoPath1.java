@@ -10,6 +10,8 @@ package frc.robot.commandgroups;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import frc.robot.commands.DrivePointTurn;
+import frc.robot.commands.DriveResetAngle;
+import frc.robot.commands.DriveResetPosition;
 import frc.robot.commands.DoNothingAuto;
 import frc.robot.commands.DriveDistance;
 import frc.robot.commands.DriveShiftLow;
@@ -47,10 +49,13 @@ private final Cellevator m_cellevator;
       //     new DoNothingAuto(),
       //     () -> drivetrain.isTargetCentered()
       //   ),
-      new DrivePointTurn(-45, drivetrain).withTimeout(2),
-      new DriveDistance(96, drivetrain).withTimeout(3),
+      new DriveResetAngle(drivetrain),
+      new DrivePointTurn(45, drivetrain).withTimeout(2),
+      new DriveResetPosition(drivetrain),
+      new DriveDistance(36, drivetrain).withTimeout(3),
       new IntakeRun(intake).withTimeout(2),
-      new DriveDistance(-96, drivetrain).withTimeout(3)
+      new DriveResetPosition(drivetrain),
+      new DriveDistance(-36, drivetrain).withTimeout(3)
       // new VisionAlign(drivetrain),
       // new ConditionalCommand(
       //     new LauncherMode(launcher, intake, hopper, cellevator).withTimeout(3),
