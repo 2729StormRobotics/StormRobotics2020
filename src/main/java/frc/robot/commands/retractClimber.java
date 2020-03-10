@@ -13,19 +13,19 @@ import frc.robot.subsystems.Climber;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class ClimbStop extends InstantCommand {
-  private final Climber m_climber;
-  
-  public ClimbStop(Climber subsystem) {
-    m_climber = subsystem;
+public class retractClimber extends InstantCommand {
+private final Climber m_Climber;
 
+
+  public retractClimber(Climber subsystem) {
+    m_Climber = subsystem;
+    addRequirements(m_Climber);
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_climber);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_climber.stopClimb();
+    m_Climber.retractClimber();
   }
 }

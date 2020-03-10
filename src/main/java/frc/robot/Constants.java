@@ -290,10 +290,10 @@ public final class Constants {
         public static final double kDistancePerPulse = Math.PI * kPulleyDiameter * kGearing;
         public static final double kSpeedPerPulse = kDistancePerPulse / 60.0;
 
-        public static final int kClimberMotorPort = 15;
-
         // piston that applies the friction brake on the climbing motors
-        public static final int kFrictionBrakeChannel = 6;
+        public static boolean kExtendClimber = true; 
+        public static boolean kRetractClimber = false;
+
 
         // Set the constants to invert the left and right climber motors
         public static final boolean kMotorInverted = true;
@@ -305,9 +305,6 @@ public final class Constants {
 
         // Define the maximum height of the climber
         public static final double kMaxHeight = 21.5;
-
-        public static final boolean kFrictionBrakeEnabled = false;
-        public static final boolean kFrictionBrakeDisabled = true;
 
         // Shuffleboard Tab
         public static final String kShuffleboardTab = "Testing";
