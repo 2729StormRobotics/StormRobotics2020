@@ -87,6 +87,7 @@ public class RobotContainer {
                         () -> m_driver.getY(Hand.kLeft),
                         () -> m_driver.getY(Hand.kRight),
                         () -> m_driver.getX(Hand.kRight),
+                        () -> m_driver.getX(Hand.kLeft),
                         m_drivetrain));
 
         m_climber.setDefaultCommand(new ClimbManually(() -> m_weapons.getY(Hand.kLeft), m_climber));

@@ -103,6 +103,7 @@ public class Drivetrain extends SubsystemBase {
 
     m_drive = new DifferentialDrive(m_leftMotorLeader, m_rightMotorLeader);
     m_drive.setRightSideInverted(false);
+    m_drive.setDeadband(kDriveDeadzone);
 
     m_gearShift = new Solenoid(kGearShiftChannel);
 
@@ -128,7 +129,7 @@ public class Drivetrain extends SubsystemBase {
     motor.setIdleMode(IdleMode.kBrake); // Sets the motors to brake mode from the beginning
     motor.setSmartCurrentLimit(kCurrentLimit);
     motor.setInverted(invert);
-    //motor.setOpenLoopRampRate(2);
+    // motor.setOpenLoopRampRate(2);
 
     encoderInit(motor.getEncoder()); // Initializes encoder within motor
   }
@@ -257,16 +258,16 @@ public class Drivetrain extends SubsystemBase {
   // Drives the motors using arcade drive
   public void arcadeDrive(double speed, double turn, boolean squareInputs) {
     if (m_reverseDrive) {
-    m_drive.arcadeDrive(speed, -turn, squareInputs);
+    m_drive.arcadeDrive(speed, turn, squareInputs);
     }
     else {
-      m_drive.arcadeDrive(speed, turn, squareInputs);
+      m_drive.arcadeDrive(speed, -turn, squareInputs);
     }
   }
 
   // Drives the motor using trigger drive
   public void triggerDrive(double forward, double reverse, double turn, boolean squareInputs) {
-    m_drive.arcadeDrive(forward - reverse, turn, squareInputs);
+    arcadeDrive(reverse - forward, turn, squareInputs);
   }
 
   // sets motor values to zero to stop

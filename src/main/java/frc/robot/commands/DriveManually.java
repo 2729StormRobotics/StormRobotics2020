@@ -33,13 +33,13 @@ public class DriveManually extends CommandBase {
    * @param subsystem  the subsystem being used--in this case, the drivetrain
    */
   public DriveManually(SendableChooser<String> type, DoubleSupplier rightTrigger, DoubleSupplier leftTrigger,
-      DoubleSupplier leftY, DoubleSupplier rightY, DoubleSupplier rightX, Drivetrain subsystem) {
+      DoubleSupplier leftY, DoubleSupplier rightY, DoubleSupplier rightX, DoubleSupplier leftX, Drivetrain subsystem) {
     m_drivetrain = subsystem;
     m_leftTank = leftY;
     m_rightTank = rightY;
     m_forwardTrigger = rightTrigger;
     m_reverseTrigger = leftTrigger;
-    m_turn = rightX;
+    m_turn = leftX;
 
     m_driveChooser = type;
 
@@ -60,7 +60,7 @@ public class DriveManually extends CommandBase {
     m_driveType = m_driveChooser.getSelected();
 
     if (m_driveType.equals("Arcade")) {
-      m_drivetrain.arcadeDrive(m_leftTank.getAsDouble(), m_turn.getAsDouble(), true);
+      m_drivetrain.arcadeDrive(m_rightTank.getAsDouble(), m_turn.getAsDouble(), true);
     } else if (m_driveType.equals("Trigger")) {
       m_drivetrain.triggerDrive(m_forwardTrigger.getAsDouble(), m_reverseTrigger.getAsDouble(), m_turn.getAsDouble(),
           true);

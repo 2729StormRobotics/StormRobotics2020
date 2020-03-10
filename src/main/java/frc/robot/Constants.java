@@ -46,6 +46,8 @@ public final class Constants {
         public static final boolean kLeftReversedDefault = true;
         public static final boolean kRightReversedDefault = !kLeftReversedDefault;
 
+        public static final double kDriveDeadzone = 0.03;
+
         /**
          * PCM Solenoid port for shifting gears
          */
@@ -361,7 +363,6 @@ public final class Constants {
         public static final int kDriverControllerPort = 0;
         public static final int kWeaponsControllerPort = 1;
 
-        public static final double kDriveDeadzone = 0.02;
         public static final String kAutoCommandsTab = "Autonomous";
     }
 }
