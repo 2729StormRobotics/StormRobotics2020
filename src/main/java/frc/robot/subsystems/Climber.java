@@ -25,7 +25,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class Climber extends SubsystemBase {
 
-
+  //creates
   private final Solenoid m_extendClimber;
   private boolean m_extend = true;
 
@@ -43,6 +43,7 @@ public class Climber extends SubsystemBase {
    * Creates a new Climber subsystem.
    */
   public Climber(){
+    //creates solenoid
     m_extendClimber = new Solenoid(0);
     m_retractClimber = new Solenoid(0);
 

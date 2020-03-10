@@ -290,7 +290,7 @@ public final class Constants {
         public static final double kDistancePerPulse = Math.PI * kPulleyDiameter * kGearing;
         public static final double kSpeedPerPulse = kDistancePerPulse / 60.0;
 
-        // piston that applies the friction brake on the climbing motors
+        // pistons that control climbing
         public static boolean kExtendClimber = true; 
         public static boolean kRetractClimber = false;
 
