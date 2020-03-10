@@ -82,7 +82,7 @@ public class RobotContainer {
 
         // m_climber.setDefaultCommand(new ClimbManually(() -> m_weapons.getY(Hand.kLeft), m_climber));
         m_cellevator.setDefaultCommand(new CellevateForIndex(m_cellevator));
-        m_climber.setDefaultCommand(new retractClimber(m_climber));
+        m_climber.setDefaultCommand(new ClimberRetract(m_climber));
 
         // Configure the button bindings
         configureButtonBindings();
@@ -143,7 +143,7 @@ public class RobotContainer {
                 .whenReleased(new PowerCellStop(m_launcher, m_intake, m_hopper, m_cellevator));
         
         new JoystickButton(m_weapons, Button.kA.value)
-                .whenPressed(new ExtendClimber(m_climber));
+                .whenPressed(new ClimberExtend(m_climber));
     }
 
     /**

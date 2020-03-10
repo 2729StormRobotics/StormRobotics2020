@@ -13,10 +13,10 @@ import frc.robot.subsystems.Climber;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class ExtendClimber extends InstantCommand {
+public class ClimberExtend extends InstantCommand {
   private final Climber m_Climber;
 
-  public ExtendClimber(Climber subsystem) {
+  public ClimberExtend (Climber subsystem) {
     m_Climber = subsystem;
     addRequirements(m_Climber);
 

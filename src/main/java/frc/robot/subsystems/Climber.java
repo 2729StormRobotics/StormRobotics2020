@@ -11,8 +11,6 @@ import static frc.robot.Constants.ClimberConstants.*;
 
 import java.util.Map;
 
-import com.revrobotics.CANEncoder;
-
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
