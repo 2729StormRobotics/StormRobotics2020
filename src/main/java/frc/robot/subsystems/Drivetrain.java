@@ -281,9 +281,13 @@ public class Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("Right Distance", getRightEncoderAverage());
     SmartDashboard.putNumber("Robot Angle", getRobotAngle());
 
-    // Updates the values of the limelight on the network table
-    xOffset = m_limelightTable.getEntry("tx").getDouble(0.0);
+    // Updates the values of the limelight on the network table. Only updates the xOffset if a target is detected
     targetValue = m_limelightTable.getEntry("tv").getDouble(0.0);
+    if (isTargetDetected()) {
+      xOffset = m_limelightTable.getEntry("tx").getDouble(0.0);
+    } else {
+      xOffset = 45;
+    }
   }
 
   @Override
