@@ -126,8 +126,8 @@ public class Vision extends SubsystemBase {
         min = i;
       }
     }
-    m_topLeftX = getTargetAngleX(getViewplaneX(getNormalizedX(target[min])));
-    m_topLeftY = getTargetAngleY(getViewplaneY(getNormalizedY(target[min+1])));
+    m_topLeftX = getTargetAngleX(target[min]);
+    m_topLeftY = getTargetAngleY(target[min+1]);
   }
 
   private void getTopRightCorners() {
@@ -138,8 +138,8 @@ public class Vision extends SubsystemBase {
         max = i;
       }
     }
-    m_topRightX = getTargetAngleX(getViewplaneX(getNormalizedX(target[max])));
-    m_topRightY = getTargetAngleY(getViewplaneY(getNormalizedY(target[max+1])));
+    m_topRightX = getTargetAngleX(target[max]);
+    m_topRightY = getTargetAngleY(target[max+1]);
   }
 
   private void updateTopCorners() {
@@ -174,19 +174,19 @@ public class Vision extends SubsystemBase {
   }
 
   private double getViewplaneX(double x) {
-    return Math.tan(Math.toRadians(29.8)) * x;
+    return Math.tan(Math.toRadians(29.8)) * getNormalizedX(x);
   }
 
   private double getViewplaneY(double y) {
-    return Math.tan(Math.toRadians(24.85)) * y;
+    return Math.tan(Math.toRadians(24.85)) * getNormalizedY(y);
   }
 
   public double getTargetAngleX(double x) {
-    return Math.toDegrees(Math.atan2(x, 1));
+    return Math.toDegrees(Math.atan2(getViewplaneX(x), 1));
   }
 
   public double getTargetAngleY(double y) {
-    return Math.toDegrees(Math.atan2(y, 1));
+    return Math.toDegrees(Math.atan2(getViewplaneY(y), 1));
   }
 
   /**
@@ -217,8 +217,6 @@ public class Vision extends SubsystemBase {
 
   public void updateLimelight() {
     // Updates the values of the limelight on the network table
-    m_xOffset = m_limelightTable.getEntry("tx").getDouble(0.0);
-    m_yOffset = m_limelightTable.getEntry("ty").getDouble(0.0);
     m_targetArea = m_limelightTable.getEntry("ta").getDouble(0.0);
     m_targetValue = m_limelightTable.getEntry("tv").getDouble(0.0);
     m_targetCoordinatesRaw = m_limelightTable.getEntry("tcornxy").getDoubleArray(new double[0]);
