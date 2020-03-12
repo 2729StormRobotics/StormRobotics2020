@@ -315,7 +315,7 @@ public final class Constants {
 
     public static final class VisionConstants {
         public static final double kLimelightHeight = 43;
-        public static final double kLimelightAngle = 16;
+        public static final double kLimelightAngle = 17.241;
         public static final double kPortHeight = 98.25;
 
         public static final int kDefaultPipeline = 0;
