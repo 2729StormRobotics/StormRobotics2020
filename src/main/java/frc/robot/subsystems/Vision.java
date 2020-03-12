@@ -28,14 +28,21 @@ public class Vision extends SubsystemBase {
   // Is target detected
   private double m_targetValue;
 
+  private double[] m_targetCoordinatesRaw;
+
+  private double m_topLeftX;
+  private double m_topLeftY;
+  private double m_topRightX;
+  private double m_topRightY;
+
   // Create a network table for the limelight
   private final NetworkTable m_limelightTable;
 
   // Create new network table entries for target detection
   private final NetworkTableEntry m_targetDistance;
-  private final NetworkTableEntry m_targetDetection; 
+  private final NetworkTableEntry m_targetDetection;
   private final NetworkTableEntry m_targetOffset;
-
+  private final NetworkTableEntry m_targetCorners;
 
   /**
    * Creates a new Vision.
@@ -52,6 +59,7 @@ public class Vision extends SubsystemBase {
     m_targetDistance = m_limelightTable.getEntry("Target Distance");
     m_targetDetection = m_limelightTable.getEntry("Target Detection");
     m_targetOffset = m_limelightTable.getEntry("Target Offset");
+    m_targetCorners = m_limelightTable.getEntry("Target Corners");
   }
 
   public void disableLED() {
@@ -83,7 +91,7 @@ public class Vision extends SubsystemBase {
    * camera
    */
   public boolean isTargetCentered() {
-    return (isTargetDetected() && (m_xOffset > -1.5) && (m_xOffset < 1.5));
+    return (isTargetDetected() && (getXOffset() > -1.5) && (getXOffset() < 1.5));
   }
 
   /**
@@ -104,6 +112,81 @@ public class Vision extends SubsystemBase {
    */
   public double getTargetDistance() {
     return (kPortHeight - kLimelightHeight) / Math.tan(Math.toRadians(getTargetAngle()));
+  }
+
+  private double[] getTargetCornersRaw() {
+    return m_targetCoordinatesRaw;
+  }
+
+  private void getTopLeftCorners() {
+    double[] target = getTargetCornersRaw();
+    int min = 0;
+    for (int i = 2; i < target.length; i += 2) {
+      if (target[i] < target[min]) {
+        min = i;
+      }
+    }
+    m_topLeftX = getTargetAngleX(getViewplaneX(getNormalizedX(target[min])));
+    m_topLeftY = getTargetAngleY(getViewplaneY(getNormalizedY(target[min+1])));
+  }
+
+  private void getTopRightCorners() {
+    double[] target = getTargetCornersRaw();
+    int max = 0;
+    for (int i = 2; i < target.length; i += 2) {
+      if (target[i] > target[max]) {
+        max = i;
+      }
+    }
+    m_topRightX = getTargetAngleX(getViewplaneX(getNormalizedX(target[max])));
+    m_topRightY = getTargetAngleY(getViewplaneY(getNormalizedY(target[max+1])));
+  }
+
+  private void updateTopCorners() {
+    getTopLeftCorners();
+    getTopRightCorners();
+  }
+
+  private double getMidPoint(double x1, double x2) {
+    double midpoint = 0.5 * (x2 - x1) + x1;
+    return midpoint;
+  }
+
+  private void updateMidpointX() {
+    m_xOffset = getMidPoint(m_topLeftX, m_topRightX);
+  }
+
+  private void updateMidpointY() {
+    m_yOffset = getMidPoint(m_topLeftY, m_topRightY);
+  }
+
+  private void updateMidpoint() {
+    updateMidpointX();
+    updateMidpointY();
+  }
+
+  private double getNormalizedX(double x) {
+    return (1 / 160) * (x - 160);
+  }
+
+  private double getNormalizedY(double y) {
+    return (1 / 120) * (120 - y);
+  }
+
+  private double getViewplaneX(double x) {
+    return Math.tan(Math.toRadians(29.8)) * x;
+  }
+
+  private double getViewplaneY(double y) {
+    return Math.tan(Math.toRadians(24.85)) * y;
+  }
+
+  public double getTargetAngleX(double x) {
+    return Math.toDegrees(Math.atan2(x, 1));
+  }
+
+  public double getTargetAngleY(double y) {
+    return Math.toDegrees(Math.atan2(y, 1));
   }
 
   /**
@@ -138,12 +221,17 @@ public class Vision extends SubsystemBase {
     m_yOffset = m_limelightTable.getEntry("ty").getDouble(0.0);
     m_targetArea = m_limelightTable.getEntry("ta").getDouble(0.0);
     m_targetValue = m_limelightTable.getEntry("tv").getDouble(0.0);
+    m_targetCoordinatesRaw = m_limelightTable.getEntry("tcornxy").getDoubleArray(new double[0]);
 
     // Updates the values of the math for target distance and value to the network
     // table
     m_targetDistance.setDouble(getTargetDistance());
     m_targetDetection.setBoolean(isTargetDetected());
     m_targetOffset.setDouble(getXOffset());
+    m_targetCorners.setDoubleArray(getTargetCornersRaw());
+
+    updateTopCorners();
+    updateMidpoint();
   }
 
   @Override
